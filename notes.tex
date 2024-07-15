@@ -24,6 +24,7 @@
 
 %Make the code formatting look professional and proper
 %Show the with some colored background
+% Enhanced code formatting for C++
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -35,7 +36,7 @@
     keywordstyle=\color{magenta},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    basicstyle=\footnotesize,
+    basicstyle=\footnotesize\ttfamily, % Using monospaced font for code
     breakatwhitespace=false,         
     breaklines=true,                 
     captionpos=b,                    
@@ -45,7 +46,9 @@
     showspaces=false,                
     showstringspaces=false,
     showtabs=false,                  
-    tabsize=2
+    tabsize=2,
+    language=C++, % Specifying the language as C++
+    morekeywords={constexpr, nullptr, noexcept} % Adding C++ specific keywords
 }
 
 \lstset{style=mystyle}
@@ -815,7 +818,7 @@ There is no general rule as it all depends on the application. Given a sequentia
     \item Mapping - Mapping the processes to the processors. It is the process of mapping the processes to the processors. It is done in such a way that the processes are mapped to the processors in such a way that the communication overhead is minimized.
 \end{itemize}
 \subsection{Data Parallelism and Data Decomposition}
-\textbf{Data Parallelism: }Given data is divided across the processing entites. Thus, eac process own and computes a portion ofthe data, it decides which data to communicate betwen other processes.
+\textbf{Data Parallelism: }Given data is divided across the processing entites. \textbf{Owner computes own:} Thus, each process own and computes a portion of the data, it decides which data to communicate betwen other processes.
 This is called owner computes rule. The data is divided into chunks and each chunk is assigned to a process. This is caleed data parallelism where the data is divided across the processing entities and thus the parallelism is dictated by the data. 
 
 \textbf{Domain Decompoistion: }Multi-dimensional domain in simulations divided into subdomains equal to processing entities is called domain decomposition.
@@ -852,7 +855,7 @@ Here, it can be seen that the process grid is arrange as a $2 \times 3$ grid and
 We decompose into tasks that can be executed in parallel. It is used when the data is not uniformly distributed.
 The independent tasks are identified and mapped to different processors. The tasks are grouped by a process called mappiing. 
 Here, we are trying to achieve two objectives - balance the groups and minimize inter-group dependencies.
-This isrepresented as a Task graph. For example, consider th task dependency graph shown in figure 
+This is represented as a Task graph. For example, consider the task dependency graph shown in figure 
 \ref{fig:task_graph}.
 \begin{figure}[H]
     \centering
@@ -870,14 +873,231 @@ In general, assigning a task graph to processors is an NP complete problem. Thus
 
 \subsection{Orchestration}
 It is the process of managing the execution of the parallel program. It involves managing the synchronization and communication between the processes.
-\textbf{Maximizing data locality: }It is the process of maximimzing data locality in a processor and avoid unnecessary communication. Thus, it is aobut minimizing the volumne of data exchange.
-(like not communicating intermediate results) or Minimizing the frequency of interactions - packing.
+\subsubsection{Maximizing data locality: }
+It is the process of maximimzing data locality in a processor and avoid unnecessary communication. Thus, it is about \textbf{minimizing the volumne of data exchange}.
+(like not communicating intermediate results) or \textbf{Minimizing the frequency of interactions - packing}.
 For example, say to compute parallel dot products. Say we have two vectors A and B and we wish to find dot product between two. It requires 
 multiplying the corresponding elements of the two vectors and then summing them up. Thus, we can do the multiplication part in parallel across various processes or various threads.
 Now the communication part can be done in two ways - either we can communicate the intermediate results to the master processor and then sum them up or we can sum them up in the individual processors and then communicate the final result to the master processor.
-The second approach is better as it minimizes the volume of data exchange. Thus, the orchestration is about minimizing the volume of data exchange and minimizing the frequency of interactions. Thus, structuing the communication in such a way that the communication overhead is minimized.
-Point to point communication between two processors involves latency and bandwidth. The latency is the time taken to establish the connection between the two processors and the bandwidth is the rate at which the data can be communicated between the two processors. By minimizing the freqeucny of interactions we can minimize the overall delay i.e. latency.
+The second approach is better as it minimizes the volume of data exchange. Thus, the orchestration is about minimizing the volume of data exchange and \textbf{minimizing the frequency of interactions}. Thus, structuing the communication in such a way that the communication overhead is minimized.
+Point to point communication between two processors involves latency and bandwidth. The latency is the time taken to establish the connection between the two processors and the bandwidth (measured in MB/s) is the rate at which the data can be communicated between the two processors. By minimizing the freqeucny of interactions we can minimize the overall delay i.e. latency.
+For example, consider that a processor is required to send 10 arrays to another processor, then in order to minimize the frequency of interactions 
+we can pack all the 10 arrays into one packet and send it to the other processor. In sending 10 arrays together to another processor we require to establish connection only once, thus the delay because of latency
+occus only once but in case if we send it as 10 different arrays, we would be required to establish communication between the processors each time which would mean dealy due to latency each time. 
+Thus, Packing will minimize the frequency of interactions and thus the overall delay. This idea is called 
+\textbf{packing}. Note that in this case the volume of data reamins the same in both the cases 
+but the frequency of interactions is minimized in the second case.
 
+\subsubsection{Minimizing contention and hotspots: }
+(Avoiding communication bottlenecks) Do not use the same communication pattern with the other processes in all the processes.
+For a given communication pattern, following a certain order will incur a communication bottleneck while following a different order will not incur a communication bottleneck and this can affect the performance.
+For example, consider a situation where every process communicates data with every other process.
+This is as shown in table \ref{tab:communication}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Process & A & B & B & D & E \\
+        \hline
+        A & - & 2 & 3 & 4 & 5 \\
+        B & 1 & - & 3 & 4 & 5 \\
+        C & 1 & 2 & - & 4 & 5 \\
+        D & 1 & 2 & 3 & - & 5 \\
+        E & 1 & 2 & 3 & 4 & - \\
+        \hline
+    \end{tabular}
+    \caption{Communication Pattern}
+    \label{tab:communication}
+\end{table}
+
+In the table \ref{tab:communication}, 
+the communication takes place according to the rule that for each of the processor at time=t, it communicates with t if ($t\neq id$).
+Thus, starting from time $t=0$, for Processor A ($id=0$), it won't communicate to anyone else since its $t=id$, for processor B ($id=1$), at time $t=0$
+it will communicate (since $t\neq id$) with Processor A.
+Similarly for processor C, at time $t=0$, it will communicate (since $t\neq id$) with processor A and so on for Processors D and E, at time $t=0$ they will communicate with Processor A. 
+Similarly, at $t=1$, Processor A will communciate with Processor B, for processor B, it will not communicate since ($t =id$), for Processor C it will communicate with Processor B at time $t=1$ and so on for other processors.
+This is followed for all the processors at all the time steps.
+Now see that at some timestep t all the processors will communicate to processor with $id=t$. This will result in communication bottleneck, although it looks like the processors are communicating in parallel,
+but at some timestep t all the processors will communicate to the same processor and thus the communication bottleneck will occur. Even at the hardware level because of the switches and common netwrok links, it can recieve only one package at a time.
+Now as the number of processes increase say to a 1000, then at some timestep t all 999 processes will try and communicate with one of the process at some time step t. Thus leading to communication bottleneck.
+The solution is to come up with an algorithm where each process follows a different order in which it communicate with the processes so that at no time step all of them end up communicating with the same processor.
+This is called \textbf{minimizing contention and hotspots} which refers to avoiding use of the same communication pattern with the other processes in all the processes.
+
+\subsubsection{Overlapping computations with interactions}
+One of the solutions is \textbf{Overalpping computations with interactions}. The idea is to split communication into phases into two parts: one part in which the computations depend 
+on  the communicated data (type 1) and second is computations that do not depends on communicated data (type 2). While communicating for type 1 perform computations for type 2.
+This can be done especially on the reciever side which do not depend on the communicated data and thus can perform the computation. In other words, the computations are being overlapped with the communications.
+
+\subsubsection{Replicating data or computations }
+Balncing the extra computation or storage cost with the gain due to less communication.
+For example, consider two processes 0 and 1. 0 computes a matrix A by doing an outer product of two vectors (say a and b) and then distributed this matrix A to process 1.
+Then processes computes with their own part of the matrix. 
+Instead of his approach, we can replicate the vectors a and b to process 1 and then process 1 can compute the matrix A by itself. This will reduce the communication overhead 
+since it will be a lightweight communciation compared to sending a part of the Matrix A. But, this will increase the computation overhead since the process 1 will have to compute the matrix A by itself.
+Now after both of them compute the matrix A, they can work on their respective parts of the matrix. Depending on the vector sizes instead of computing half of the matrix which could be very huge in size,
+we are communicating only the vectors thereby reducing the communciations. This is called \textbf{Replicating data or computations} as we are replicaiting the data and computations to reduce the communication overhead. Here, 
+both of the processes end up replicating the data and computations by computing the matrix A to reduce the communication overhead. Ultimately, it all depends on the computation cost and communication cost and the tradeoff between them.
+
+\subsection{Mapping}
+Mapping the processes to the processors. 
+Which process runs on which particular processor.
+\begin{itemize}
+    \item \textbf{Network topology and communction pattern: }It can depend on network topology and communication pattern of processes. The aspect of mapping the communication pattern to the network topology in an intelligent way plays an important role in the performance of the parallel program.
+          For example, consider a 2D mesh network topology. The processes are arranged in a 2D grid and the communication pattern is such that each process communicates with its neighbours. Then we would like to do a natural mapping i.e. map the 
+            processes to the processors in such a way that the processes which communicate with each other are mapped to the processors which are close to each other. This will reduce the communication overhead as the communication between the processes will be faster.
+          
+    \item \textbf{Hetrogeneous systems: }On processor speeds in case of hetrogeneous systems (different processors have different speeds). In case of homogeneous systems all the processors have same speed and communication cost is same.
+          In case of hetrogenoeus systems the communication cost as well as processor speed is different for different processors and thus the mapping can depend on the communication cost. For example, consider a system with 2 processors A and B. Processor A is faster than processor B.
+            Now, if the communication cost between processor A and B is less than the computation cost of processor B then it is better to map the process which communicates with processor B to processor A. This is because the communication cost is less than the computation cost of processor B. Thus, we wish to map the processes 
+            to processors in such a way that heavy compute tasks are mapped to faster processors and light compute tasks are mapped to slower processors.
+\end{itemize}
+All data and task parallel strategies generally follow static mapping i.e. at the beginning of the program the mapping is done and it remains constant throughout the program.
+But, in some cases dynamic mapping is done i.e. the mapping is done at runtime. For example, consider a situation where the load on the processors is not uniform and the load on the processors keeps changing. In such cases, dynamic mapping is done where the mapping is done at runtime based on the load on the processors by the master processor.
+The idea here is that a process/global memory can hold a set of tasks. The master processors distributed some tasks to all the processes. Once a processor completes its tasks, it asks the coordinator process for more tasks.
+This is referred to as self-scheduling or work stealing, where the processes are scheduled dynamically based on the load on the processors. Here we don't fix the taks onto the processors but let the processes decide dynamically which tasks to take up.
+Thus, even in case of hetrogeneous processors, the processes working on a high speed processor can finish tasks quickly and will then steal more work from the slower processors. This is called work stealing.
+
+
+To summarise the various steps they are as shown in the table \ref{tab:summary}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|p{0.5\textwidth}|}
+        \hline
+        \textbf{Step} & Architecture-Dependent? &  \textbf{Description} \\
+        \hline
+        Decomposition & Mostly no &  Identifying parallel tasks with large extent of possible concurrent activity but not too much \\
+        Assignment & Mostly no & Balance workload; reduce communication volume; Assigning the tasks to the processors \\
+        Orchestration & Yes & Reduce noninherent communication via data locality; reduce communication and synchronization cost as seen by the processor; reduce serializaion at shared resources; schedule tasks to satisfy dependencies early;
+        Managing the execution of the parallel program \\
+        Mapping & Yes & Put related processes on the same processor if necessary; explot network topology; Mapping the processes to the processors \\
+        \hline
+    \end{tabular}
+    \caption{Summary of Steps}
+    \label{tab:summary}
+\end{table}
+As shown in the table \ref{tab:summary}, the decomposition and assignment steps try to identify independent tasks and balane the workload. Once these tasksare fixed and the communication patters are fixed,
+the orchestration step tries to minimize the communication overhead and the mapping step tries to map the processes to the processors in such a way that the communication overhead is minimized. The Orchestration and Mapping steps are architecture dependent as they depend on the network topology and the communication pattern of the processes.
+The first two steps Decomposition and Assignment are mostly independent of the architecture and are done at the programming level.
+
+\subsection{Exapmle}
+Given a 2d array of float values, repeatedy average each elements with immediate neighbours until the difference between two
+iterations is less than some tolerance value. Consider a 2d domain with some grid points, we start with some initial values at this grid point and we keep udating the values over time.
+For example, it could be solving a heat equation where the heat spreads over a plate, thus the grid points represent temperature at different points on the plate and thus averaging the value reduces the temperature at that point.
+So we are looking at how the values of these temperatures evolve over time.
+
+%Add code
+\begin{lstlisting}[caption={Parallel Program for Averaging},captionpos=b]
+do{
+    diff=0.0
+    for (i=0;i<n;i++)
+        for (j=0;j<n;j++){
+            temp=A[i][j];
+            A[i][j]=average(neighbours);
+            diff+=abs(A[i][j]-temp);
+        }
+}while (diff>tolerance);    
+\end{lstlisting}
+Consider the figure \ref{fig:grid} which shows the grid points and the neighbours of the grid points.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/grid.png}
+    \caption{Grid Points}
+    \label{fig:grid}
+\end{figure}
+In this we go over all the values of the grid points and update the value of the grid point by averaging the values of the neighbours. We keep doing this until the difference of global variable diff between the two iterations is less than some tolerance value.
+There are two methods to solve this problem: one is Jacobi method where we take the values of the neighbour from the previous time step and the other is Gauss-Seidel method where we take the values of the neighbour from the current time step whenever available (for the lower indecx values we use the latest values and for the higher index values we use the previous values).
+Suppose we want to parallelise the program. For the pupose of paralleizing the program we wish to decompose the problem into tasks that can be executed in parallel.
+\begin{enumerate}
+\item One way is to consider each element in parallel. A parallel process or a parallel thread for each of the element i.e. concurrent task for each element update:
+which would require a max concurrency of $n^2$ tasks (for n*n elements in the grid). Practically, this is not feasible as the number of tasks is very large and the overhead of creating and managing the tasks is very high. This many parallel number of threads is not practically possible,
+as for larger values of n the number of threads required will be $n^2$, thus many threads would have to be mapped to the same processors and would require a lot of context switching between threads and context switchiing between the processes which can thus affect the performance.
+\item Another way is to consider tasks for elements in anti-diagonal. Note that values in a partiular diagonal depends on the values from the previous diagonal but not among the elements in that diagonal.
+Now we consider a parituclar diagonal, for some element in the diagonal for using the Gauss-Siedel method we require the values of the neighbours from the previous diagonal at latest time step and the value from the next diagonal at previous time step. This works out, since we are computing diagonal by diagonal 
+starting from the left top corner and moving towards the right bottom corner. Thus, the values of the neighbours are available from the previous diagonal at the latest timestep and the next diagonal at the previous time step. Also note that the values of the elements in the diagonal are independent of each other and thus can be computed in parallel.
+Thus, we can consider the tasks for the elements in the anti-diagonal and compute the values of the elements in the anti-diagonal in parallel. This way we can reduce the number of tasks to $2n-1$ tasks (for n*n elements in the grid). This is a better approach than the previous approach as the number of tasks is reduced and the tasks are independent of each other and can be computed in parallel.
+Note that for the diagonals which are at the ends, will have small number of elements, thus the parallelism will also be very small. This also will have a synchronization const because the processes assigned to a particular diagonal cannot start executing until the earler diagonals
+have finished executing. Thus, the parallelism will be limited by the number of elements in the diagonal and the synchronization cost.
+\item What we follow is block distribution of the data. Consider the figure \ref{fig:block} which shows the block distribution of the data.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/block.png}
+    \caption{Block Distribution}
+    \label{fig:block}
+\end{figure}
+In this we have divided the 2d grid across the rows. First set of rows is assigned to P0, the second set of rows assigned to P1 and so on. Each processor will be resposible 
+for updating the values of the elements in the rows assigned to it. Now for orchestration step, we try to findout what are the synchronization and communication requirements and we try to ensure correctness and minimzie communication and synchrozination cose.
+It depends on the programming/model architecture. Shared address space/Shared memory model or a Message Passing Model. 
+\end{enumerate}
+
+Now we consder Shared Address space (SAS) version of the above program as shown in lstlisting \ref{lst:shared}.
+\begin{lstlisting}[caption={Shared Address Space Version},captionpos=b,label={lst:shared}]
+int n, nprocs; /* matri: (n+2 x n+2) elements */
+float **A, diff=0;
+LockDec(lock_diff);
+BarrierDec(barrier1);
+main()
+begin
+    read(n); /*read input parameter: matrix size*/
+    Read(nprocs);
+    A = malloc(a 2-d array of (n+2) x (n+2) doubles);
+    Create(nprocs-1,Solve, A);
+    initialize(A); /*initialize the matrix A somehow*/
+    Solve(A);
+    Wait_for_End (nprocs-1);
+end main
+\end{lstlisting}
+Note that here we are using $n+2$ processors in order to take care of the boundary processors.
+Here, the array A will be shared and the main process creates the different processes and then it is solved.
+Let us now look at the Solve function.
+\begin{lstlisting}[caption={Solve Function},captionpos=b,label={lst:solve}]
+procedure Solve(A) /* solve the equation system*/
+    float **A;
+begin
+    int i, j, pid, done =0;
+    float temp;
+        mybegin = 1 +(n/nprocs)*pid;
+        myend =mybegin+(n/nprocs);
+    while(!done) do /* outermost loop over sweeps*/
+        diff=0; /*initialize difference to 0*/
+            Barriers(barrier1, nprocs);
+        for (i=mybeg to myend) do /*sweep for all points of grid*/
+            for (j=1 to n) do
+                temp=A[i,j]; /*save old value of element*/
+                A[i,j]=0.2*(A[i,j]+A[i,j-1]+A[i-1,j]+A[i,j+1]+A[i+1,j]); /* compute average*/
+                diff+=abs(A[i,j]-temp);
+            end for
+        end for
+        if(diff/(n*n) < TOL) then done =1;
+    end while
+end procedure
+\end{lstlisting}
+Now this particular function is going to be executed by all the processes. But depending on the 
+process id different processes will end up processing different parts of the grid. Thus, it uses Single Program Multiple Data Model.
+It uses the same single program but exectued by different processes on different data.
+The $mybegin=1+(n/nprocs)*pid$ and $myend=mybegin+(n/nprocs)$ are the starting and ending points of the grid that the process is responsible for and thus it is calculated based on the process id for each of the processor.
+Now all the processes enter the while loop. Here, we have a global variable diff and matrix A which is shared by all the processes.
+At the beginning of the loop all the processes synchroinze as shown in the code by Barriers.
+Each of the processes then execute the statement 11. Although they will be executing the same statmenet but the beginning and the ending row will differ depending 
+on the process id, thus different processes will be executing this code for different sets of rows.
+Now, the processes will be updating the values of the elements in the grid and then calculating the difference between the new value and the old value. After taking the average note that they 
+update the value of diff, but since diff is a global variable it gets updated by all the processes which is then later on compared with tolerance to determine the end of the loop.
+This was just an overview of the program. Fr understanding the benifits of computing in parallel, we need to understand the importance of parallel statements like barrier.
+A barrier is a function call that achieves synchronization calls between the processes. When a particular process calls a barrier, it keeps waiting in the barrier call until all the other processes have reached the barrier call.
+Thus, the barrier call ensures that all the processes have reached the barrier call before any of the processes can proceed further. This is important in the above program as we need to ensure that all the processes have completed the computation of the elements in the grid before we can proceed to the next iteration.
+This avoids the situation where some of the processes have completed the computation and some of the processes have not completed the computation and thus the processes which have completed the computation will be waiting for the other processes to complete the computation
+instead of moving with the computation so as to avoid the use of stale values which are still not updated by the other processors.
+
+\begin{note}
+    The matrix A is a global variable and is thus shared by all the processes. But during execution note that the processes are updating
+    the values of the elements in the matrix A. Thus, in case when the elements at the boundary of two processors are updated, it may lead to a problem since
+    it may happen that the processor may not yet have updated some of the values at the boundary but when the other processor updates the elment under its control
+    it may use the updated value of the element in some cases and stale value of the element in some cases. Thus, the updates of the elements at the boundary of the processors
+    should be done in a synchronized way. This can be achieved in csae of Jacobi method by maintaing a temporary array which is local to each processor, that stores values for the current 
+    timestep based on the values stored in the global matrix (which contains values at the previosu timestep). Once all the processes have reached the end of the iteration which can be found using a barrier call.
+    Then the temporary matrix will be copied to the global matrix and the next iteration will start. This way the updates of the elements at the boundary of the processors will be synchronized in case of Jacobi method.
+    Here, we are ignoring this case for the sake of simplicity and are assuming that this problem is somehow handled internaly.
+\end{note}
 
 
 

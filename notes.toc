@@ -41,3 +41,9 @@
 \contentsline {subsection}{\numberline {7.5}Data Distributions}{46}{subsection.7.5}%
 \contentsline {subsection}{\numberline {7.6}Task Parallelism}{47}{subsection.7.6}%
 \contentsline {subsection}{\numberline {7.7}Orchestration}{48}{subsection.7.7}%
+\contentsline {subsubsection}{\numberline {7.7.1}Maximizing data locality: }{48}{subsubsection.7.7.1}%
+\contentsline {subsubsection}{\numberline {7.7.2}Minimizing contention and hotspots: }{49}{subsubsection.7.7.2}%
+\contentsline {subsubsection}{\numberline {7.7.3}Overlapping computations with interactions}{50}{subsubsection.7.7.3}%
+\contentsline {subsubsection}{\numberline {7.7.4}Replicating data or computations }{51}{subsubsection.7.7.4}%
+\contentsline {subsection}{\numberline {7.8}Mapping}{51}{subsection.7.8}%
+\contentsline {subsection}{\numberline {7.9}Exapmle}{53}{subsection.7.9}%
