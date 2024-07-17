@@ -46,4 +46,4 @@
 \contentsline {subsubsection}{\numberline {7.7.3}Overlapping computations with interactions}{50}{subsubsection.7.7.3}%
 \contentsline {subsubsection}{\numberline {7.7.4}Replicating data or computations }{51}{subsubsection.7.7.4}%
 \contentsline {subsection}{\numberline {7.8}Mapping}{51}{subsection.7.8}%
-\contentsline {subsection}{\numberline {7.9}Exapmle}{53}{subsection.7.9}%
+\contentsline {subsection}{\numberline {7.9}Example}{53}{subsection.7.9}%

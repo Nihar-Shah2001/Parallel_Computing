@@ -930,7 +930,7 @@ on  the communicated data (type 1) and second is computations that do not depend
 This can be done especially on the reciever side which do not depend on the communicated data and thus can perform the computation. In other words, the computations are being overlapped with the communications.
 
 \subsubsection{Replicating data or computations }
-Balncing the extra computation or storage cost with the gain due to less communication.
+Balancing the extra computation or storage cost with the gain due to less communication.
 For example, consider two processes 0 and 1. 0 computes a matrix A by doing an outer product of two vectors (say a and b) and then distributed this matrix A to process 1.
 Then processes computes with their own part of the matrix. 
 Instead of his approach, we can replicate the vectors a and b to process 1 and then process 1 can compute the matrix A by itself. This will reduce the communication overhead 
@@ -943,7 +943,7 @@ both of the processes end up replicating the data and computations by computing 
 Mapping the processes to the processors. 
 Which process runs on which particular processor.
 \begin{itemize}
-    \item \textbf{Network topology and communction pattern: }It can depend on network topology and communication pattern of processes. The aspect of mapping the communication pattern to the network topology in an intelligent way plays an important role in the performance of the parallel program.
+    \item \textbf{Network topology and communication pattern: }It can depend on network topology and communication pattern of processes. The aspect of mapping the communication pattern to the network topology in an intelligent way plays an important role in the performance of the parallel program.
           For example, consider a 2D mesh network topology. The processes are arranged in a 2D grid and the communication pattern is such that each process communicates with its neighbours. Then we would like to do a natural mapping i.e. map the 
             processes to the processors in such a way that the processes which communicate with each other are mapped to the processors which are close to each other. This will reduce the communication overhead as the communication between the processes will be faster.
           
@@ -980,7 +980,7 @@ As shown in the table \ref{tab:summary}, the decomposition and assignment steps 
 the orchestration step tries to minimize the communication overhead and the mapping step tries to map the processes to the processors in such a way that the communication overhead is minimized. The Orchestration and Mapping steps are architecture dependent as they depend on the network topology and the communication pattern of the processes.
 The first two steps Decomposition and Assignment are mostly independent of the architecture and are done at the programming level.
 
-\subsection{Exapmle}
+\subsection{Example}
 Given a 2d array of float values, repeatedy average each elements with immediate neighbours until the difference between two
 iterations is less than some tolerance value. Consider a 2d domain with some grid points, we start with some initial values at this grid point and we keep udating the values over time.
 For example, it could be solving a heat equation where the heat spreads over a plate, thus the grid points represent temperature at different points on the plate and thus averaging the value reduces the temperature at that point.
@@ -1049,7 +1049,7 @@ end main
 \end{lstlisting}
 Note that here we are using $n+2$ processors in order to take care of the boundary processors.
 Here, the array A will be shared and the main process creates the different processes and then it is solved.
-Let us now look at the Solve function.
+Let us now look at the psuedo code for the Solve function.
 \begin{lstlisting}[caption={Solve Function},captionpos=b,label={lst:solve}]
 procedure Solve(A) /* solve the equation system*/
     float **A;
@@ -1082,7 +1082,7 @@ Each of the processes then execute the statement 11. Although they will be execu
 on the process id, thus different processes will be executing this code for different sets of rows.
 Now, the processes will be updating the values of the elements in the grid and then calculating the difference between the new value and the old value. After taking the average note that they 
 update the value of diff, but since diff is a global variable it gets updated by all the processes which is then later on compared with tolerance to determine the end of the loop.
-This was just an overview of the program. Fr understanding the benifits of computing in parallel, we need to understand the importance of parallel statements like barrier.
+This was just an overview of the program. For understanding the benifits of computing in parallel, we need to understand the importance of parallel statements like barrier.
 A barrier is a function call that achieves synchronization calls between the processes. When a particular process calls a barrier, it keeps waiting in the barrier call until all the other processes have reached the barrier call.
 Thus, the barrier call ensures that all the processes have reached the barrier call before any of the processes can proceed further. This is important in the above program as we need to ensure that all the processes have completed the computation of the elements in the grid before we can proceed to the next iteration.
 This avoids the situation where some of the processes have completed the computation and some of the processes have not completed the computation and thus the processes which have completed the computation will be waiting for the other processes to complete the computation
@@ -1094,10 +1094,203 @@ instead of moving with the computation so as to avoid the use of stale values wh
     it may happen that the processor may not yet have updated some of the values at the boundary but when the other processor updates the elment under its control
     it may use the updated value of the element in some cases and stale value of the element in some cases. Thus, the updates of the elements at the boundary of the processors
     should be done in a synchronized way. This can be achieved in csae of Jacobi method by maintaing a temporary array which is local to each processor, that stores values for the current 
-    timestep based on the values stored in the global matrix (which contains values at the previosu timestep). Once all the processes have reached the end of the iteration which can be found using a barrier call.
+    time step based on the values stored in the global matrix (which contains values at the previosu timestep). Once all the processes have reached the end of the iteration which can be found using a barrier call.
     Then the temporary matrix will be copied to the global matrix and the next iteration will start. This way the updates of the elements at the boundary of the processors will be synchronized in case of Jacobi method.
     Here, we are ignoring this case for the sake of simplicity and are assuming that this problem is somehow handled internaly.
 \end{note}
+
+Then we have a waitforend followed by solving matrix A in the code in \ref{lst:shared}.
+The waitforend is for the main process waiting for all the processes to finsh which can be done by making all the process 
+send a synchroinzation message to the first process which is an All to one communication.
+Note that diff variable is a global variable thus is a shared variable which is read and written to by all processes.
+Thus, it may result in garbage values since all the processes try to simultaneously read and change a shared variablee. This is because of the race conditions
+because of context switching at the assembly level language which may result in garbage values.
+The solution to this is to use locks. A lock is a mechanism that allows only one process to access the shared variable at a time. Thus, when a process is accessing the shared variable, it locks the shared variable and then
+accesses the shared variable and then unlocks the shared variable. This way only one process can access the shared variable at a time.
+In computer science, a lock or mutex (from mutual exclusion) is a synchronization primitive. A lock is designed to enforce a mutual exclusion concurrency control policy. This means that only one thread at a time may acquire the lock and all other threads attempting to acquire the lock are blocked until the thread that acquired the lock releases it.
+In other words, in order to protect the shared variables by means of this locking mechanisms of mutex locks (mutual exclusion locks) where only that
+process which holds the lock will go ahead and execute these statements and it is only when the process releases this lock 
+that the other processes can go ahead and execute the statements. This is called mutual exclusion because the processes are mutually
+excluding each other and one process gets exclusive access to that part of the code which is called a critical section.
+Note that this is also happending with the matrix A which is also a global variable and thus a shared variable. Thus, especially at the boundary values
+of the processors, where the values may be updated and read simulataneously, it is important to
+use locks to protect those boundary values when you are using shared arrays.
+
+Another way to resolve these is by using temporary matrices which are local to each processor and then copying the values of the temporary matrix to the global matrix after all the processes have completed the computation.
+This way the updates of the elements at the boundary of the processors will be synchronized. This is called double buffering.
+
+Note that in the case we are using locking mecahnisms, which are very costly and need to be used sparingly,
+since each time after the processes updates the value, for updating the value in the diff variable, the processes are waiting for the lock to be released by the other process and then only they can proceed further. 
+NOte that this happens for each of the grid point updates. 
+This can lead to a lot of waiting time and thus the performance of the program can be affected.
+So then the question arises, how to reduce the waiting time and the contention for the lock.
+Note that diff is needed only for calculating the final global value and to find out whether the convergence condition is achieved or not.
+Hence, instead of each process updating this global diff variable on every update of the grid point, we can have a local diff variable for each process which is updated by each process and then at the end of the iteration
+the local diff variables of all the processes are added to get the global diff variable. This way the contention for the lock is reduced and the waiting time is reduced since it is only at the time when all the
+local variables are added to the gloabl diff variable that the lock is required. This is called reduction operation. Thus, we have reduced the locking overhead from $\mathcal{O}(n^2)$ for each grid point 
+update to $\mathcal{O}(p)$ where p is the number of processes. This is a significant improvement in the performance of the program.
+
+Now the updated solve psuedo code is as shown in the listing \ref{lst:solve2}.
+\begin{lstlisting}[caption={Updated Solve Function},captionpos=b,label={lst:solve2}]
+procedure Solve(A) /* solve the equation system*/
+    float **A;
+begin
+    int i, j, pid, done =0;
+    float mydiff, temp;
+        mybegin = 1 +(n/nprocs)*pid;
+        myend =mybegin+(n/nprocs);
+    while(!done) do /* outermost loop over sweeps*/
+        mydiff=diff=0; /*initialize difference to 0*/
+            Barriers(barrier1, nprocs);
+        for (i=mybeg to myend) do /*sweep for all points of grid*/
+            for (j=1 to n) do
+                temp=A[i,j]; /*save old value of element*/
+                A[i,j]=0.2*(A[i,j]+A[i,j-1]+A[i-1,j]+A[i,j+1]+A[i+1,j]); /* compute average*/
+                mydiff+=abs(A[i,j]-temp);
+            end for
+        end for
+        lock(diff-lock);
+            diff +=mydiff;
+        unlock(diff-lock)
+        barrier(barrier1,nprocs);
+        if(diff/(n*n) < TOL) then done =1; /* checking the terminating condition*/
+        Barrier(barrier1,nprocs);
+    end while
+end procedure
+\end{lstlisting}
+Note that now in the pseudo code a new local vairable mydiff has been interoduced for each of the processes
+which is updated by each of the processes and then at the end of the iteration the local mydiff variables of all the processes are added to get the global diff variable
+using the locking mechanism as shown in the code \ref{lst:solve2}. See that the statement lock(diff-lock) and unlock(diff-lock) are used to lock and unlock (or relasing the lock) 
+the global diff variable respectively
+This way the contention for the lock is reduced and the waiting time is reduced since it is only at the time when all the
+local variables are added to the gloabl diff variable that the lock is required.
+Also note that the barrier call is used to synchronize the processes at the end of the iteration. This is important as we need to ensure that all the processes have completed the computation of the elements in the grid and added 
+their value from mydiff is added to global diff before checking the terminating condition in order to proceed to the next iteration.
+
+Now there is another barrier call after we check the terminating condition. This is because in case if the terminating condition is not met then one of the process may 
+start executing for the next iteration and see that in the beginning of the iteration set diff=0.
+Thus, while the other processes are still checking the terminating condition, 
+they may encounter diff=0 in the terminating condition which is wrong. Thus, we add another barrier for letting all the processes
+check the terminating condition with the correct diff value and once all the processes are done, then proceed to the next iteration.
+
+Then, the done=1 condition at the convergence point is updated redundantly by all the processes.
+Note that the code that does the update is identical to the sequential program.
+
+This is also one of the advantages of a shared memory program over a message passing program.
+In a shared memory program, the code that is written is identical to the sequential program and the parallelism is achieved by adding the parallel constructs like locks and barriers.
+Thus, the code is easier to write and debug as compared to a message passing program where the code is completely different from the sequential program and the parallelism is achieved by sending messages between the processes.
+
+\textbf{Message Passing Version}\\
+Here we cannot assume A to be a gloabl shared array which all the processes can access.
+Because there is no concept of shared variable in message passing model. Each process will have to maintain its part of the matrix.
+The only way to reciev values update by some other processor is by using the explicit message passing between these tow processes.
+Thus, we need to send the data to the processes.
+
+We do a domain decomposition to decompose the 2D domain into different processes and each process follows the owner compute rule.
+Here we have more communication and on top of that we will be mainatining local data strucutres because there is no concept of global data structures.
+Here, we use something called as ghost rows. This  can be understood as follows. Consider the figure \ref{fig:ghost}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/ghost.png}
+    \caption{Ghost Rows}
+    \label{fig:ghost}
+\end{figure}
+Here, we have divided the 2D grid into 4 processes as done in the previous case of shared memory model.
+Each process is responsible for updating the values of the elements in the rows assigned to it.
+Here Each process will have its local array because there is no concept of shared array in orrder to maintain these elements.
+In addition each process has an additional ghost row as shown in the figure \ref{fig:ghost}.
+These rows are to accomodate the boundary rows coming from other processes. For example, as shown in the figure \ref{fig:ghost},
+the process 0 has a ghost row at the bottom which will accomodate the boundary row from process 1. Similarly, the process 1 has a ghost row at the top to accomodate boundary row from process 0
+and at the bottom which will accomodate the boundary row from process 2 and so on.
+The ghost row values will be used for updating the local values and they will not be updated by the processes themselves.
+THe ghost row values will be used just to update the local values of the processes and they will be updated by the processes which own them.
+Thus, the name ghost rows. They are also called as halo rows or halo regions or ghost zone regions.
+Then each process can imply do sequential computation.
+
+Now consider the following Generating processes code for the message passing version as shown in lisitng \ref{lst:mpi}.
+\begin{lstlisting}[caption={Message Passing Version - Generating Processes},captionpos=b,label={lst:mpi}]
+int n, nprocs; /* matrix: (n+2 x n+2) elements */
+float **myA;
+main()
+begin
+    read(n); /*read input parameter: matrix size*/
+    realead(nprocs);
+    A = malloc(a 2-d array of (n+2) x (n+2) doubles);
+    Create(nprocs-1,Solve, A);
+    initialize(A); /*initialize the matrix A somehow*/
+    Solve(A);
+    Wait_for_End (nprocs-1);
+end main
+\end{lstlisting}
+
+Now consider the following Solve function for the message passing version as shown in listing \ref{lst:solve3}
+which contains Array allocation and ghost row copying.
+\begin{lstlisting}[caption={MPI - Solve Function},captionpos=b,label={lst:solve3}]
+procedure Solve(A) /* solve the equation system*/
+    float **A;
+begin
+    int i, j, pid, done =0;
+    float mydiff, temp;
+    myend=(n/nprocs);
+    myA=malloc (array of (n/nprocs) x (n) floats);
+    while(!done) do /* outermost loop over sweeps*/
+        mydiff=0; /*initialize local difference to 0*/
+        if (pid!=0) then
+            SEND(&myA[1,0],n*sizeof(float),(pid-1),row);
+        if (pid!=nprocs-1) then
+            SEND(&myA[myend,0],n*sizeof(float),(pid+1),row);
+        if (pid!=0) then
+            RECEIVE (&myA[0,0],n*sizeof(float),(pid-1),rpw);
+        if(pid!=nprocs-1) then
+            RECIEVE(&myA[myend+1,0],n*sizepf(foat),(pid-1),row);
+        for (i=1 to myend) do /*sweep for all points of grid*/
+            for (j=1 to n) do
+                temp=A[i,j]; /*save old value of element*/
+                A[i,j]=0.2*(A[i,j]+A[i,j-1]+A[i-1,j]+A[i,j+1]+A[i+1,j]); /* compute average*/
+                mydiff+=abs(A[i,j]-temp);
+            end for
+        end for
+        if(pid!=0) then
+            SEND(mydiff,sizeof(float),0,DIFF);
+            RECIEVE(done,sizeof(int),0,DONE);
+        else
+            for k=1 to nproces-1 do
+                RECEIVE(tempdiff,sizeo(float),k,DIFF);
+                mydiff+=tempdiff;
+            end for
+            if (mydiff/(n*n)<TOL) then done =1;
+            for k = 1 to nprocs-1 do
+                SEND(done,sizeof(int),k,DONE);
+            end for
+    end while
+end procedure
+\end{lstlisting}
+
+In the code \ref{lst:solve3}, the myA is the local array for each of the processes which is used to store the local values of the elements in the grid
+for the domain allocated to it (some subset or rows and all columns). These can be done in many ways: one is to make each of the processes read from a file
+and the other is to make one of the process can initialize the entier matrix and then distribute it to the various processes.
+For the sake of simplicity, let us assume that the processes are somehow able to initialize the matrix.
+Inside the while loop, each of the process maintains a local diff value (no concept of shared/global memory since it is a message passing model nothing is shared).
+Then, at thebeginning of the iteration each processes send their boundary data to the neighbouring processes and the negihbouring processes recieve 
+this boundary data and store into the ghost rows of their local array. This is done using the SEND and RECIEVE functions as can be seen in the code.
+The conditions written here are because the process 0 does not have a process before it and the last process does not have a process after it so 
+they do not need to send or recieve the boundary data to any processes before and after and need to send and recieve data only to the processes that they share a boundary with. 
+Here pid is the processid which does from 0 to nprocs-1. Thus, based on the process id the send and recieve blocks will change and 
+based on these decisions the processes will change the corresponding send and receive statements. For example from the code we can see that a procees with pid not 0 sends 
+its top row to a lower rank process and a process with pid not equal to nprocs-1 sends its bottom row to a higher rank process. Then we have the corresponding recieve statement for
+the same. This way the boundary data is exchanged between the processes and the ghost rows are updated with the boundary data.
+Then the processes update the values of the elements in the grid and then calculate the local diff value as done in the sequential code.
+
+This time the diff value is not a global variable but a local variable for each of the processes. 
+Then, the processes send their local diff values to the process 0 which is the master process. The process 0 recieves the local diff values from all the processes and then adds them to get the global diff value.
+Then, the process 0 checks the terminating condition and if the terminating condition is met then it sends the done signal to all the processes and the processes terminate.
+This is the message passing version explained in a nutshell using a Psuedocode.
+
+
+
+    
+
+
 
 
 
