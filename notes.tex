@@ -1027,9 +1027,10 @@ have finished executing. Thus, the parallelism will be limited by the number of 
 \end{figure}
 In this we have divided the 2d grid across the rows. First set of rows is assigned to P0, the second set of rows assigned to P1 and so on. Each processor will be resposible 
 for updating the values of the elements in the rows assigned to it. Now for orchestration step, we try to findout what are the synchronization and communication requirements and we try to ensure correctness and minimzie communication and synchrozination cose.
-It depends on the programming/model architecture. Shared address space/Shared memory model or a Message Passing Model. 
+It depends on the programming/model architecture - shared memory model/message passing model. 
 \end{enumerate}
 
+\textbf{Shared address space/Shared memory model}\\
 Now we consder Shared Address space (SAS) version of the above program as shown in lstlisting \ref{lst:shared}.
 \begin{lstlisting}[caption={Shared Address Space Version},captionpos=b,label={lst:shared}]
 int n, nprocs; /* matri: (n+2 x n+2) elements */
@@ -1285,6 +1286,260 @@ This time the diff value is not a global variable but a local variable for each 
 Then, the processes send their local diff values to the process 0 which is the master process. The process 0 recieves the local diff values from all the processes and then adds them to get the global diff value.
 Then, the process 0 checks the terminating condition and if the terminating condition is met then it sends the done signal to all the processes and the processes terminate.
 This is the message passing version explained in a nutshell using a Psuedocode.
+
+\subsection{Notes on Message Passing Version}
+\begin{itemize}
+    \item In a shared memory model although there is no explicit communication,
+    when a process writes the variable and the other process reads it you can take it as some kind of communication. But the communication 
+    is recieving process initiated i.e. when the recieving process recieves the data is the communication completed wheras in message passing version
+    a process explicitly sends to anoother process thus it is sender initiated. 
+    \item The synchroinziation in case of Message passing version is implicit. It is not explicitly done using barriers as in the case of Shared memory model
+    but the synchroinzation happens using these communications (denoted by SEND and RECEIVE calls in the program).
+    This arises the question whether a deadlock situation can arise due to communications in case for MPI? It may happen in the case when all the processes are waiting for the other process to send something 
+    and none of the processes are sending anything. This is called a deadlock situation. Say all the processes execute a RECEIVE statement and until this opertion is completed they cannot move on to the next statement to SEND.
+    This will lead to a deadlock situation since all the processes are stuck at RECEIVE statement to receive data but none of the processes are sending anything. This can also be though in other way that consider thtat all the processes execute SEND statement
+    and it is such that the processes will move on to the next statement only after it has been recieved by some other processes. Then in these cases a deadlock situation will happen since all the SEND operations of all the processes will be waiting for each other 
+    to execute their RECEIVE statement which will not happen because those processes are also waiting for other processes to consume the message. Thus, all the processes will be at the SEND stage waiting for each other.
+    This can be avoided by using non-blocking communication calls. Such a communication is called synchronized communication where we want that a process return from SEND only if the other process begins to receives the message, thus called synchronized communications since the 
+    processes are synchronizing. We can try and break the deadlock by one process sending the data and the other process receiving the data.
+    \item The communication is done at one in whole rows at the beginning fof the iteration, not grid-point by grid-point. Instead of sending rows in each grid point the entier row is sent in one shot.
+    \item Note the communication pattern when the mydiff variable is sent from all the processes to the master process and the the master process forms the gloabl value using all this local values. This kind of communication pattern is called All to One communication and is called reduction.
+    This is very common operation in parallel programming where all the processes send their local values to the master process and the master process combines all these local values to form the global value. Thus, many parallel programming libraries support automatic functions for reduction.
+    Finally, the master process sends the done signal to all the processes which is called One to All communication which is also called a Broadcast operation where one of the process broadcasts a message to all the other processes.
+    Thus, we can use the following code by replacing the SEND and RECEIVE operations to broadcast and reduction operations.
+    \begin{lstlisting}
+    /*communcate local diff values and determine if done, using reduction and broadcast*/
+    REDUCE(0,mydiff,sizeof(float),ADD);
+    if(pid==0) then
+        if (mydiff/(n*n)<TOL)then
+            done =1;
+        endif
+            BROADCAST(0,done,sizeof(int),DONE);
+    \end{lstlisting}
+    Note that the reduce operation is called to combine the diff at the process 0 using ADD operation to reduce. The ADD operation is used to add the diff values of all the processes to get the global diff value.
+    There are even other various operators which can be applied to the reduce operation like MAX, MIN, etc. Then the master process checks the terminating condition. The BROADCAST operation is used to broadcast the done signal to all the processes.
+    Thus, it can be simplified using the reduction and broadcast operations.
+\end{itemize}
+
+\subsection{Send and Receive Alternatives}
+Recall that in the message passing version we used the SEND and RECEIVE operations to send and recieve the data between the processes.
+Now it may happen that the send operation i.e. the process will wait until the data is sent (the reciever starts executing its receive and starts getting the message from the sender process) 
+and the recieve operation is also i.e. the process will wait until the data is recieved (the sender starts executing its send and starts sending the message to the reciever process).
+This can be avoided by using asynchronous operations. Many MPI libraries support Asynchronous communications sends and receives
+where a process does not have to wait for the other process to start executing i.e. in asynchronous send a process that sends the data does not have to wait until another process starts receiving the data and similarly, in case of asynchrnous recieve,
+a process does not have to wait for the other process to start sending the data. 
+Asynchroous operations can be categorised into blocking asynchronous and nonblocking asynchronous operations for receive/send. This will be seen in detail in MPI.
+
+\subsection{Summary}
+\begin{itemize}
+\item Shared Address Space: Shared and private data are explicity separate. Communction is implicit in access patters and synchronization takes place viat atomic operations like locks and barriers on shared data.
+Synchronization is thus explicit and distinct from data communication.
+\item Message Passing: There is no concept of shared memory and all the data structures are local data. Data is distributed among local address spaces. 
+Here, the communication is explicit and synchronization (at least for the above example) is implicit i.e. no explicit barrier but there are message passing versions where you can explicit synchronization as well.
+\item Note that the decomposition and Assignment were similar in both Shared Address Space model and Message passing model, where the difference was in orchestration and mapping. Consider the following table for summary table \ref{tab:finsummary}.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{0.5\textwidth}|c|c|}
+        \hline
+        & Shared Address Space & Message Passing \\
+        \hline
+        Explicit in global structure? & Yes & No\\
+        Communication & Implicit & Explicit \\
+        Synchronization & Explicit & Implicit \\
+        Explicit replcation of border rows? & No & Yes \\
+        \hline
+    \end{tabular}
+    \caption{Summary}
+    \label{tab:finsummary}
+\end{table}
+\end{itemize}
+
+\section{Shared Memory Parallelism - OpenMP}
+
+\subsection{Introduction}
+Recall the word, processes, used in case of shaed memory address space models. Here, the processes are referred to as threads.
+Threads are lightweight processes which share the same address space. Individual threads need to use barriers and lock to protect the variables. 
+The program also needs to mention certain variables as shared and certain varaibles as local. 
+Thus, threads can access the same data structures and variables. The programming library that is used for shared memory parallelism is OpenMP (a portable programming model).
+OpenMP is a set of compiler directives, library routines, and environment variables that can be used to specify high-level parallelism in Fortran and C/C++ programs.
+What are compiler directives? Within your code you can add certain statements which are guidelines to the compiler to do certain special things.
+For example, there are certiain levels of optimization O1, O2,.. one can direct the compiler to optimize certain section of code to a certain level of code using these compiler directives.
+In case of OpenMP compiler directives are given related to shared memory parallelism. Compiler directives are also called pragmas in OpenMP.
+
+It is very easy to program using OpenMP to convert the sequential program by writing the sequential code and then using the OpenMP directives and execute using OpenMP flags to achieve paralleism.
+First verion of OpenMP came in 1997 with the latest version 4.5 in 2015.
+
+\subsection{Fork-Join Model}
+OpenMP uses a fork-join model. The main program is called the master thread and the master thread forks a team of threads whenever it encounters parallel construct. The team of threads then execute the parallel region and 
+then the threads join back to the master thread.
+This is as shown in the figure \ref{fig:forkjoin}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/forkjoin.png}
+    \caption{Fork-Join Model}
+    \label{fig:forkjoin}
+\end{figure}
+The program begins as a single thread called master thread. Then when it encounters parallel construct, it forks/spawns
+a team of threads. The statement are then executed in parellel for the parallel region. At the end of the parallel region the team of threads synchroinze and terminate and join
+back to the master thread.
+
+This is one of the good things about OpenMP has selective parallelism i.e. only certain sections of the code are executed in parallel based on the requirement. Thereby we are adhering to Amhadal's Law which says that not all parts of the code can be parallelized
+and only certain parts of the code can be parallelized. Thus we are not spawing all of the program in parallel and only those where we require parallelism.
+
+OpenMP consists of:
+\begin{itemize}
+\item Work-sharing constructs: speicifes how region should be parallelised and distributed amond threads.
+\item Synchronization constructs: for providing synchronization between threads.
+\item Data environment constructs: for specifying which data is shared and which is private.
+\item Library calls, environment variables: special function calls and set environment variables. (set env command before executing your code).
+\end{itemize}
+A construct is a directive combined with the regui where the directive applies. Above shown are the three constructs OpenMP supports.
+OpenMP support loop-level paralleism to paralleise mainly for/do loops. If there are no dependencies between the iterations of the for loops then we can distribute this iterations to the processes
+wherer some process executes some set of iterations and the other process executes the other set of iterations. This is called loop-level parallelism.
+It gives the user a control over the fine-grained parallelism i.e.what regions to be paralleised. Hence, we call this as fine-level parllelism.
+It follows Amdahl's law which says that only certain parts of the sequential code can be parallelized which is what is seen in this case. Note that in this we can also change the phases of parallelism meaning that 
+based on the requirement we can change the number of threads that are executing the parallel region. Regions which can be more paralleised, one can have more number of threads. This is called dynamic parallelism.
+In addition OpenMP also supports coarse-level parallelism i.e. parallelism where executing completely two different sections of code in parallel in addition to fine-level parallelism.
+In the recent versions of OpenMP it also support executions on accelerators (GPUs), SIMD vectorizations (automatically updates a vector in parallel units) and task-core affinity.
+The task-core affinity refers to the fact that the tasks can be explicitly mapped to a particular core. This can be helpful when we want to keep data which is highly related closer in order to save time.
+
+\subsection{Parallel Construct}
+
+omp parallel is the parallel construct in OpenMP. 
+It is used to create a team of threads. The syntax is as follows:
+\begin{lstlisting}
+#pragma omp parallel
+{
+    /*parallel region*/
+}
+\end{lstlisting}
+The parallel construct is followed by a block of code which is executed by all the threads in the team. 
+The block of code is called the parallel region. So when a compiler encounters the pragma omp parallel construct it creates a team of 
+threads and the subsequent region inside the block is then executed in parallel. Before the encounter with the omp parallel the comiler will execute the code in 
+the sequential manner on a master thread. This is thus achieved by the parallel directive along with the block of code to be executed in parallel enclosed in curly braces which will be executed in parallel by a number of threads is 
+called parallel construct.
+
+How many number of threads? There are various ways to specify it, one can set an environment variable from command line set env omp numthreads=number of threads. 
+Another way is to use the omp set numthreads(number of threads) function in the code. We can also specify the number of threads in clauses.
+The floowing clauses can be used:
+\begin{itemize}
+\item if (condition): will execute in parallel if the condition is true.
+\item num\_threads (n): will execute in parallel using n threads.
+\item default (shared | none): specifies the default data scope for variables within a parallel region. Should the variables be shared or private among the threads.
+\item private (list): specifies a list of variables that are private to each thread.
+\item firstprivate(list): specifies a list of variables that are private to each thread and are initialized with the value of the variable outside the parallel region.
+\item shared(list): specifies a list of variables that are shared among all the threads.
+\item copyin(list): specifies a list of variables that are shared among all the threads and are initialized with the value of the variable outside the parallel region.
+\item reduction(operator:list): specifies a list of variables that are private to each threads and which undergo changes by different threads. Then at the end of this parallel region all of these private variables are combined using the operator 
+specified to give a value.
+\item proc bind (master | close | spread): specifies the binding of the threads to the cores. How you want the task to be distributed to the cores. To the same core as the master thread or close to the master thread or spread.
+\end{itemize}
+Consider the code as shown  in the listing below which return the number of threads used in the parallel region. So say n threads were used then it would return n, n times each time when exeuted by one of the thread. 
+\begin{lstlisting}
+#include <omp.h>
+int main()
+{
+    int nthreads;
+    #pragma omp parallel
+    {
+        nthreads = omp_get_num_threads();
+        printf("Number of threads = %d\n", nthreads);
+    }
+    return 0;
+}
+\end{lstlisting}
+I encourage you to run these codes by simply copying and pasting it into your IDE and then execute them to see the results.
+
+Consider another Hello World code as shown in the listing below.
+\begin{lstlisting}
+#include <omp.h>
+int main()
+{
+    int nthreads,tid;
+    #pragma omp parallel private(nthreads,tid){
+        printf("Hello World\n");
+    }
+    return 0;
+}
+\end{lstlisting}
+So some number of threads will be spawned and you will see the Hello World printed by each of the threads.
+
+\subsection{Work sharing construct}
+The work sharing construct is used to distribute the work among the threads.using the parallel construct we have spawned multiple threads.
+Now to specify how to distribute the work among the threads we use work sharing construct.
+There are three types of work sharing constructs - loops, sections, single.
+
+\subsubsection{for-loop}
+It is used for a for-loop or a do loop using pragma omp for (clause) as in the case of parallel construct.
+The following clauses can be used :
+\begin{itemize}
+\item private (list)
+\item firstprivate(list)
+\item lastprivate(list): here the value of the variable in the list is equal to the value that is set by the last thread.
+\item linear(list):
+\item reduction(operator:list)
+\item schedule([modifier[,modifier]:]kind[,chunksize]): To distribute the iterations among the threads, schedule clause specifies how 
+we schedule the iterations of the loop among the different threads.
+\item collapse(n): Useful for nested level parallelism. Say two for loops are nested and we want to parallelize both of them then we can use the collapse clause. In general only one of the 
+for loop collapses but using collapse clause we can parallelise both of them by collapsing both the for loops. Say first for loop executes for 3 iterations and the second for loop executes for two iterations, Then
+using collapse we can consider them as a total of six iterations in parallel across the threads. If we don't use the collapse clause only the outermost three iterations will be distributed among the threads.
+\item ordered(n): In some cases we want threads to execute in order i.e. we want the threads managed by the first thread to be executed first and then the second thread and so on.
+\item nowait: To tell the threads not to wait for each other at the end of for loop. By default all the threads will be waiting for each other for all the threads to finish executing the for loop.
+\end{itemize}
+For construct is the most commonly used and th most important construct in OpenMP.
+Note that we are assuming that the iterations can be independently executed and simultaneously in parallel by the threads.
+This works as long as the iterations are not dependent on each other whereas in the case when the itations are dependent on each other say we are using a value in the loop which is dependent on the value resulted in previous loop,
+in those cases the programmer should not use for construct.
+
+Schedule clause: The assignment of iterations to threads depend on the schedule clause.
+There are five schedule clauses. 
+\begin{enumerate}
+    \item shedule(static,chink size): In this the total number of iterations of the for loop will divided by this chunk size to obatin chunks and these chunks are distributed to the threads in a round-robin manner.
+    For example, say 20 iterations of for loop and say chink size is 2 then 20/2 = 10 chunks are formed which each consisting of two iterations (first chunk consisits of first two iterations and so on) and say we have only four threads then these chunks are distributed among these four threads in a round-robin manner.
+    First chunk to first thread, second chunk to second thread, third chunk to third thread, fourth chunk to fourth thread and back from fifth chunk to first thread and so on.
+    \item schedule(dynamic, chunksize): It is the smae as above but here the chunks can be distributed dynamically, based on  OpenMP runtime system libraries own policy to distribute these chunks to the 
+    threads that are ready to execute in a dynamic fashion.
+    \item schedule(runtime): Here we give complete freedom to the OpenMP library to distribute the iterations based on the availability of thread.
+\end{enumerate}
+
+Consider the following for-loop example code \ref{lst:for-example}.
+\begin{lstlisting}[caption={for-Example: Addition of two Arrays},captionpos=b,label={lst:for-example}]
+#include<omp.h>
+#define CHUNKSIZE 100
+#define N 1000
+main(){
+    int i,chunk;
+    float a[N],b[N],c[N];
+    /*some initializations*/
+    for (i=0;i<N;i++)
+        a[i]=b[i]=i*1.0;
+    
+        chunk=CHUNKSIZE;
+        #pragma omp parallel shared(a,b,c,chunk) private(i) {
+            #pragma omp for schedule(dynamic,chunk) nowait
+            for(i=0;i<N;i++)
+            {
+                c[i]=a[i]+b[i];
+            }/*end of parallel section*/
+        }
+}
+\end{lstlisting}
+
+Here we ared adding two arrays a and b to form a third array c.
+Note that we can perform this additions completely independent of each other and hence a good opportunity 
+for using parallelism.
+First for parallelization we need to spawn the threads for which we used pragma omp parallel shared(a,b,c,chunk) private(i).
+Here a,b,c are shared among all the threads (since they could be very large arrays) and chunk is also a shared variable and iterator i is private variable to each thread because each thread is going to 
+have its own set of iterations, and those set of iteraions should be managed by a private iterator i to avoid any conflicts between which iterations to perform among the threads. 
+Then we use the for construct to parallelize the for loop with a dynamic schedule clause and nowait for threads to not wait after finishing their iterations.
+Note we can also combine the two pragma into one line in the code as pragma omp parallel for shared(a,b,c,chunk) private(i) schedule(dynamic,chunk) nowait.
+
+
+
+
+
+
+
 
 
 

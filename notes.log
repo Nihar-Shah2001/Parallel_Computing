@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.10.21)  17 JUL 2024 10:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.10.21)  17 JUL 2024 13:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -795,7 +795,7 @@ Overfull \hbox (58.33336pt too wide) detected at line 94
 [][][][]
  []
 
-<images/moore.png, id=273, 1927.2pt x 1426.32875pt>
+<images/moore.png, id=318, 1927.2pt x 1426.32875pt>
 File: images/moore.png Graphic file (type png)
 <use images/moore.png>
 Package pdftex.def Info: images/moore.png  used on input line 98.
@@ -808,7 +808,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [4 <./images/moore.png>]
-<images/simd.png, id=281, 507.39563pt x 350.05782pt>
+<images/simd.png, id=326, 507.39563pt x 350.05782pt>
 File: images/simd.png Graphic file (type png)
 <use images/simd.png>
 Package pdftex.def Info: images/simd.png  used on input line 130.
@@ -830,7 +830,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [6 <./images/simd.png>]
-<images/mimd.png, id=299, 507.39563pt x 342.5297pt>
+<images/mimd.png, id=344, 507.39563pt x 342.5297pt>
 File: images/mimd.png Graphic file (type png)
 <use images/mimd.png>
 Package pdftex.def Info: images/mimd.png  used on input line 164.
@@ -844,7 +844,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [7]
-<images/shared_memory.png, id=307, 578.6418pt x 236.5638pt>
+<images/shared_memory.png, id=352, 578.6418pt x 236.5638pt>
 File: images/shared_memory.png Graphic file (type png)
 <use images/shared_memory.png>
 Package pdftex.def Info: images/shared_memory.png  used on input line 182.
@@ -858,7 +858,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [8 <./images/mimd.png>]
-<images/uma.png, id=316, 402.303pt x 398.4486pt>
+<images/uma.png, id=361, 402.303pt x 398.4486pt>
 File: images/uma.png Graphic file (type png)
 <use images/uma.png>
 Package pdftex.def Info: images/uma.png  used on input line 206.
@@ -872,7 +872,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9 <./images/shared_memory.png>]
-<images/numa.png, id=325, 503.9628pt x 324.2514pt>
+<images/numa.png, id=370, 503.9628pt x 324.2514pt>
 File: images/numa.png Graphic file (type png)
 <use images/numa.png>
 Package pdftex.def Info: images/numa.png  used on input line 217.
@@ -886,7 +886,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10 <./images/uma.png>]
-<images/distributed_memory.png, id=334, 503.9628pt x 317.0244pt>
+<images/distributed_memory.png, id=379, 503.9628pt x 317.0244pt>
 File: images/distributed_memory.png Graphic file (type png)
 <use images/distributed_memory.png>
 Package pdftex.def Info: images/distributed_memory.png  used on input line 227.
@@ -904,7 +904,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [11 <./images/numa.png> <./images/distributed_memory.png>]
-<images/state_dia.png, id=346, 555.5154pt x 393.1488pt>
+<images/state_dia.png, id=391, 555.5154pt x 393.1488pt>
 File: images/state_dia.png Graphic file (type png)
 <use images/state_dia.png>
 Package pdftex.def Info: images/state_dia.png  used on input line 266.
@@ -954,7 +954,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16]
-<images/class_network.png, id=387, 718.93594pt x 448.67625pt>
+<images/class_network.png, id=432, 718.93594pt x 448.67625pt>
 File: images/class_network.png Graphic file (type png)
 <use images/class_network.png>
 Package pdftex.def Info: images/class_network.png  used on input line 350.
@@ -968,7 +968,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [17 <./images/class_network.png>]
-<images/bus.png, id=396, 600.74437pt x 689.57625pt>
+<images/bus.png, id=441, 600.74437pt x 689.57625pt>
 File: images/bus.png Graphic file (type png)
 <use images/bus.png>
 Package pdftex.def Info: images/bus.png  used on input line 366.
@@ -982,7 +982,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [18]
-<images/crossbar.png, id=404, 802.49812pt x 573.64313pt>
+<images/crossbar.png, id=449, 802.49812pt x 573.64313pt>
 File: images/crossbar.png Graphic file (type png)
 <use images/crossbar.png>
 Package pdftex.def Info: images/crossbar.png  used on input line 379.
@@ -996,7 +996,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [19 <./images/bus.png>]
-<images/multistage.png, id=414, 791.20593pt x 395.22656pt>
+<images/multistage.png, id=459, 791.20593pt x 395.22656pt>
 File: images/multistage.png Graphic file (type png)
 <use images/multistage.png>
 Package pdftex.def Info: images/multistage.png  used on input line 393.
@@ -1010,7 +1010,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [20 <./images/crossbar.png>]
-<images/shuffle.png, id=424, 504.38437pt x 430.60875pt>
+<images/shuffle.png, id=469, 504.38437pt x 430.60875pt>
 File: images/shuffle.png Graphic file (type png)
 <use images/shuffle.png>
 Package pdftex.def Info: images/shuffle.png  used on input line 412.
@@ -1024,7 +1024,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [21 <./images/multistage.png>]
-<images/switching.png, id=434, 506.6428pt x 131.74219pt>
+<images/switching.png, id=479, 506.6428pt x 131.74219pt>
 File: images/switching.png Graphic file (type png)
 <use images/switching.png>
 Package pdftex.def Info: images/switching.png  used on input line 423.
@@ -1038,7 +1038,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22 <./images/shuffle.png>]
-<images/omega.png, id=443, 601.4972pt x 406.51875pt>
+<images/omega.png, id=488, 601.4972pt x 406.51875pt>
 File: images/omega.png Graphic file (type png)
 <use images/omega.png>
 Package pdftex.def Info: images/omega.png  used on input line 441.
@@ -1064,7 +1064,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [24 <./images/omega.png>]
-<images/completelyconnected.png, id=463, 289.08pt x 242.40562pt>
+<images/completelyconnected.png, id=508, 289.08pt x 242.40562pt>
 File: images/completelyconnected.png Graphic file (type png)
 <use images/completelyconnected.png>
 Package pdftex.def Info: images/completelyconnected.png  used on input line 475.
@@ -1078,7 +1078,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [25]
-<images/star.png, id=471, 242.40562pt x 237.88875pt>
+<images/star.png, id=516, 242.40562pt x 237.88875pt>
 File: images/star.png Graphic file (type png)
 <use images/star.png>
 Package pdftex.def Info: images/star.png  used on input line 484.
@@ -1092,17 +1092,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [26 <./images/completelyconnected.png> <./images/star.png>]
-<images/lineararrays.png, id=482, 831.85782pt x 82.80937pt>
+<images/lineararrays.png, id=527, 831.85782pt x 82.80937pt>
 File: images/lineararrays.png Graphic file (type png)
 <use images/lineararrays.png>
 Package pdftex.def Info: images/lineararrays.png  used on input line 495.
 (pdftex.def)             Requested size: 258.00539pt x 25.68326pt.
-<images/mesh.png, id=485, 810.77907pt x 224.33812pt>
+<images/mesh.png, id=530, 810.77907pt x 224.33812pt>
 File: images/mesh.png Graphic file (type png)
 <use images/mesh.png>
 Package pdftex.def Info: images/mesh.png  used on input line 507.
 (pdftex.def)             Requested size: 344.005pt x 95.18668pt.
-<images/hypercube.png, id=487, 819.06pt x 376.40625pt>
+<images/hypercube.png, id=532, 819.06pt x 376.40625pt>
 File: images/hypercube.png Graphic file (type png)
 <use images/hypercube.png>
 Package pdftex.def Info: images/hypercube.png  used on input line 524.
@@ -1116,7 +1116,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [27 <./images/lineararrays.png> <./images/mesh.png>]
-<images/4dhypercube.png, id=498, 774.64406pt x 395.22656pt>
+<images/4dhypercube.png, id=543, 774.64406pt x 395.22656pt>
 File: images/4dhypercube.png Graphic file (type png)
 <use images/4dhypercube.png>
 Package pdftex.def Info: images/4dhypercube.png  used on input line 536.
@@ -1130,12 +1130,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [28 <./images/hypercube.png>]
-<images/tree.png, id=508, 603.0028pt x 229.60782pt>
+<images/tree.png, id=553, 603.0028pt x 229.60782pt>
 File: images/tree.png Graphic file (type png)
 <use images/tree.png>
 Package pdftex.def Info: images/tree.png  used on input line 546.
 (pdftex.def)             Requested size: 258.00539pt x 98.23894pt.
-<images/fattree.png, id=511, 883.80188pt x 328.22626pt>
+<images/fattree.png, id=556, 883.80188pt x 328.22626pt>
 File: images/fattree.png Graphic file (type png)
 <use images/fattree.png>
 Package pdftex.def Info: images/fattree.png  used on input line 560.
@@ -1177,7 +1177,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [32]
-<images/gpu.png, id=545, 1294.08469pt x 648.92438pt>
+<images/gpu.png, id=590, 1294.08469pt x 648.92438pt>
 File: images/gpu.png Graphic file (type png)
 <use images/gpu.png>
 Package pdftex.def Info: images/gpu.png  used on input line 653.
@@ -1199,7 +1199,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [34 <./images/gpu.png>]
-<images/smx.png, id=561, 606.01407pt x 681.29532pt>
+<images/smx.png, id=606, 606.01407pt x 681.29532pt>
 File: images/smx.png Graphic file (type png)
 <use images/smx.png>
 Package pdftex.def Info: images/smx.png  used on input line 685.
@@ -1213,7 +1213,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [35]
-<images/cuda_memory.png, id=568, 622.57594pt x 691.83469pt>
+<images/cuda_memory.png, id=613, 622.57594pt x 691.83469pt>
 File: images/cuda_memory.png Graphic file (type png)
 <use images/cuda_memory.png>
 Package pdftex.def Info: images/cuda_memory.png  used on input line 695.
@@ -1263,7 +1263,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [40]
-<images/amdahl.png, id=598, 602.25pt x 470.75874pt>
+<images/amdahl.png, id=643, 602.25pt x 470.75874pt>
 File: images/amdahl.png Graphic file (type png)
 <use images/amdahl.png>
 Package pdftex.def Info: images/amdahl.png  used on input line 764.
@@ -1301,7 +1301,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [44]
-<images/domain.png, id=624, 705.38531pt x 399.74344pt>
+<images/domain.png, id=669, 705.38531pt x 399.74344pt>
 File: images/domain.png Graphic file (type png)
 <use images/domain.png>
 Package pdftex.def Info: images/domain.png  used on input line 828.
@@ -1315,7 +1315,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [45]
-<images/data_distribution.png, id=633, 506.6428pt x 311.66437pt>
+<images/data_distribution.png, id=678, 506.6428pt x 311.66437pt>
 File: images/data_distribution.png Graphic file (type png)
 <use images/data_distribution.png>
 Package pdftex.def Info: images/data_distribution.png  used on input line 848.
@@ -1329,7 +1329,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [46 <./images/domain.png>]
-<images/task_graph.png, id=641, 761.09344pt x 333.49594pt>
+<images/task_graph.png, id=686, 761.09344pt x 333.49594pt>
 File: images/task_graph.png Graphic file (type png)
 <use images/task_graph.png>
 Package pdftex.def Info: images/task_graph.png  used on input line 862.
@@ -1396,7 +1396,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [53]
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 990.
-<images/grid.png, id=691, 359.09157pt x 303.38344pt>
+<images/grid.png, id=736, 359.09157pt x 303.38344pt>
 File: images/grid.png Graphic file (type png)
 <use images/grid.png>
 Package pdftex.def Info: images/grid.png  used on input line 1004.
@@ -1410,7 +1410,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [54 <./images/grid.png>]
-<images/block.png, id=712, 464.4853pt x 404.26031pt>
+<images/block.png, id=757, 464.4853pt x 404.26031pt>
 File: images/block.png Graphic file (type png)
 <use images/block.png>
 Package pdftex.def Info: images/block.png  used on input line 1024.
@@ -1472,10 +1472,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [61]
-<images/ghost.png, id=822, 564.60938pt x 625.58719pt>
+<images/ghost.png, id=867, 564.60938pt x 625.58719pt>
 File: images/ghost.png Graphic file (type png)
 <use images/ghost.png>
-Package pdftex.def Info: images/ghost.png  used on input line 1194.
+Package pdftex.def Info: images/ghost.png  used on input line 1195.
 (pdftex.def)             Requested size: 258.00539pt x 285.87401pt.
 
 
@@ -1525,36 +1525,122 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[67
+[67]
+Overfull \hbox (19.00539pt too wide) in paragraph at lines 1342--1352
+ [][] 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[68]
+<images/forkjoin.png, id=975, 540.51938pt x 215.30438pt>
+File: images/forkjoin.png Graphic file (type png)
+<use images/forkjoin.png>
+Package pdftex.def Info: images/forkjoin.png  used on input line 1378.
+(pdftex.def)             Requested size: 258.00539pt x 102.77328pt.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[69]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[70 <./images/forkjoin.png>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[71]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[72]
+Overfull \hbox (16.09908pt too wide) in paragraph at lines 1481--1483
+[]\OT1/cmr/m/n/12 schedule([modifier[,modifier]:]kind[,chunksize]): To dis-tribute the it-er-a-tions among
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[73]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[74]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[75]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[76
 pdfTeX warning (ext4): destination with the same identifier (name{cite.latexcompanion}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1330 \end{document}
+l.1585 \end{document}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{cite.latexcompanion}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1330 \end{document}
+l.1585 \end{document}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{cite.latexcompanion}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1330 \end{document}
+l.1585 \end{document}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{cite.latexcompanion}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1330 \end{document}
+l.1585 \end{document}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{cite.latexcompanion}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1330 \end{document}
+l.1585 \end{document}
                      
 pdfTeX warning (ext4): destination with the same identifier (name{cite.latexcompanion}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1330 \end{document}
+l.1585 \end{document}
                      ] 
 enddocument/afterlastpage: lastpage setting LastPage.
 (notes.aux)
@@ -1567,20 +1653,20 @@ L3 programming layer <2023-10-10>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: C2758BE639F462BFDC91A09EB440BDF5;9640.
+(rerunfilecheck)             Checksum: 585F820C5AA62FA4BBEBD035710A6D67;11091.
  ) 
 Here is how much of TeX's memory you used:
- 35714 strings out of 474824
- 812650 string characters out of 5750976
+ 35857 strings out of 474824
+ 814534 string characters out of 5750976
  2290043 words of memory out of 5000000
- 56835 multiletter control sequences out of 15000+600000
+ 56899 multiletter control sequences out of 15000+600000
  567853 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,12n,93p,849b,1990s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\nihar\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on notes.pdf (67 pages, 5613337 bytes).
+Output written on notes.pdf (76 pages, 5697543 bytes).
 PDF statistics:
- 1039 PDF objects out of 1200 (max. 8388607)
- 287 named destinations out of 1000 (max. 500000)
- 576 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1213 PDF objects out of 1440 (max. 8388607)
+ 366 named destinations out of 1000 (max. 500000)
+ 653 words of extra memory for PDF output out of 10000 (max. 10000000)
 

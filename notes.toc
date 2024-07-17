@@ -47,3 +47,12 @@
 \contentsline {subsubsection}{\numberline {7.7.4}Replicating data or computations }{51}{subsubsection.7.7.4}%
 \contentsline {subsection}{\numberline {7.8}Mapping}{51}{subsection.7.8}%
 \contentsline {subsection}{\numberline {7.9}Example}{53}{subsection.7.9}%
+\contentsline {subsection}{\numberline {7.10}Notes on Message Passing Version}{66}{subsection.7.10}%
+\contentsline {subsection}{\numberline {7.11}Send and Receive Alternatives}{67}{subsection.7.11}%
+\contentsline {subsection}{\numberline {7.12}Summary}{68}{subsection.7.12}%
+\contentsline {section}{\numberline {8}Shared Memory Parallelism - OpenMP}{69}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Introduction}{69}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Fork-Join Model}{69}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Parallel Construct}{71}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Work sharing construct}{73}{subsection.8.4}%
+\contentsline {subsubsection}{\numberline {8.4.1}for-loop}{73}{subsubsection.8.4.1}%
