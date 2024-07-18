@@ -1478,7 +1478,9 @@ The following clauses can be used :
 \item lastprivate(list): here the value of the variable in the list is equal to the value that is set by the last thread.
 \item linear(list):
 \item reduction(operator:list)
-\item schedule([modifier[,modifier]:]kind[,chunksize]): To distribute the iterations among the threads, schedule clause specifies how 
+\item schedule([modifier[,modifier]:]kind[,chunksize]): To 
+distribute the iterations among 
+the threads, schedule clause specifies how 
 we schedule the iterations of the loop among the different threads.
 \item collapse(n): Useful for nested level parallelism. Say two for loops are nested and we want to parallelize both of them then we can use the collapse clause. In general only one of the 
 for loop collapses but using collapse clause we can parallelise both of them by collapsing both the for loops. Say first for loop executes for 3 iterations and the second for loop executes for two iterations, Then
@@ -1533,6 +1535,109 @@ Here a,b,c are shared among all the threads (since they could be very large arra
 have its own set of iterations, and those set of iteraions should be managed by a private iterator i to avoid any conflicts between which iterations to perform among the threads. 
 Then we use the for construct to parallelize the for loop with a dynamic schedule clause and nowait for threads to not wait after finishing their iterations.
 Note we can also combine the two pragma into one line in the code as pragma omp parallel for shared(a,b,c,chunk) private(i) schedule(dynamic,chunk) nowait.
+
+\subsubsection{Coarse Level parallelism - Sections and Tasks}
+In addition to fine-level parallelism as shown with the for loop example, OpenMP also supports coarse-level parallelism.
+When we talk about given a set of iterations to a thread that is a fine-level parllelism regarding the iterations of the for loop.
+but now suppose that we wish to execute two different functions continaing many such for loops in parallel then it requires a coarse-level parallelism, we can use the sections construct.
+Consider the following code showing use of sections construct as shown in the listing \ref{lst:sections}.
+\begin{lstlisting}[caption={Sections Construct},captionpos=b,label={lst:sections}]
+#pragma omp parllel sections <\clause-list\>
+{
+    #pragma omp section
+        structure-block i
+    #pragma omp section
+        structure-block j
+    ...
+}
+\end{lstlisting}
+NOw suppose the structure blocks consists of functions and we wish to execute them in parallel, then as shown, we first enclose the entire in pragma omp sections and then 
+the small parts which we wish to execute in parallel to be in pragma omp parallel section
+Then the first section will be executed by one thread and the second section will be executed by another thread and so on.
+
+OpenMP also supports dynamically spwaning tasks. Suppose you have a parallel region and you wish to execute a few set of statements (a task) i.e. we are dynamically creating a task.
+This generally occurs in large simulations where depending on the requirement one might need to create a task dynamically. This is done using the task construct. This task will be automatically assigned to one of the threads.
+This is another coarse-level parallelism that OpenMP supports. Tasks is more dynamic construct where your code might be creating tasks dynamically and you want to assign them to the threads dynamically.
+Task will be assigned to one of the threads you have spawned by OpenMP. You can also use a depend clause which allows us to create dependencies between the tasks by specifying 
+certain variable\_list. Suppose a taks uses some variable x and executes its program and now we wish to use that varaible for another task such that the second task depends on the first task.
+Then we can use the depend clause to specify that variable and thus to have the second task depends on the first task. This is done using the depend clause. Thus, it creates dependencies between variables and thus, second task
+begins execution only after the first task has finished execution. Thus, it creates the dependencies between the tasks.
+Now you can dynamically create task graphs where nodes in the graphs represent the tasks and the edges between the nodes represent the dependencies between the tasks.
+This is a very powerful construct in OpenMP. Thus, with the tasks construct OpenMP can follow its own scheduling mechanism to assign the tasks to the threads such that the dependencies are maintained.
+This is as shown in the listing \ref{lst:tasks}.
+\begin{lstlisting}[caption={Tasks Construct},captionpos=b,label={lst:tasks}]
+#pragma omp parallel \<clause-list\>
+{
+    ...
+    #pragma omp task \<clause-list\>
+    ...
+    #pragma omp task depend(dependence type: variable\_list)
+}
+\end{lstlisting}
+
+\subsection{Syncronization Directives}
+Having distribute work among the threads there is always a chance of threads accessing some common variables. Hence, you need to synchronize the threads 
+and protect certain variables using locking mechanisms.
+OpenMP supports this using the following synchronization directives:
+Note that all of this are already enclosed in a parallel region/parallel construct.
+\begin{itemize}
+    \item pragma omp master: This is used to specify that the block of code following this directive is executed by the master thread only.
+    This is generally useful for print statements where you want only one thread to print the output. Say to print the value of a variable.
+    \item pragma omp critical: This is used to specify that the block of code following this directive is executed by only one thread at a time.
+    Say you are updating a variable and we do not want multiple threads to update the variable at the same time else it might result in garbage values.
+    Then we can use the critical directive to protect the variable by enclosing that statement in this directive and only one thread can update the variable at a time.
+    \item pragma omp barrier: This is used to specify that the threads wait at this point until all the threads have reached this point.
+    \item pragma omp atomic: This is used to specify that the operation statement (expression) following this directive is executed atomically i.e. only one thread can execute this operation at a time.
+    \item pragma omp ordered: This is used to specify that the block of code following this directive is executed in the order of the thread number. Say we want the first thread to execute those stataments first and then the second thread to execute those statements and so on.
+    This is useful when we want to maintain the order of the threads executing the statements.Say for example an array is distributed among threads and then we wish to print the entire array. Then we would like to print the array in the order of the threads i.e. the first set of elements reciding in the first thread to print and then the second and so on.
+    \item pragma omp flush: This is used to specify that the threads flush their private data to the shared memory. This is used to ensure that the shared memory is updated with the latest values of the private data.
+    For example, say a thread has updated a variable and we want to ensure that the shared memory is updated with the latest value of the variable. Now there is no gurantee that the variable can be updated immediately to the shared array and be visible to the other threads. There may be a time lapse before it gets written to the shared array and before its visible to the other threads.
+    Becuase the operating system maintains its own buffers where it may store the variables. Instead, if we wish to immediately flushed out so that it is visible to the other threads, then we can use the flush directive.
+    Flush directive is used when we wish to see consistent vie of memory among the threads. Using flush directive, Thread-cisible variables (global variables, shared variabls etc..) are written to memory. If a variable list is used, only variables in the list are flushed.
+    Consider the following code as shown in the listing \ref{lst:flush}.
+    \begin{lstlisting}[caption={Flush Directive},captionpos=b,label={lst:flush}]
+    int sync(NUMBER_OF_THREDS);
+    float work[NUMBER_OF_THREADS];
+    #pragma omp parallel pritvate(iam,neighbor) shared (work,sync)
+    {
+    iam = omp_get_thread_num();
+    sync[iam]=0;
+    #pragma omp barrier
+
+    /*Do computation into my portion of work array*/
+    work[iam]=compute(iam);
+
+    /* Announce that I am done with my work
+        * The first flush ensures that my work is
+        * made visible before sync.
+        * The second flush ensures that sync is made visible.
+    */
+    #pragma omp flush(work)
+    sync[iam]=1;
+    #pragma omp flush(sync)
+
+    /* Wait for neighbor*/
+    neighbor = (iam>0?iam : omp_get_num+threads())-1;
+    while(sync[neighbor]==0){
+        #pragma omp flush(sync)
+    }
+    /* Read neighbor's values of work array*/
+    ...=work[neighbor];
+    }
+    \end{lstlisting}
+    Here in the example, a thread writes its respective value to its respective array elements and at the same time 
+    neighboring thread tries to read the values that are written by this particular thread. Since, the neighboring threads are trying to read the values that are written by the threads, we need to ensure that the values are written to the shared memory before they are read by the neighboring threads.
+    This is done using the flush directive. The first flush directive ensures that the values are written to the shared memory before they are read by the neighboring threads. The second flush directive ensures that the sync array is made visible to the neighboring threads.
+    The above shown SPMD code is executed by all the threads. From the perspective of a thread the iam variables denotes its thread id, the neighbor represents the neighboring thread id. The 
+    work and sync are the variables that are shared among the threads. The work array is the main array where the threads write their respective values (and also being read by the other threads) and the sync array is used to signal the other threads to say that this thread has finished writing to the work array
+    so that the other thread can read those values. IN order to ensure that the values are written to the shared memory before they are read by the neighboring threads, the sync variable has to be flushed out.
+    Note that we can get the thread id as shown in the code using omp\_get\_thread\_num. So at the beginning of the code each thread will get its thread id and then set the sync[id]=0 and then barrier is used to ensure that all the threads have reached this point.
+    Each thread then does some computation and at the end of the computation stores its result to its corresponding work element. Now it requires to announce that it is done with its work so that the neigboring thread can make use of that value.
+    This is done using flush statement so that the changes in work array is visible and then it changes the value of sync array to 1 to signal the other threads that is is done. Then another flush statement so that the changes in sync are visible.
+    Then the neighboring threads will find out its thread id based on their own thread id and will actively look whether the neighboring variables are updated or not. If not then it will keep on checking until the neighboring thread has updated the value  (because fo the while loop),
+    it keeps flushing the sync variable. Once the sync variable is updated then it reads the value of the work array of the neighboring thread.
+\end{itemize}
+
 
 
 

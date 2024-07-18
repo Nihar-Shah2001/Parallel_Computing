@@ -56,3 +56,5 @@
 \contentsline {subsection}{\numberline {8.3}Parallel Construct}{71}{subsection.8.3}%
 \contentsline {subsection}{\numberline {8.4}Work sharing construct}{73}{subsection.8.4}%
 \contentsline {subsubsection}{\numberline {8.4.1}for-loop}{73}{subsubsection.8.4.1}%
+\contentsline {subsubsection}{\numberline {8.4.2}Coarse Level parallelism - Sections and Tasks}{75}{subsubsection.8.4.2}%
+\contentsline {subsection}{\numberline {8.5}Syncronization Directives}{77}{subsection.8.5}%
