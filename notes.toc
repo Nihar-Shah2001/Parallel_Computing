@@ -3,18 +3,18 @@
 \contentsline {subsection}{\numberline {2.1}SIMD - Single Instruction Multiple Data}{5}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}MISD - Multiple Instruction Single Data}{7}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}MIMD - Mutliple Instruction Multiple Data}{7}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Classification based on Memoory}{8}{section.3}%
+\contentsline {section}{\numberline {3}Classification based on Memory}{8}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Shared Memory}{8}{subsection.3.1}%
 \contentsline {subsubsection}{\numberline {3.1.1}Uniform Memory Access (UMA)}{9}{subsubsection.3.1.1}%
 \contentsline {subsubsection}{\numberline {3.1.2}Non-Uniform Memory Access (NUMA)}{10}{subsubsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.2}Distributed Memory Architcture}{11}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.2}Distributed Memory Architecture}{11}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}Shared Memory Architectures: Cache Coherence}{12}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}State Transition Diagram}{13}{subsubsection.3.3.1}%
 \contentsline {subsection}{\numberline {3.4}Implementation of Cache Coherence Protocols}{14}{subsection.3.4}%
 \contentsline {subsubsection}{\numberline {3.4.1}Snooping Protocol}{14}{subsubsection.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Directory Based Protocol}{14}{subsubsection.3.4.2}%
 \contentsline {subsection}{\numberline {3.5}False Sharing}{15}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Interconnection newtorks for a Parallel Computer}{17}{section.4}%
+\contentsline {section}{\numberline {4}Interconnection networks for a Parallel Computer}{17}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Network Topology}{18}{subsection.4.1}%
 \contentsline {subsubsection}{\numberline {4.1.1}Bus-based networks}{18}{subsubsection.4.1.1}%
 \contentsline {subsubsection}{\numberline {4.1.2}Cross-bar Networks}{19}{subsubsection.4.1.2}%
@@ -57,4 +57,12 @@
 \contentsline {subsection}{\numberline {8.4}Work sharing construct}{73}{subsection.8.4}%
 \contentsline {subsubsection}{\numberline {8.4.1}for-loop}{73}{subsubsection.8.4.1}%
 \contentsline {subsubsection}{\numberline {8.4.2}Coarse Level parallelism - Sections and Tasks}{75}{subsubsection.8.4.2}%
-\contentsline {subsection}{\numberline {8.5}Syncronization Directives}{77}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.5}Synchronization Directives}{77}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Data Scope Attribute Clauses}{80}{subsection.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}threadprivate}{81}{subsubsection.8.6.1}%
+\contentsline {subsubsection}{\numberline {8.6.2}default-example}{82}{subsubsection.8.6.2}%
+\contentsline {subsection}{\numberline {8.7}Library Routines (API)}{83}{subsection.8.7}%
+\contentsline {subsection}{\numberline {8.8}Locks}{84}{subsection.8.8}%
+\contentsline {subsection}{\numberline {8.9}Example 1: Jacobi Solver}{86}{subsection.8.9}%
+\contentsline {subsection}{\numberline {8.10}BFS}{87}{subsection.8.10}%
+\contentsline {subsubsection}{\numberline {8.10.1}Version 1 (Nested Parallelism)}{87}{subsubsection.8.10.1}%

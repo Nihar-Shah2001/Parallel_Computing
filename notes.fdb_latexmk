@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1721285625 "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" "notes.pdf" "notes" 1721285635 0
+["pdflatex"] 1721667606 "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" "notes.pdf" "notes" 1721667613 0
   "C:/Users/nihar/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1720531146 857234 e8a1a9d86e493b5630a833b8f14f22c6 ""
   "C:/Users/nihar/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1701119847 14064 4c991fe2c8dc029152f3d8c217ba8f62 ""
   "C:/Users/nihar/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1697839103 24175185 15f765f2aaac607a27d3f155f11208cb ""
@@ -218,7 +218,7 @@
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/tex/latex/tools/multicol.sty" 1686255640 32515 51caec75eda9c8890135f12f1a4eddc3 ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1656236890 56148 51a9a8571c07b9921892ae11063ae853 ""
-  "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" 1721285617 139915 1115870d5684a113615991964abcabc4 ""
+  "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" 1721667590 156628 75288ae03111aacdab06d736aa3a553c ""
   "images/4dhypercube.png" 1718212346 107392 22b42bba52c9006dd7721b695354f7a2 ""
   "images/amdahl.png" 1718261169 33574 839ede515edeaed3aea2d33c294933ca ""
   "images/block.png" 1721022090 60755 9c21c2e8597d48b3bf0c5fb7ec9861c4 ""
@@ -253,10 +253,10 @@
   "images/task_graph.png" 1718271803 25905 6d8bf143356dbdda70c59a4ca9348a3f ""
   "images/tree.png" 1718212421 34237 ffdf5d15ab1c3a78bc91a771a25b9c96 ""
   "images/uma.png" 1717702594 12051 a064753d1251ad4c0f9ff6348b59a606 ""
-  "notes.aux" 1721285634 19524 cc1f452a3f6041a396a622b40d4f7d8a "pdflatex"
-  "notes.out" 1721285634 11588 56b859b4d9d1c19cb757740b6a8c4e78 "pdflatex"
-  "notes.tex" 1721285617 139915 1115870d5684a113615991964abcabc4 ""
-  "notes.toc" 1721285634 5677 b35a5a7bc16697335cc3bcc020859c50 "pdflatex"
+  "notes.aux" 1721667612 21828 e85aefb2f37980433874d2ae13c4e8b8 "pdflatex"
+  "notes.out" 1721667612 12835 fb8a4d8826b5f104e60c2a3ca5c0e21d "pdflatex"
+  "notes.tex" 1721667590 156628 75288ae03111aacdab06d736aa3a553c ""
+  "notes.toc" 1721667612 6388 8343838e34280b392a710bba031b9096 "pdflatex"
   (generated)
   "notes.aux"
   "notes.log"
