@@ -1906,9 +1906,11 @@ MPI_RECV(buf,count,datatype,source,tag,comm,status)
 MPI_GET_COUNT(status,datatype,count)
 \end{lstlisting}
 Here, sending data from one process to another is called MPI\_SEND.
-The sending process will send an array, along with the count of number of elements in that array, and the data type of the array elements. 
 The buf, count, datatype corresponds to MPI message i.e. the sender process that wants to send message is defined by these three parameters to another process called the reciever process. 
 \begin{itemize}
+    \item buf: It is used to send the memory address of the array to be send.
+    \item count: It is used to send the count of the number of elements in the array that is supposed to be send.
+    \item datatype: It specifies the datatype of the array that is supposed to be send.
     \item dest: To identify the receiver process the sender process should give the id of the receiver process. In MPI terminology. we call these ids as Rank of a process. When we spawn a set of process, each process will get a rank starting from 0 to p-1, where p is the number of processes. For example, if process 0 wishes to send a message to process 4, the it will fill 3 in the dest.
     \item tag: Just like the identifies for the process, it also gives identifier for the message. This is especially useful when a sender process wants to send multiple messages to the same reciever process and we want the receiver process to demarcate the messages clearly, then we need to use message id.
     \item comm: It shares the communication context. It is a communicator pointer available to the process that calls this function the pointer points to a communication group 
