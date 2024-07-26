@@ -1816,7 +1816,8 @@ int chunk_size, threads=16;
 So as can be seen in the code we have first initialized and then we have used a schedule in parallelizing the code.
 For that we have declared the chunk\_size=N/num\_threads which is the total number of rows/columns divided by the number of threads=16. So in the next statement where we start parallel region using pragma omp parallel for indicates that we are using 16 threads, the iterators i and j have been declared as private. The number of rows, columns and grids are shared variables i.e. shared among threads. Then we are using static in the schedule clause so the total number of iterations will be given based on chunk\_size to each of the threads in a round robin manner. Note that we are also using collapse(2) which means that it will collapse the two for loops i.e. the total number of iterations will be considered as rows*cols and these many iterations will be distributed among all the threads based on the chunk\_size. In this if we had not used collapse then only the first for loop i.e. the iterations for the rows would have been distributed among the threads and now each thread would have to take care of all the iterations for the columns.
 
-\subsection{BFS}
+\subsection{Breadth First Search (BFS) Algorithm}
+The idea behind BFS is that we start from some source vertex at level 0 and then in the first level we explore all the neighbours of the source vertex, then in the second level we pick one of the neighbours of the source vertex and explore its neighbours and so on till all the neighbours have been explored. Below shown is the parallel version of BFS.
 \subsubsection{Version 1 (Nested Parallelism)}
 Consider the following example code \ref{lst:bfsv1}
 \begin{lstlisting}[caption={BFS-Example},captionpos=b,label={lst:bfsv1}]
@@ -1834,9 +1835,9 @@ Consider the following example code \ref{lst:bfsv1}
         # pragma omp parallel for ...
             for(j=0;j<length(neigh);j++){
             w=neigh[j];
-            if(dist[w] = 1){
+            if(dist[w] = -1){
                 level[curLevel +1]= union(level[curLevel+1],w);
-                dist[w] 
+                dist[w] =dist[v]+1
             }
             }
         }
@@ -1844,12 +1845,102 @@ Consider the following example code \ref{lst:bfsv1}
     
 \end{lstlisting}
 Here we are at first assigning only the source so the 0th level has only the source vertex s. The current level =0, and distance of the source vertex from the source vertex is set 0 and the distance of other vertex from the source vertex is set to -1. We are suppose to find the distance of the other vertices from the source vertex. 
-Inside the while loop we first set the e
+Inside the while loop we keep on going until we don't see any nodes in the current level. Using the for loop we explore the vertices at the current level and check all its neighbours and store the neighbours in the variable neigh. Then in the next for loop we start at one of the neighbours and check if the distance is -1 i.e. whether it ha been already explored or not. If it has not been explored then we add that vertex into the next level and add the distance of that node as the distance till previous node +1. Thus, using two pragma omp for we are parallelizing both the for loops nesting the inner and outer for loops, thus a nested for parallelism.
 
+In order to explain in further depth, what we have done is that we spawn a thread corresponding to each of the vertex in the current level which is done by the pragma omp for on the outer loop. Then for each of the vertex we further spawn threads for exploring its neighbours and adding the corresponding distance which can be done independently. Thus we are spawning threads inside a thread i.e. nested level parallelism.
 
+\subsubsection{Version 2 (Task constructs)}
+Here we are going to use task construct to implement the BFS algorithm.
+Consider the following code \ref{lst:bfsv2}.
+\begin{lstlisting}[caption={BFS-Example},captionpos=b,label={lst:bfsv2}]
+...
+    level[0] = s;
+    curLevel = 0;
+    dist[s]=0; dist[v!=s]=-1;
 
+    while(level[curLevel]!=NULL){
+    #pragma omp parallel ...
+        for(v in level[curLevel]){
+            for (w in neighbours(v)){
+                # pragma omp task...
+                {
+                    if (dist[w]=-1){
+                        level[curLevel+1]=union(level[curLevel+1],w)
+                        ..
+                        dist[w]=dist[v]+1;
+                    }
+                }
+            }       
+        }   
+    }
+\end{lstlisting}
+Here we are not using for construct instead we are just opening a parallel region and anytime we are required to process a neighbour then for that neighbour we are dynamically creating a task, the task will be dynamically assigned to OpenMP threads by the OpenMP library.
 
+\newpage
 
+\section{Message Passing Interface - MPI}
+Recall that MPI uses distributed memory parallelism. Here we have explicit communication and synchronization. Thus, unlike in the case of shared memory paralellism where we just used parallel constructs in order to make the program work in parallel, here, we will be required to write an explicit program to be run by each of the processors. Hence, MPI is said to have high programming complexity. MPI is highly popular because even though you may have high multiple cores within a node, for very large problem you need to have many such nodes and when you have many such nodes the only way to share information between parallel processes executing on these two nodes is through message passing and hence we have to inevitably used MPI for it.
+
+\subsection{MPI Intrdocution}
+It is a stanard for explicit message passing in MIMD machines. Thus, a MPI program on one machine will also work on any other machines. Thus, it supports portability, and is a standard for hardware vendors. Currently the latest version is MPI-3 in 2012.
+MPI containes the following standards:
+\begin{itemize}
+    \item Point-Point: point to point communications. When we are required to send information from one process to another process using a send and receive function.
+    \item Collectives: When we wish to communicate across multiple processes, they are done using this collectives.
+    \item Communication contests: For each communication it defines a scope.
+    \item Process topologies: MPI supports process topologies. Recall that we have already seen network topologies. Network topologies refer to how the processes are connected as a mesh, bus, star, etc..
+    All these happen at the hardware level. Likewise at the programming level the processes may have certain communication pattern. Example, may be in a linear manner or in a mesh like manner. This is called Process topologies.
+    \item Profiling interface: MPI allows profiling interface that is to implement MPI functions so that you can create a library of your own.
+    \item I/O: This is defined in MPI standard 2. How can we make multiples processes read and write data simultaneously.
+    \item Dynamic Process groups: MPI -2 allows you to dynamically spawn multiple processes during the execution.
+    \item One-sided communication: Like in Shared memory parallelism where only one process is required for communication. Here, in MPI 2 using one-sided communication can be used where one of the process just adds data and there is no other process required to receive that data. Thus, instead of requiring two processes to share data we can have only one process which can put data into a remote process memory without requiring the other process to receive it.
+    \item Extended collectives:
+\end{itemize}
+There are many such MPI functions which can be used to write a program. 
+
+\subsection{Communication Primitives}
+\subsubsection{Point-Point Communications}
+\begin{lstlisting}
+MPI_SEND(buf,count,datatype,dest,tag,comm)
+MPI_RECV(buf,count,datatype,source,tag,comm,status)
+MPI_GET_COUNT(status,datatype,count)
+\end{lstlisting}
+Here, sending data from one process to another is called MPI\_SEND.
+The sending process will send an array, along with the count of number of elements in that array, and the data type of the array elements. 
+The buf, count, datatype corresponds to MPI message i.e. the sender process that wants to send message is defined by these three parameters to another process called the reciever process. 
+\begin{itemize}
+    \item dest: To identify the receiver process the sender process should give the id of the receiver process. In MPI terminology. we call these ids as Rank of a process. When we spawn a set of process, each process will get a rank starting from 0 to p-1, where p is the number of processes. For example, if process 0 wishes to send a message to process 4, the it will fill 3 in the dest.
+    \item tag: Just like the identifies for the process, it also gives identifier for the message. This is especially useful when a sender process wants to send multiple messages to the same reciever process and we want the receiver process to demarcate the messages clearly, then we need to use message id.
+    \item comm: It shares the communication context. It is a communicator pointer available to the process that calls this function the pointer points to a communication group 
+\end{itemize}
+
+Similarly, for MPI\_RECV:
+\begin{itemize}
+    \item buf: When the message is send it will be received in this as the receiving buffer.
+    \item count: This will count the number of elements in the array that is supposed to be receive.
+    \item datatype: The datatype of the received data.
+    \item source: Just like sender has to say for which process it is sending to, the receiver has to mention from which process it is receiving from which is by giving the rank of the process it is receiving from.
+    \item tag: It also needs the same tag as that of the sender process so that the message is matched with the receiver process
+    \item comm: Then a communicator.
+    \item status: It is an extra parameter to find out the status of the message. For this we can use MPI\_GET\_COUNT(status, datatype,count) to know how much of the data you ended up receiving.
+\end{itemize}
+
+When you initially start a process all the processes will belong to a certain group and all the processes will be given a rank with respect o processes in the group. In MPI you can create subgroups (may or may not be overlapping). Inside a subgroup the process can have different ranks with respect to other processes in the sub group than the ones originally assigned. For example, withing a group say a process is ranked 4, then in a subgroup consisting of that processor it can be ranked 0. Thus, the process had id 4 with respect to overall group but now has rank 0 with respect to its subgroup. Thus a particular process can have multiple ranks depending upon the subgroup you are considering it in. Thus, say that sending to rank r is now confusing since there could be multiple processes with rank r within different subgroups, thus, we need to also mention the subgroup, only then the process you are sending to it will be clear.  Thus, we not only need to tell the rank but also the communication scope/communication group with which you are referring . That communication group is pointed to by a variable called the communicator.
+
+Consider the following simple example code
+\begin{lstlisting}
+comm=MPI_COMM_WORLD
+rank=MPI_Comm_rank(comm,&rank);
+for(i=0;i<n;i++) a[i]=0;
+if(rank==0){
+    MPI_SEND(a+n/2,n/2,MPI_INT,1,tag,comm);
+}
+else{
+    MPI_RECV(b,n/2,MPI_INT,0,tag,comm,&status);
+}
+\end{lstlisting}
+Let us assume only two processes in the overall world with no subgroups. The overall group in MPI is called by a default value MPI\_COMM\_WORLD.
+MPI\_Comm\_rank is a special utility function to find out the rank with respect to the particular group that you are belonging to. The above shown is a SPMD program. Thus when the program is executed by the process it will get its own id/rank in the overall group stored in the variable rank. MPI\_INT are called wild cards which is used to define integers, similarly, MPI\_DOUBLE stands for double and so on. NOw in thcode we initialise an array and then the process whose rank=0 send the second half of the array to the process with rank=1. See that we we are sending A=n/2 in the buff and then n/2 elements of the array whose datatype is integer. We can use some integer value (say 5) as tag/id of the message, then the comm refers to the process 1 in the overall communicator defined in the MPI\_COMM\_WORLD. In the else loop, the process whose rank is not zero i.e. rank 1 will do MPI\_RECV and will receive the message into its array and will receive n/2 elements of the array of data type int (MPI\_INT) from process 0, with the same tag and comm, and the status stored in the variable by \&status. After that the processes work on their individual arrays in parallel.
 
 
 

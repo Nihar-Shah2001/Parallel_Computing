@@ -1,68 +1,73 @@
-\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
-\contentsline {section}{\numberline {2}Classification of Architectures - Flynn's Taxonomy}{5}{section.2}%
-\contentsline {subsection}{\numberline {2.1}SIMD - Single Instruction Multiple Data}{5}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}MISD - Multiple Instruction Single Data}{7}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}MIMD - Mutliple Instruction Multiple Data}{7}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Classification based on Memory}{8}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Shared Memory}{8}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}Uniform Memory Access (UMA)}{9}{subsubsection.3.1.1}%
-\contentsline {subsubsection}{\numberline {3.1.2}Non-Uniform Memory Access (NUMA)}{10}{subsubsection.3.1.2}%
-\contentsline {subsection}{\numberline {3.2}Distributed Memory Architecture}{11}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Shared Memory Architectures: Cache Coherence}{12}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}State Transition Diagram}{13}{subsubsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.4}Implementation of Cache Coherence Protocols}{14}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}Snooping Protocol}{14}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}Directory Based Protocol}{14}{subsubsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.5}False Sharing}{15}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Interconnection networks for a Parallel Computer}{17}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Network Topology}{18}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}Bus-based networks}{18}{subsubsection.4.1.1}%
-\contentsline {subsubsection}{\numberline {4.1.2}Cross-bar Networks}{19}{subsubsection.4.1.2}%
-\contentsline {subsubsection}{\numberline {4.1.3}Multistage Network}{20}{subsubsection.4.1.3}%
-\contentsline {subsubsection}{\numberline {4.1.4}Completely Connected Networks}{25}{subsubsection.4.1.4}%
-\contentsline {subsubsection}{\numberline {4.1.5}Star Connected Network/Star Topology}{26}{subsubsection.4.1.5}%
-\contentsline {subsubsection}{\numberline {4.1.6}Linear Arrays, Meshes and k-d Meshes}{27}{subsubsection.4.1.6}%
-\contentsline {subsubsection}{\numberline {4.1.7}Tree Based Networks}{29}{subsubsection.4.1.7}%
-\contentsline {subsection}{\numberline {4.2}Evaluating Static Networks}{30}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}Diameter}{30}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}Connectivity}{31}{subsubsection.4.2.2}%
-\contentsline {subsubsection}{\numberline {4.2.3}Bisection Width and Bisection Bandwidth}{31}{subsubsection.4.2.3}%
-\contentsline {subsubsection}{\numberline {4.2.4}Cost}{32}{subsubsection.4.2.4}%
-\contentsline {section}{\numberline {5}Graphical Processing Units}{33}{section.5}%
-\contentsline {subsection}{\numberline {5.1}GPU Architecture}{34}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}CUDA Memory Spaces}{36}{subsection.5.2}%
-\contentsline {section}{\numberline {6}Parallelization Principles}{39}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Evaluation of Parallel Programs}{39}{subsection.6.1}%
-\contentsline {section}{\numberline {7}Parallel Programming Classification and Steps}{44}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Parallel Program Models}{44}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Programming Paradigms}{44}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Parallelizing a Program}{44}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}Data Parallelism and Data Decomposition}{45}{subsection.7.4}%
-\contentsline {subsection}{\numberline {7.5}Data Distributions}{46}{subsection.7.5}%
-\contentsline {subsection}{\numberline {7.6}Task Parallelism}{47}{subsection.7.6}%
-\contentsline {subsection}{\numberline {7.7}Orchestration}{48}{subsection.7.7}%
-\contentsline {subsubsection}{\numberline {7.7.1}Maximizing data locality: }{48}{subsubsection.7.7.1}%
-\contentsline {subsubsection}{\numberline {7.7.2}Minimizing contention and hotspots: }{49}{subsubsection.7.7.2}%
-\contentsline {subsubsection}{\numberline {7.7.3}Overlapping computations with interactions}{50}{subsubsection.7.7.3}%
-\contentsline {subsubsection}{\numberline {7.7.4}Replicating data or computations }{51}{subsubsection.7.7.4}%
-\contentsline {subsection}{\numberline {7.8}Mapping}{51}{subsection.7.8}%
-\contentsline {subsection}{\numberline {7.9}Example}{53}{subsection.7.9}%
-\contentsline {subsection}{\numberline {7.10}Notes on Message Passing Version}{66}{subsection.7.10}%
-\contentsline {subsection}{\numberline {7.11}Send and Receive Alternatives}{67}{subsection.7.11}%
-\contentsline {subsection}{\numberline {7.12}Summary}{68}{subsection.7.12}%
-\contentsline {section}{\numberline {8}Shared Memory Parallelism - OpenMP}{69}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Introduction}{69}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Fork-Join Model}{69}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Parallel Construct}{71}{subsection.8.3}%
-\contentsline {subsection}{\numberline {8.4}Work sharing construct}{73}{subsection.8.4}%
-\contentsline {subsubsection}{\numberline {8.4.1}for-loop}{73}{subsubsection.8.4.1}%
-\contentsline {subsubsection}{\numberline {8.4.2}Coarse Level parallelism - Sections and Tasks}{75}{subsubsection.8.4.2}%
-\contentsline {subsection}{\numberline {8.5}Synchronization Directives}{77}{subsection.8.5}%
-\contentsline {subsection}{\numberline {8.6}Data Scope Attribute Clauses}{80}{subsection.8.6}%
-\contentsline {subsubsection}{\numberline {8.6.1}threadprivate}{81}{subsubsection.8.6.1}%
-\contentsline {subsubsection}{\numberline {8.6.2}default-example}{82}{subsubsection.8.6.2}%
-\contentsline {subsection}{\numberline {8.7}Library Routines (API)}{83}{subsection.8.7}%
-\contentsline {subsection}{\numberline {8.8}Locks}{84}{subsection.8.8}%
-\contentsline {subsection}{\numberline {8.9}Example 1: Jacobi Solver}{86}{subsection.8.9}%
-\contentsline {subsection}{\numberline {8.10}BFS}{87}{subsection.8.10}%
-\contentsline {subsubsection}{\numberline {8.10.1}Version 1 (Nested Parallelism)}{87}{subsubsection.8.10.1}%
+\contentsline {section}{\numberline {1}Introduction}{5}{section.1}%
+\contentsline {section}{\numberline {2}Classification of Architectures - Flynn's Taxonomy}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}SIMD - Single Instruction Multiple Data}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}MISD - Multiple Instruction Single Data}{8}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}MIMD - Mutliple Instruction Multiple Data}{8}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Classification based on Memory}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Shared Memory}{9}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Uniform Memory Access (UMA)}{10}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Non-Uniform Memory Access (NUMA)}{11}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Distributed Memory Architecture}{12}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Shared Memory Architectures: Cache Coherence}{13}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}State Transition Diagram}{14}{subsubsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.4}Implementation of Cache Coherence Protocols}{15}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Snooping Protocol}{15}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}Directory Based Protocol}{15}{subsubsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.5}False Sharing}{16}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Interconnection networks for a Parallel Computer}{18}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Network Topology}{19}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Bus-based networks}{19}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Cross-bar Networks}{20}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.3}Multistage Network}{21}{subsubsection.4.1.3}%
+\contentsline {subsubsection}{\numberline {4.1.4}Completely Connected Networks}{26}{subsubsection.4.1.4}%
+\contentsline {subsubsection}{\numberline {4.1.5}Star Connected Network/Star Topology}{27}{subsubsection.4.1.5}%
+\contentsline {subsubsection}{\numberline {4.1.6}Linear Arrays, Meshes and k-d Meshes}{28}{subsubsection.4.1.6}%
+\contentsline {subsubsection}{\numberline {4.1.7}Tree Based Networks}{30}{subsubsection.4.1.7}%
+\contentsline {subsection}{\numberline {4.2}Evaluating Static Networks}{31}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Diameter}{31}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Connectivity}{32}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Bisection Width and Bisection Bandwidth}{32}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}Cost}{33}{subsubsection.4.2.4}%
+\contentsline {section}{\numberline {5}Graphical Processing Units}{34}{section.5}%
+\contentsline {subsection}{\numberline {5.1}GPU Architecture}{35}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}CUDA Memory Spaces}{37}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Parallelization Principles}{40}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Evaluation of Parallel Programs}{40}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Parallel Programming Classification and Steps}{45}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Parallel Program Models}{45}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Programming Paradigms}{45}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Parallelizing a Program}{45}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Data Parallelism and Data Decomposition}{46}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Data Distributions}{47}{subsection.7.5}%
+\contentsline {subsection}{\numberline {7.6}Task Parallelism}{48}{subsection.7.6}%
+\contentsline {subsection}{\numberline {7.7}Orchestration}{49}{subsection.7.7}%
+\contentsline {subsubsection}{\numberline {7.7.1}Maximizing data locality: }{49}{subsubsection.7.7.1}%
+\contentsline {subsubsection}{\numberline {7.7.2}Minimizing contention and hotspots: }{50}{subsubsection.7.7.2}%
+\contentsline {subsubsection}{\numberline {7.7.3}Overlapping computations with interactions}{51}{subsubsection.7.7.3}%
+\contentsline {subsubsection}{\numberline {7.7.4}Replicating data or computations }{52}{subsubsection.7.7.4}%
+\contentsline {subsection}{\numberline {7.8}Mapping}{52}{subsection.7.8}%
+\contentsline {subsection}{\numberline {7.9}Example}{54}{subsection.7.9}%
+\contentsline {subsection}{\numberline {7.10}Notes on Message Passing Version}{67}{subsection.7.10}%
+\contentsline {subsection}{\numberline {7.11}Send and Receive Alternatives}{68}{subsection.7.11}%
+\contentsline {subsection}{\numberline {7.12}Summary}{69}{subsection.7.12}%
+\contentsline {section}{\numberline {8}Shared Memory Parallelism - OpenMP}{70}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Introduction}{70}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Fork-Join Model}{70}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Parallel Construct}{72}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Work sharing construct}{74}{subsection.8.4}%
+\contentsline {subsubsection}{\numberline {8.4.1}for-loop}{74}{subsubsection.8.4.1}%
+\contentsline {subsubsection}{\numberline {8.4.2}Coarse Level parallelism - Sections and Tasks}{76}{subsubsection.8.4.2}%
+\contentsline {subsection}{\numberline {8.5}Synchronization Directives}{78}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}Data Scope Attribute Clauses}{81}{subsection.8.6}%
+\contentsline {subsubsection}{\numberline {8.6.1}threadprivate}{82}{subsubsection.8.6.1}%
+\contentsline {subsubsection}{\numberline {8.6.2}default-example}{83}{subsubsection.8.6.2}%
+\contentsline {subsection}{\numberline {8.7}Library Routines (API)}{84}{subsection.8.7}%
+\contentsline {subsection}{\numberline {8.8}Locks}{85}{subsection.8.8}%
+\contentsline {subsection}{\numberline {8.9}Example 1: Jacobi Solver}{87}{subsection.8.9}%
+\contentsline {subsection}{\numberline {8.10}Breadth First Search (BFS) Algorithm}{88}{subsection.8.10}%
+\contentsline {subsubsection}{\numberline {8.10.1}Version 1 (Nested Parallelism)}{88}{subsubsection.8.10.1}%
+\contentsline {subsubsection}{\numberline {8.10.2}Version 2 (Task constructs)}{90}{subsubsection.8.10.2}%
+\contentsline {section}{\numberline {9}Message Passing Interface - MPI}{91}{section.9}%
+\contentsline {subsection}{\numberline {9.1}MPI Intrdocution}{91}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Communication Primitives}{92}{subsection.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}Point-Point Communications}{92}{subsubsection.9.2.1}%
