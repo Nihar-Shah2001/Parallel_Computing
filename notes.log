@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.10.21)  26 JUL 2024 15:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.10.21)  26 JUL 2024 20:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -758,43 +758,43 @@ Overfull \hbox (58.33336pt too wide) detected at line 96
 [][][][]
  []
 
-<images/moore.png, id=398, 1927.2pt x 1426.32875pt>
+<images/moore.png, id=408, 1927.2pt x 1426.32875pt>
 File: images/moore.png Graphic file (type png)
 <use images/moore.png>
 Package pdftex.def Info: images/moore.png  used on input line 100.
 (pdftex.def)             Requested size: 344.005pt x 254.59523pt.
 [5 <./images/moore.png>]
-<images/simd.png, id=406, 507.39563pt x 350.05782pt>
+<images/simd.png, id=416, 507.39563pt x 350.05782pt>
 File: images/simd.png Graphic file (type png)
 <use images/simd.png>
 Package pdftex.def Info: images/simd.png  used on input line 132.
 (pdftex.def)             Requested size: 344.005pt x 237.34177pt.
  [6] [7 <./images/simd.png>]
-<images/mimd.png, id=425, 507.39563pt x 342.5297pt>
+<images/mimd.png, id=435, 507.39563pt x 342.5297pt>
 File: images/mimd.png Graphic file (type png)
 <use images/mimd.png>
 Package pdftex.def Info: images/mimd.png  used on input line 166.
 (pdftex.def)             Requested size: 344.005pt x 232.23766pt.
  [8]
-<images/shared_memory.png, id=432, 578.6418pt x 236.5638pt>
+<images/shared_memory.png, id=442, 578.6418pt x 236.5638pt>
 File: images/shared_memory.png Graphic file (type png)
 <use images/shared_memory.png>
 Package pdftex.def Info: images/shared_memory.png  used on input line 184.
 (pdftex.def)             Requested size: 344.005pt x 140.63988pt.
  [9 <./images/mimd.png>]
-<images/uma.png, id=441, 402.303pt x 398.4486pt>
+<images/uma.png, id=451, 402.303pt x 398.4486pt>
 File: images/uma.png Graphic file (type png)
 <use images/uma.png>
 Package pdftex.def Info: images/uma.png  used on input line 208.
 (pdftex.def)             Requested size: 215.0023pt x 212.9399pt.
  [10 <./images/shared_memory.png>]
-<images/numa.png, id=450, 503.9628pt x 324.2514pt>
+<images/numa.png, id=460, 503.9628pt x 324.2514pt>
 File: images/numa.png Graphic file (type png)
 <use images/numa.png>
 Package pdftex.def Info: images/numa.png  used on input line 219.
 (pdftex.def)             Requested size: 215.0023pt x 138.33194pt.
  [11 <./images/uma.png>]
-<images/distributed_memory.png, id=459, 503.9628pt x 317.0244pt>
+<images/distributed_memory.png, id=469, 503.9628pt x 317.0244pt>
 File: images/distributed_memory.png Graphic file (type png)
 <use images/distributed_memory.png>
 Package pdftex.def Info: images/distributed_memory.png  used on input line 229.
@@ -805,7 +805,7 @@ Overfull \hbox (45.18773pt too wide) in paragraph at lines 233--239
  []
 
 [12 <./images/numa.png> <./images/distributed_memory.png>]
-<images/state_dia.png, id=471, 555.5154pt x 393.1488pt>
+<images/state_dia.png, id=481, 555.5154pt x 393.1488pt>
 File: images/state_dia.png Graphic file (type png)
 <use images/state_dia.png>
 Package pdftex.def Info: images/state_dia.png  used on input line 268.
@@ -816,43 +816,43 @@ Underfull \hbox (badness 10000) in paragraph at lines 277--289
  []
 
 [14 <./images/state_dia.png>] [15] [16] [17]
-<images/class_network.png, id=512, 718.93594pt x 448.67625pt>
+<images/class_network.png, id=522, 718.93594pt x 448.67625pt>
 File: images/class_network.png Graphic file (type png)
 <use images/class_network.png>
 Package pdftex.def Info: images/class_network.png  used on input line 352.
 (pdftex.def)             Requested size: 344.005pt x 214.69122pt.
  [18 <./images/class_network.png>]
-<images/bus.png, id=521, 600.74437pt x 689.57625pt>
+<images/bus.png, id=531, 600.74437pt x 689.57625pt>
 File: images/bus.png Graphic file (type png)
 <use images/bus.png>
 Package pdftex.def Info: images/bus.png  used on input line 368.
 (pdftex.def)             Requested size: 344.005pt x 394.88286pt.
  [19]
-<images/crossbar.png, id=530, 802.49812pt x 573.64313pt>
+<images/crossbar.png, id=540, 802.49812pt x 573.64313pt>
 File: images/crossbar.png Graphic file (type png)
 <use images/crossbar.png>
 Package pdftex.def Info: images/crossbar.png  used on input line 381.
 (pdftex.def)             Requested size: 344.005pt x 245.90897pt.
  [20 <./images/bus.png>]
-<images/multistage.png, id=539, 791.20593pt x 395.22656pt>
+<images/multistage.png, id=549, 791.20593pt x 395.22656pt>
 File: images/multistage.png Graphic file (type png)
 <use images/multistage.png>
 Package pdftex.def Info: images/multistage.png  used on input line 395.
 (pdftex.def)             Requested size: 344.005pt x 171.83772pt.
  [21 <./images/crossbar.png>]
-<images/shuffle.png, id=549, 504.38437pt x 430.60875pt>
+<images/shuffle.png, id=559, 504.38437pt x 430.60875pt>
 File: images/shuffle.png Graphic file (type png)
 <use images/shuffle.png>
 Package pdftex.def Info: images/shuffle.png  used on input line 414.
 (pdftex.def)             Requested size: 344.005pt x 293.69052pt.
  [22 <./images/multistage.png>]
-<images/switching.png, id=559, 506.6428pt x 131.74219pt>
+<images/switching.png, id=569, 506.6428pt x 131.74219pt>
 File: images/switching.png Graphic file (type png)
 <use images/switching.png>
 Package pdftex.def Info: images/switching.png  used on input line 425.
 (pdftex.def)             Requested size: 344.005pt x 89.45282pt.
  [23 <./images/shuffle.png>]
-<images/omega.png, id=568, 601.4972pt x 406.51875pt>
+<images/omega.png, id=578, 601.4972pt x 406.51875pt>
 File: images/omega.png Graphic file (type png)
 <use images/omega.png>
 Package pdftex.def Info: images/omega.png  used on input line 443.
@@ -863,46 +863,46 @@ Underfull \hbox (badness 10000) in paragraph at lines 432--446
  []
 
 [24 <./images/switching.png>] [25 <./images/omega.png>]
-<images/completelyconnected.png, id=589, 289.08pt x 242.40562pt>
+<images/completelyconnected.png, id=599, 289.08pt x 242.40562pt>
 File: images/completelyconnected.png Graphic file (type png)
 <use images/completelyconnected.png>
 Package pdftex.def Info: images/completelyconnected.png  used on input line 477.
 (pdftex.def)             Requested size: 258.00539pt x 216.358pt.
  [26]
-<images/star.png, id=596, 242.40562pt x 237.88875pt>
+<images/star.png, id=606, 242.40562pt x 237.88875pt>
 File: images/star.png Graphic file (type png)
 <use images/star.png>
 Package pdftex.def Info: images/star.png  used on input line 486.
 (pdftex.def)             Requested size: 171.99922pt x 168.80417pt.
  [27 <./images/completelyconnected.png> <./images/star.png>]
-<images/lineararrays.png, id=607, 831.85782pt x 82.80937pt>
+<images/lineararrays.png, id=617, 831.85782pt x 82.80937pt>
 File: images/lineararrays.png Graphic file (type png)
 <use images/lineararrays.png>
 Package pdftex.def Info: images/lineararrays.png  used on input line 497.
 (pdftex.def)             Requested size: 258.00539pt x 25.68326pt.
-<images/mesh.png, id=610, 810.77907pt x 224.33812pt>
+<images/mesh.png, id=620, 810.77907pt x 224.33812pt>
 File: images/mesh.png Graphic file (type png)
 <use images/mesh.png>
 Package pdftex.def Info: images/mesh.png  used on input line 509.
 (pdftex.def)             Requested size: 344.005pt x 95.18668pt.
-<images/hypercube.png, id=612, 819.06pt x 376.40625pt>
+<images/hypercube.png, id=622, 819.06pt x 376.40625pt>
 File: images/hypercube.png Graphic file (type png)
 <use images/hypercube.png>
 Package pdftex.def Info: images/hypercube.png  used on input line 526.
 (pdftex.def)             Requested size: 344.005pt x 158.09528pt.
  [28 <./images/lineararrays.png> <./images/mesh.png>]
-<images/4dhypercube.png, id=623, 774.64406pt x 395.22656pt>
+<images/4dhypercube.png, id=633, 774.64406pt x 395.22656pt>
 File: images/4dhypercube.png Graphic file (type png)
 <use images/4dhypercube.png>
 Package pdftex.def Info: images/4dhypercube.png  used on input line 538.
 (pdftex.def)             Requested size: 344.005pt x 175.51643pt.
  [29 <./images/hypercube.png>]
-<images/tree.png, id=633, 603.0028pt x 229.60782pt>
+<images/tree.png, id=643, 603.0028pt x 229.60782pt>
 File: images/tree.png Graphic file (type png)
 <use images/tree.png>
 Package pdftex.def Info: images/tree.png  used on input line 548.
 (pdftex.def)             Requested size: 258.00539pt x 98.23894pt.
-<images/fattree.png, id=636, 883.80188pt x 328.22626pt>
+<images/fattree.png, id=646, 883.80188pt x 328.22626pt>
 File: images/fattree.png Graphic file (type png)
 <use images/fattree.png>
 Package pdftex.def Info: images/fattree.png  used on input line 562.
@@ -913,19 +913,19 @@ Overfull \hbox (62.66798pt too wide) in paragraph at lines 616--631
  []
 
 [33]
-<images/gpu.png, id=670, 1294.08469pt x 648.92438pt>
+<images/gpu.png, id=680, 1294.08469pt x 648.92438pt>
 File: images/gpu.png Graphic file (type png)
 <use images/gpu.png>
 Package pdftex.def Info: images/gpu.png  used on input line 655.
 (pdftex.def)             Requested size: 387.00153pt x 194.0649pt.
  [34] [35 <./images/gpu.png>]
-<images/smx.png, id=686, 606.01407pt x 681.29532pt>
+<images/smx.png, id=696, 606.01407pt x 681.29532pt>
 File: images/smx.png Graphic file (type png)
 <use images/smx.png>
 Package pdftex.def Info: images/smx.png  used on input line 687.
 (pdftex.def)             Requested size: 387.00153pt x 435.08151pt.
  [36]
-<images/cuda_memory.png, id=693, 622.57594pt x 691.83469pt>
+<images/cuda_memory.png, id=703, 622.57594pt x 691.83469pt>
 File: images/cuda_memory.png Graphic file (type png)
 <use images/cuda_memory.png>
 Package pdftex.def Info: images/cuda_memory.png  used on input line 697.
@@ -936,25 +936,25 @@ Overfull \hbox (15.22432pt too wide) in paragraph at lines 745--745
  []
 
 [40] [41]
-<images/amdahl.png, id=723, 602.25pt x 470.75874pt>
+<images/amdahl.png, id=733, 602.25pt x 470.75874pt>
 File: images/amdahl.png Graphic file (type png)
 <use images/amdahl.png>
 Package pdftex.def Info: images/amdahl.png  used on input line 766.
 (pdftex.def)             Requested size: 344.005pt x 268.90993pt.
  [42] [43 <./images/amdahl.png>] [44] [45]
-<images/domain.png, id=749, 705.38531pt x 399.74344pt>
+<images/domain.png, id=759, 705.38531pt x 399.74344pt>
 File: images/domain.png Graphic file (type png)
 <use images/domain.png>
 Package pdftex.def Info: images/domain.png  used on input line 830.
 (pdftex.def)             Requested size: 344.005pt x 194.94885pt.
  [46]
-<images/data_distribution.png, id=758, 506.6428pt x 311.66437pt>
+<images/data_distribution.png, id=768, 506.6428pt x 311.66437pt>
 File: images/data_distribution.png Graphic file (type png)
 <use images/data_distribution.png>
 Package pdftex.def Info: images/data_distribution.png  used on input line 850.
 (pdftex.def)             Requested size: 344.005pt x 211.61984pt.
  [47 <./images/domain.png>]
-<images/task_graph.png, id=766, 761.09344pt x 333.49594pt>
+<images/task_graph.png, id=776, 761.09344pt x 333.49594pt>
 File: images/task_graph.png Graphic file (type png)
 <use images/task_graph.png>
 Package pdftex.def Info: images/task_graph.png  used on input line 864.
@@ -966,19 +966,19 @@ Overfull \hbox (25.69838pt too wide) in paragraph at lines 967--978
 
 [53] [54]
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 992.
-<images/grid.png, id=816, 359.09157pt x 303.38344pt>
+<images/grid.png, id=826, 359.09157pt x 303.38344pt>
 File: images/grid.png Graphic file (type png)
 <use images/grid.png>
 Package pdftex.def Info: images/grid.png  used on input line 1006.
 (pdftex.def)             Requested size: 258.00539pt x 217.99612pt.
  [55 <./images/grid.png>]
-<images/block.png, id=838, 464.4853pt x 404.26031pt>
+<images/block.png, id=848, 464.4853pt x 404.26031pt>
 File: images/block.png Graphic file (type png)
 <use images/block.png>
 Package pdftex.def Info: images/block.png  used on input line 1026.
 (pdftex.def)             Requested size: 258.00539pt x 224.55835pt.
  [56] [57 <./images/block.png>] [58] [59] [60] [61] [62]
-<images/ghost.png, id=947, 564.60938pt x 625.58719pt>
+<images/ghost.png, id=957, 564.60938pt x 625.58719pt>
 File: images/ghost.png Graphic file (type png)
 <use images/ghost.png>
 Package pdftex.def Info: images/ghost.png  used on input line 1197.
@@ -989,7 +989,7 @@ Overfull \hbox (19.00539pt too wide) in paragraph at lines 1344--1354
  []
 
 [69]
-<images/forkjoin.png, id=1055, 540.51938pt x 215.30438pt>
+<images/forkjoin.png, id=1065, 540.51938pt x 215.30438pt>
 File: images/forkjoin.png Graphic file (type png)
 <use images/forkjoin.png>
 Package pdftex.def Info: images/forkjoin.png  used on input line 1380.
@@ -1004,7 +1004,7 @@ Overfull \hbox (6.74199pt too wide) in paragraph at lines 1714--1715
 []\OT1/cmr/m/n/12 OMP[]GET[]NUM[]PROCS(): To get the num-ber of pro-ces-sors on which OpenMP
  []
 
-[84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95] 
+[84] [85] [86] [87] [88] [89] [90] [91] [92] [93] [94] [95] [96] [97] [98] [99] [100] 
 enddocument/afterlastpage: lastpage setting LastPage.
 (notes.aux)
  ***********
@@ -1012,20 +1012,20 @@ LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `notes.out' has not changed.
-(rerunfilecheck)             Checksum: 438A915A41D83587AD6E11FE12FCB7E7;13972.
+(rerunfilecheck)             Checksum: B7EE72A84CDFFFF12A6D89288DB027F6;14442.
  ) 
 Here is how much of TeX's memory you used:
- 36302 strings out of 474824
- 820383 string characters out of 5750976
+ 36399 strings out of 474824
+ 821774 string characters out of 5750976
  2282043 words of memory out of 5000000
- 57101 multiletter control sequences out of 15000+600000
+ 57131 multiletter control sequences out of 15000+600000
  567853 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,12n,93p,1526b,2132s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,12n,93p,3047b,2132s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\nihar\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on notes.pdf (95 pages, 5797401 bytes).
+Output written on notes.pdf (100 pages, 5826591 bytes).
 PDF statistics:
- 1653 PDF objects out of 1728 (max. 8388607)
- 609 named destinations out of 1000 (max. 500000)
- 773 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1763 PDF objects out of 2073 (max. 8388607)
+ 676 named destinations out of 1000 (max. 500000)
+ 789 words of extra memory for PDF output out of 10000 (max. 10000000)
 

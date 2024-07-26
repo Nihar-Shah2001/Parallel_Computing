@@ -1906,11 +1906,9 @@ MPI_RECV(buf,count,datatype,source,tag,comm,status)
 MPI_GET_COUNT(status,datatype,count)
 \end{lstlisting}
 Here, sending data from one process to another is called MPI\_SEND.
+The sending process will send an array, along with the count of number of elements in that array, and the data type of the array elements. 
 The buf, count, datatype corresponds to MPI message i.e. the sender process that wants to send message is defined by these three parameters to another process called the reciever process. 
 \begin{itemize}
-    \item buf: It is used to send the memory address of the array to be send.
-    \item count: It is used to send the count of the number of elements in the array that is supposed to be send.
-    \item datatype: It specifies the datatype of the array that is supposed to be send.
     \item dest: To identify the receiver process the sender process should give the id of the receiver process. In MPI terminology. we call these ids as Rank of a process. When we spawn a set of process, each process will get a rank starting from 0 to p-1, where p is the number of processes. For example, if process 0 wishes to send a message to process 4, the it will fill 3 in the dest.
     \item tag: Just like the identifies for the process, it also gives identifier for the message. This is especially useful when a sender process wants to send multiple messages to the same reciever process and we want the receiver process to demarcate the messages clearly, then we need to use message id.
     \item comm: It shares the communication context. It is a communicator pointer available to the process that calls this function the pointer points to a communication group 
@@ -1940,9 +1938,100 @@ if(rank==0){
 else{
     MPI_RECV(b,n/2,MPI_INT,0,tag,comm,&status);
 }
+/*process array a*/
+
+/*do reverse communication*/
 \end{lstlisting}
 Let us assume only two processes in the overall world with no subgroups. The overall group in MPI is called by a default value MPI\_COMM\_WORLD.
-MPI\_Comm\_rank is a special utility function to find out the rank with respect to the particular group that you are belonging to. The above shown is a SPMD program. Thus when the program is executed by the process it will get its own id/rank in the overall group stored in the variable rank. MPI\_INT are called wild cards which is used to define integers, similarly, MPI\_DOUBLE stands for double and so on. NOw in thcode we initialise an array and then the process whose rank=0 send the second half of the array to the process with rank=1. See that we we are sending A=n/2 in the buff and then n/2 elements of the array whose datatype is integer. We can use some integer value (say 5) as tag/id of the message, then the comm refers to the process 1 in the overall communicator defined in the MPI\_COMM\_WORLD. In the else loop, the process whose rank is not zero i.e. rank 1 will do MPI\_RECV and will receive the message into its array and will receive n/2 elements of the array of data type int (MPI\_INT) from process 0, with the same tag and comm, and the status stored in the variable by \&status. After that the processes work on their individual arrays in parallel.
+MPI\_Comm\_rank is a special utility function to find out the rank with respect to the particular group that you are belonging to. The above shown is a SPMD program. Thus when the program is executed by the process it will get its own id/rank in the overall group stored in the variable rank. MPI\_INT are called wild cards which is used to define integers, similarly, MPI\_DOUBLE stands for double and so on. Now in thcode we initialise an array and then the process whose rank=0 send the second half of the array to the process with rank=1. See that we we are sending A=n/2 in the buff and then n/2 elements of the array whose datatype is integer. We can use some integer value (say 5) as tag/id of the message, then the comm refers to the process 1 in the overall communicator defined in the MPI\_COMM\_WORLD. In the else loop, the process whose rank is not zero i.e. rank 1 will do MPI\_RECV and will receive the message into its array and will receive n/2 elements of the array of data type int (MPI\_INT) from process 0, with the same tag and comm, and the status stored in the variable by \&status. After that the processes work on their individual arrays in parallel.
+
+The default communicator is MPI\_COMM\_WORLD which includes all processes We can also use Wild cards in the MPI\_RECV function in the receiver source and tag fields as MPI\_ANY\_SOURCE and MPI\_ANY\_TAG respectively. This is extremely useful when a particular process is receiving messages, using this, it does not need to worry about any particular order in which it should receive and it could receive in any order if we use MPI\_ANY\_SOURCE. Likewise MPI\_ANY\_TAG can be used when a particular process is receiving multiple message from multiple sources with multiple message ids and the if the order of messages does not matter, then, in that case we can specify wild card MPI\_ANY\_TAG. Recall that we can also use MPI\_COMM\_RANK to get the process rank/id.
+
+Following are a few Utility functions in MPI:
+\begin{itemize}
+    \item MPI\_INIT: This is used to initialize the MPI environment at the beginning of the program.
+    \item MPI\_FINALIZE: This is used to finalize the MPI environment at the end of the program.
+    \item MPI\_Comm\_size(comm,\&size): With the function a process can find out how many processes are involved in the MPI communicator world that you enter (here comm).
+    \item MPI\_Comm\_rank: A process can query its own id.
+    \item MPI\_Wtime(): It is used to get the time spent in the parallel region of the code by inserting before and after the section and then subtracting to get the time taken in that section of the code.
+\end{itemize}
+
+\subsubsection{EXAMPLE 1: Finding maximum using 2 processes}
+Consider the following C program.
+\begin{lstlisting}
+#include "mpi.h"
+int main(int argc,char** argv){
+    int n;
+    int* A, *local_array;
+    int max, local_max,rank1_max,i;
+    MPI_COMM comm;
+    MPI_Status status;
+    int rank, size;
+    int LARGE_NEGATIVE_NUMBER=-999999;
+    MPI_Init(&argc,&argv);
+
+    comm=MPI_COMM_WORLD;
+    MPI_Comm_size(comm,&size);
+    MPI_Comm_rank(comm,&rank);
+
+    if(size!=2){
+        printf("This program works with only two prodcesses.\n");
+        exit(0);
+    }
+    if(rank==0){
+        /*Read N from console*/
+        MPI_Send(&N,1,MPI_INT,1,5,comm);
+        /*Do dynamic allocation of A array with N elements*/
+        /*Initialize an array A of N elements*/
+        /*Do dynamic allocation of local_array with N/2 elements */
+        for(i=0;i<N/2;i++){
+            local_array[i]=A[i];
+        }
+        MPI_Send(A+N/2,N/2,MPI_INT,1,10,comm);
+    }
+    else{
+        MPI_Recv(&N,1,MPI_INT,0,5,comm,&status);
+        /*Do dynamic allocation of local_array with N/w elements */
+        MPI_Recv(local_array,N/2,MPI_INT,0,10,comm,&status);
+    }
+    local_max=LARGE_NEGATIVE_NUMBER;
+    for(i=0;i<N/2;i++){
+        if(local_array[i]>local_max){
+            local_max=local_array[i];
+        }
+    }
+
+    if(rank==1){
+    MPI_Send(&local_max,1,MPI_INT,0,15,comm);
+    }
+    else{
+        max=local_max;
+        MPI_Recv(&rank1_max,1,MPI_INT,1,15,comm);
+        if(rank1_max>max){
+            max=rank1_max;
+        }
+    }
+    printf("Maximum number is %d\n",max);
+
+    MPI_FINALIZE();
+}
+\end{lstlisting}
+This program tries to find out maximum element in an array using two processes. Note that we need to include mpi.h header file to use MPI. Then we declared a communicator comm of type MPI\_Comm. Then another variable status of type MPI\_Status which will be used in receive function. We first initialize the MPI environment using MPI\_Init and pass the arguments \&argc,\&argv. Then we use the default communicator MPI\_COMM\_WORLD and store it in comm variable. Then using MPI\_Comm\_size we can find the total number of processes with which this program is started and then find its own ran using MPI\_Comm\_rank.
+Since the program is required to use only two processes we put a check on the number of processes with which user starts using if loop. If the size is not equal to it prints the statement or else we continue with the algorithm. If rank =0 for the process, it will read N from the console and then sends that N to the Processor with rank 1. This is done using the MPI\_Send command with sending the address using \&N and since its only 1 value we write 1 in place of count, since the datatype of N is an integer we write MPI\_INT. If the process is not rank=0 i.e. rank=1, it will receive similarly using MPI\_Recv as shown in the code above. Then the process 0 dynamically allocates the array A with N elements and initializes it. The process 0 then reads the first half of the array and stores it in its local array. It then sends the second half using MPI\_Send to the process with rank=1. Note that in this case we used message id as 10. Then the process with rank=1 receives it into its local array. 
+Then after storing the value of large negative number in local\_max, we use a for loop which is executed by both the processes to find the maximum in their own part of array. This is a case of SPMD program where the same program is executed by multiple processes on different data. Both then find the local maximum and then the process with rank=1 sends its maximum to process with rank 0 and after process with rank 0 compares both the maximum and chooses the larger one and prints the maximum number. Then we use MPI\_Finalize to end the MPI environment.
+
+\subsection{Buffering and Safety}
+One of the important aspects related to send and receive is send and receive buffers. In order to understand this better consider an example. Say you have a written a program and in it you call MPI\_Send(user\_buf,...) where user\_buf refers to the buffer (data address) to be send. This user program is linked with a MPI library. So when user program uses MPI\_Send it calls the MPI library which implements the MPI functions and interacts with the underlying hardware and network using TCPIP protocols (Tcp\_send()) in the networks functionality, which will then be received by some receiver. At the receiver side there is a MPI library which has implemented MPI\_Recv using the underlying network receive. This is then called by the receiving process in the user program by invoking the function MPI\_Recv. The MPI libraries will have its own global send and receive buffer, and at some point in the MPI library implementation of MPI\_Send the user\_buf gets copied into the send\_buf and likewise after the message is received in the MPI library inside the MPI\_Recv function it gets copied from recv\_buf to user\_buf. MPI\_Send also spawns threads and then return. This threads take care of any additional overhead like inserting message headers, dealing with acknowledgments and invoking the network send function TCP\_send(). The user program does not have to wait for all of these since inside the MPI library function it spawns threads to take care of the sending and then immediately returns because the main thread which called this function can immediately return and make progress with the subsequent statements. Behind the scenes, MPI library threads is still taking care of sending the communication. Likewise is the case with MPI recv\_buffer. This is called blocking send and blocking receive because the MPI\_Send has to wait till the user\_buf gets copied into send\_buf. Likewise MPI\_Recv has to block or wait until the message from recv\_buf is safely copied to user\_buf passed by the receiving function.
+
+Consider the following three scenarios.
+Case 1: Process 0 does MPI\_Send and then MPI\_Recv and the process 1 does the matching receive MPI\_Recv and then a matching send MPI\_Send for the receive in process 0. This kind of program always works since it has simply the send corresponding to a receive and a receive corresponding to a send. 
+
+Case 2: Now consider a scenario where process 0 does MPI\_Recv and MPI\_Send and process 1 does MPI\_Recv and MPI\_Send. Now the process 0 can make progress only after it has received from process 1 and similarly process 1 can proceed only after it receives from process 0. Thus, unless both the processes do not receive they cannot proceed to their next statement of MPI\_Send which is the corresponding statement for the other process. So both of them cannot proceed and will be waiting for each other. Hence, this situation will result in a deadlock.
+
+Case 3: Now consider a situation where Process 0 first calls MPI\_Send and then MPI\_Recv and the process 1 does MPI\_Send and then MPI\_Recv.
+This will work because the process 0 user buffer that is passed in the MPI\_Send will be safely copied to MPI implementations send\_buf and will return to the user program. While the communication is happening in the background threads, the process 0 will call MPI\_Recv function. At the same time process 1 calls MPI\_Send and the corresponding MPI\_Recv function in process 0 will be able to receive it. Hence, there is a progress in the program as in the process 0 we will safely return from MPI\_Send operation since the user\_buf was safely copied to send\_buf and the function returns and continue on to the next statement in the user program to receive from process 1. Likewise process 1 will be able to execute MPI\_Recv statement. This may or may not work provided that the MPI libraries send and receive buffers have got sufficient space to accommodate the message that is being passed in the user\-buf. This is because send\_buf is an internal buffer that is maintained by the MPI library and it cannot allocate really large size buffers because if it allocates large size buffers a significant amount of memory will be consumed by the MPI library and there will be very little memory left for the user program for its own variables. So MPI implementation have typically fixed size buffers. If the fixed size buffer is of adequate capacity greater than message size being sent using MPI\_Send then it will work as described and user\_buf will be safely copied to send\_buf and it will then safely proceed. On the other hand, if the implementation buffer send\_buf is smaller in size than the user\_buf passed in MPI send then all the part of the user\_buf will not copied and only some part of it will be copied and thus in order to send all of the message, the copied part needs to be send first and received by the receiving process and then when the buffer is empty and the entire message is again copied and this process goes on. But note that in order for the buffer to copy the entire message it needs to first send the already copied part to the required processor which then needs to be received by the receiving end processor. If the receiving end processor is also trying to send as in this case then the situation will lead to a deadlock situation, as both the processes are not waiting for the other process to start receiving so that the rest of the user\_buf can be copied to the send\_buf. Overall, if the implementation buffer is of adequate capacity then this work or else if it is of a lesser capacity than the user\_buf then it will result in a deadlock situation. Note that this is not the case with case 2 because here the implementation will require the MPI\_Recv to first receive all of the message before moving on to the next statement. Thus case3 may or may not work and hence is an unsafe way of writing program so avoid writing those kinds of programs.
+
+
 
 
 
