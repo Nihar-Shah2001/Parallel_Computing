@@ -2021,6 +2021,7 @@ Since the program is required to use only two processes we put a check on the nu
 Then after storing the value of large negative number in local\_max, we use a for loop which is executed by both the processes to find the maximum in their own part of array. This is a case of SPMD program where the same program is executed by multiple processes on different data. Both then find the local maximum and then the process with rank=1 sends its maximum to process with rank 0 and after process with rank 0 compares both the maximum and chooses the larger one and prints the maximum number. Then we use MPI\_Finalize to end the MPI environment.
 
 \subsection{Buffering and Safety}
+\subsubsection{Blocking Communications}
 One of the important aspects related to send and receive is send and receive buffers. In order to understand this better consider an example. Say you have a written a program and in it you call MPI\_Send(user\_buf,...) where user\_buf refers to the buffer (data address) to be send. This user program is linked with a MPI library. So when user program uses MPI\_Send it calls the MPI library which implements the MPI functions and interacts with the underlying hardware and network using TCPIP protocols (Tcp\_send()) in the networks functionality, which will then be received by some receiver. At the receiver side there is a MPI library which has implemented MPI\_Recv using the underlying network receive. This is then called by the receiving process in the user program by invoking the function MPI\_Recv. The MPI libraries will have its own global send and receive buffer, and at some point in the MPI library implementation of MPI\_Send the user\_buf gets copied into the send\_buf and likewise after the message is received in the MPI library inside the MPI\_Recv function it gets copied from recv\_buf to user\_buf. MPI\_Send also spawns threads and then return. This threads take care of any additional overhead like inserting message headers, dealing with acknowledgments and invoking the network send function TCP\_send(). The user program does not have to wait for all of these since inside the MPI library function it spawns threads to take care of the sending and then immediately returns because the main thread which called this function can immediately return and make progress with the subsequent statements. Behind the scenes, MPI library threads is still taking care of sending the communication. Likewise is the case with MPI recv\_buffer. This is called blocking send and blocking receive because the MPI\_Send has to wait till the user\_buf gets copied into send\_buf. Likewise MPI\_Recv has to block or wait until the message from recv\_buf is safely copied to user\_buf passed by the receiving function.
 
 Consider the following three scenarios.
@@ -2031,12 +2032,117 @@ Case 2: Now consider a scenario where process 0 does MPI\_Recv and MPI\_Send and
 Case 3: Now consider a situation where Process 0 first calls MPI\_Send and then MPI\_Recv and the process 1 does MPI\_Send and then MPI\_Recv.
 This will work because the process 0 user buffer that is passed in the MPI\_Send will be safely copied to MPI implementations send\_buf and will return to the user program. While the communication is happening in the background threads, the process 0 will call MPI\_Recv function. At the same time process 1 calls MPI\_Send and the corresponding MPI\_Recv function in process 0 will be able to receive it. Hence, there is a progress in the program as in the process 0 we will safely return from MPI\_Send operation since the user\_buf was safely copied to send\_buf and the function returns and continue on to the next statement in the user program to receive from process 1. Likewise process 1 will be able to execute MPI\_Recv statement. This may or may not work provided that the MPI libraries send and receive buffers have got sufficient space to accommodate the message that is being passed in the user\-buf. This is because send\_buf is an internal buffer that is maintained by the MPI library and it cannot allocate really large size buffers because if it allocates large size buffers a significant amount of memory will be consumed by the MPI library and there will be very little memory left for the user program for its own variables. So MPI implementation have typically fixed size buffers. If the fixed size buffer is of adequate capacity greater than message size being sent using MPI\_Send then it will work as described and user\_buf will be safely copied to send\_buf and it will then safely proceed. On the other hand, if the implementation buffer send\_buf is smaller in size than the user\_buf passed in MPI send then all the part of the user\_buf will not copied and only some part of it will be copied and thus in order to send all of the message, the copied part needs to be send first and received by the receiving process and then when the buffer is empty and the entire message is again copied and this process goes on. But note that in order for the buffer to copy the entire message it needs to first send the already copied part to the required processor which then needs to be received by the receiving end processor. If the receiving end processor is also trying to send as in this case then the situation will lead to a deadlock situation, as both the processes are not waiting for the other process to start receiving so that the rest of the user\_buf can be copied to the send\_buf. Overall, if the implementation buffer is of adequate capacity then this work or else if it is of a lesser capacity than the user\_buf then it will result in a deadlock situation. Note that this is not the case with case 2 because here the implementation will require the MPI\_Recv to first receive all of the message before moving on to the next statement. Thus case3 may or may not work and hence is an unsafe way of writing program so avoid writing those kinds of programs.
 
+These are called Blocking functions.
+
+\subsubsection{Non-Blocking Communications}
+MPI also supports non-blocking functions. Here the process does not even wait for the message to be copied to the send buffer or receive buffer. Within these functions immediately the thread is spawned and the control returns to the user program even before the message is safely copied to MPI buffers (send or receive). This means that the communication may not have reached a safe point in both send and receive when you use a non-blocking function. Thus, the sender or receiver after sending/receiving should not start modifying/using this buffer in the program as there is no guarantee that the communication is complete. As the threads spawned are taking care of the communication. Thus, after calling send/receive you cannot use the send/receive buffers. Recall that on the contrary in case of blocking functions, a thread is spawned only after the message is safely copied to the send buffer and then the control returns to the user program and in case of blocking receive whether you spawn a thread or not only when a message is actually received to the user buffer the control returns to the user program and the MPI receive returns until then the MPI\_RECV will block. In case of non-blocking functions MPI\_ISEND and MPI\_IRECV as soon as they are called immediately the threads are spawned in both the cases and this thread will take care of all the things that the blocking send and receive had implemented in the background and the control will immediately returns the control the user program. Here, the return would be very quick. But, because of this quick return the communication might still be happening in the background by means of those threads. Thus the user\_buf may still not have been copied to send\_buf. Likewise the recv\_buf may still not have been copied to user\_buf on the receiver side. Hence, even though the function returns the programmer cannot assume that this buffers are safe to use and hence should not be using those buffers. The following are the non-blocking functions:
+\begin{itemize}
+    \item MPI\_ISEND(buf,count,datatype,dest,tag,comm,request)
+    \item MPI\_IRECV(buf,count,datatype,dest,tag,comm,request)
+    \item MPI\_WAIT(request,status)
+    \item MPI\_TEST(request,flag,status)
+    \item MPI\_REQUEST\_FREE(request)
+\end{itemize}
+We get a token called request when we use MPI\_ISEND and MPI\_IRECV and with the help of this token the programmer can complete the process using MPI\_WAIT function. This is helpful because between the MPI\_ISEND/MPI\_IRECV and MPI\_WAIT function the user can do some other processes which are not dependent on this communication. MPI non-blocking communications allow you to use the principle of orchestration that is overlapping computation and communication. The MPI\_ISEND and MPI\_IRECV is also called posting send and posting receive respectively and MPI\_WAIT is called completion function.So between positing and completion the user can have some other statements which do not depend on these communication and thereby overlap the communication statements with computations. MPI\_TEST function is used to check whether the communication is completed or not and if it is completed then we use MPI\_WAIT to complete.
+
+A post-send returns before the message is copied out of the send buffer. A post-recv returns before data is copied into the recv buffer. Efficiency depends on implementation.
+Other non-blocking communications:
+\begin{itemize}
+    \item MPI\_WAITANY(count, array\_of\_requests, index,status)
+    \item MPI\_TESTANY(count,array\_of\_requests,index,flag,status)
+    \item MPI\_WAITALL(count,array\_of\_requests,array\_of\_statuses)
+    \item MPI\_TESTALL(count,array\_of\_requests,flag,array\_of\_statuses)
+    \item MPI\_WAITSOME(incount, array\_of\_requests,outcount,array\_of\_indices,array\_of\_statuses)
+    \item MPI\_TESTSOME(incount,array\_of\_requests,outcount,array\_of\_indices,array\_of\_statuses)
+\end{itemize}
+A particular process can post may non-blocking functions and thus we can have an array of requests as shown by the above non-blocking functions and the above functions as the name suggest can be used to check or test accordingly. For example to check whether any one of them is completed we use test for any. To check if all has complete we use testforall and so on as the names suggest. Thus, one can use these variants of test and variants of wait when many non-blocking functions are used.
+
+Now consider two cases:
+
+Case 1: When process 0 does MPI\_Send(1) and then does MPI\_Send(2) and process 1 does MPI\_Irecv(2) and then MPI\_IRecv(1). Then in this case this would not be a problem since the process 1 calls non-blocking functions and hence MPI\_IRecv(1) means that it will not wait for the message to be copied and will move on to the next statement MPI\_IRecv(2) and thus the send and receive will match and the program will continue executing. Even though the process 0 uses blocking send, irrespective of the size of the buffer the program will continue working since the corresponding receive and send are matched.
+
+Case 2: Process 0 does MPI\_ISEND and then MPI\_Recv and process 1 does MPI\_ISEND and then MPI\_Recv. Then in this case, the program works and is safe to write because the send functions are non-blocking functions and hence both the processes will post receiving functions. Thus, we can convert any communication to safe using non-blocking functions.
+
+\subsection{Example: Finding a Particular element in an Array}
+Consider the following example, given an array of elements within a program and the user wants to search for a particular element in this array like a database search. Assuming that the array elements are unique and only two processes are involved. So the idea is we divide the array into two parts and send the second half to the process 1 and we also send the key element to search for to the process 1. Both the processes then start searching for the element and if found immediately terminate the program. The following is SPMD program.
+\begin{lstlisting}
+#include "mpi.h"
+int main(int argc,char** argv){
+...
+...
+int other_i,other_rank,flag;
+MPI_Request request;
+...
+...
+    ...
+    ...
+    other_rank=(rank==0)?1:0
+    MPI_Irecv(&other_i,1,MPI_INT,other_rank,10,comm,&request);
+    for(i=0;i<N/2;i++)
+    {
+        if(A[i]==elem){
+        /*Found it!Inform the other process of the index position*/
+            MPI_Send(&i,1,MPI_INT,other_rank,10,comm);
+            if(rank==0){
+                global_pos=i;
+            }
+            /*Cancel the posted Irecv by this process*/
+            MPI_Cancel(&request);
+            break;
+        }
+        else{
+            MPI_Test(&request,&flag,&status);
+            if(flag==1){
+                /* The other process has found it*/
+                MPI_Wait(&request,&status);
+                if(rank==0){
+                    global_pos=other_i+N/2;
+                }
+                break;
+            }
+        }
+    }
+    if(rank==0){
+        printf("Found the element %d in position %d\n",elem,global_pos);
+    }
+    MPI_Finalize();
+}
+\end{lstlisting}
+Here we first find the rank of the individual process and store the rank of the other process in other\_rank variable. Then we post a non-blocking MPI\_Irecv. Now each of the process checks in its part of the array for the element. If it's found then we inform the other process of the index position using blocking MPI\_Send instead of searching in the rest of the array and terminate the program. Since there is no guarantee that the when and by what process will that element will be found and by whom we use non-blocking receive and hence it's very beneficial in this scenario. For example, here if a process finds the element in the array then it immediately sends the index position to the other process, but if it is not found then it may never send the position. Thus, a particular process may or may not send the message depending on whether it was able to find the element or not. Hence, in this kinds of non-deterministic cases it will be highly useful to make use of non-blocking communication than blocking communications. In case, we had used blocking communications instead of non-blocking communication we would be required to communicate with the other process whether found or not after searching through each element which will be a waste of communications. This is because the other process will be positing blocking receive and hence it needs to be communicated in each and every step whether it was found or not in every iteration. We want a process to send only when the element was found and not every time even when element was not found.
+
+For the process that found the element will cancel its request of Irecv using MPI\_Cancel. For the other process that did not find it will Test whether the communication has been made using MPI\_Test and if the communication is made, it will wait using MPI\_WAIT for the communication to be completed and then after setting the correct global position it will break. Note that in the case we wanted to use blocking MPI\_Recv then we would be required to move the call to the end of the iteration since it will b anticipating a communication every time and hence need to communication after each iteration whether the element was found or not after each iteration which is a waste of communication resources. Note that here we are not doing busy wait as the processes continue searching and not wait for the other process to complete.
+
+\subsection{Communication Modes}
+There are different communication modes in MPI. The send and receive that we have seen till now correspond to standard communication i.e. send can be posted before or after the receive is executed at the receiver side. The communication will be completed from the sender side before the receiver is executed at the receiver side if there is adequate buffer capacity. In case the there is not adequate buffer then the send will return only after the receiver side has started receiving side and has started consuming the message. 
+
+MPI also supports buffered send, in this you can create an array of adequate capacity and pass it to MPI library to use it as a buffer. In this case there will be no problem of buffering and safety as you are creating adequate size of array to pass it to the MPI library to use it as buffer. Here, we create the large enough array and pass it to the MPI using buffer attach function and MPI will then use this array for subsequent send and receive as implementation buffer. In this case we call Buffered\_Send. Thus, in this case send can start before or after receive and be completed even before the receive is executed.
+
+Synchronous send, can be executed before or after the receive is executed on the receiver side but it will complete only when the receiver has started consuming some of the message. This is particularly useful when you want to make sure that the receiver has reached that particular point in the program. Thus, when the synchronous send returns, you will know that the receiver process has started consuming the message on the receiver side.
+
+Read send or Rsend: Here, send can start executing only after receive is executed. If your program reaches send first and the receive has not been executed then the MPI will throw an error. This is especially useful for large message sizes where we want to send a huge message and we know that the implementation buffer will not have that capacity then you want this buffer to directly be communicated with the receiver side and you want the receiver to start receiving the message. It is in this case we use ready send.
 
 
+\begin{table}
+    \centering
+    \begin{tabular}
+        {|p{0.3\textwidth}|p{0.2\textwidth}|p{0.5\textwidth}|}    
+        \hline
+        Mode & Start & Completion \\
+        \hline
+        Standard(MPI\_Send) & Before or after recv  & Before recv (buffer) or after (no buffer)\\
+\hline
+        Buffered (MPI\_Bsend)(Uses MPI\_Buffer\_Attach) & Before or after recv & Before recv\\
+        \hline
+         Synchronous(MPI\_Ssend)&Before or after recv  & Particular point in recv\\
+         \hline
+         Ready(MPI\_Rsend)& After recv & After recv\\
+         \hline
+    \end{tabular}
+    \caption{Communication Modes}
+    \label{tab:comm_modes}
+\end{table}
 
-
-
-
+The summary of all the Communication Modes is as shown in the table \ref{tab:comm_modes}.
 
 
 

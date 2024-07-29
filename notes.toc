@@ -73,3 +73,7 @@
 \contentsline {subsubsection}{\numberline {9.2.1}Point-Point Communications}{92}{subsubsection.9.2.1}%
 \contentsline {subsubsection}{\numberline {9.2.2}EXAMPLE 1: Finding maximum using 2 processes}{95}{subsubsection.9.2.2}%
 \contentsline {subsection}{\numberline {9.3}Buffering and Safety}{97}{subsection.9.3}%
+\contentsline {subsubsection}{\numberline {9.3.1}Blocking Communications}{97}{subsubsection.9.3.1}%
+\contentsline {subsubsection}{\numberline {9.3.2}Non-Blocking Communications}{99}{subsubsection.9.3.2}%
+\contentsline {subsection}{\numberline {9.4}Example: Finding a Particular element in an Array}{101}{subsection.9.4}%
+\contentsline {subsection}{\numberline {9.5}Communication Modes}{103}{subsection.9.5}%
