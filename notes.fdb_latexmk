@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1722240463 "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" "notes.pdf" "notes" 1722240471 0
+["pdflatex"] 1722334357 "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" "notes.pdf" "notes" 1722334365 0
   "C:/Users/nihar/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1720531146 857234 e8a1a9d86e493b5630a833b8f14f22c6 ""
   "C:/Users/nihar/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1701119847 14064 4c991fe2c8dc029152f3d8c217ba8f62 ""
   "C:/Users/nihar/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1697839103 24175185 15f765f2aaac607a27d3f155f11208cb ""
@@ -35,6 +35,7 @@
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1247596667 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1247596667 32726 39f0f9e62e84beb801509898a605dbd5 ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247596667 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1247596667 32587 65067f817f408bc71a7312f3d9828a9b ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1247596667 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1247596667 36118 fad905eba93cff5bce1e185fe980a177 ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1247596667 31099 342ef5a582aacbd3346f3cf4579679fa ""
@@ -218,7 +219,7 @@
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/tex/latex/tools/multicol.sty" 1686255640 32515 51caec75eda9c8890135f12f1a4eddc3 ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/nihar/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1656236890 56148 51a9a8571c07b9921892ae11063ae853 ""
-  "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" 1722240448 191261 b79443e592eff430a6b6ced3dfb7243d ""
+  "c:/Users/nihar/OneDrive - Indian Institute of Science/Indian Institute of Science/Introduction to Scalable Systems/MyNotes/notes.tex" 1722334356 192486 9856c5b911545a38d08f1e09467ddbc2 ""
   "images/4dhypercube.png" 1718212346 107392 22b42bba52c9006dd7721b695354f7a2 ""
   "images/amdahl.png" 1718261169 33574 839ede515edeaed3aea2d33c294933ca ""
   "images/block.png" 1721022090 60755 9c21c2e8597d48b3bf0c5fb7ec9861c4 ""
@@ -253,10 +254,10 @@
   "images/task_graph.png" 1718271803 25905 6d8bf143356dbdda70c59a4ca9348a3f ""
   "images/tree.png" 1718212421 34237 ffdf5d15ab1c3a78bc91a771a25b9c96 ""
   "images/uma.png" 1717702594 12051 a064753d1251ad4c0f9ff6348b59a606 ""
-  "notes.aux" 1722240470 23803 5348b6030c5ccbeefbde36fb4b9fc129 "pdflatex"
-  "notes.out" 1722240471 15314 0ee1c5ddeb98d18f5a8c3eae87cf8ec3 "pdflatex"
-  "notes.tex" 1722240448 191261 b79443e592eff430a6b6ced3dfb7243d ""
-  "notes.toc" 1722240471 7509 20d657801fa4b1f1474165ba868cf0a5 "pdflatex"
+  "notes.aux" 1722334364 24078 838ea90e875f9cd1eefa87e2c50b7857 "pdflatex"
+  "notes.out" 1722334365 15672 09fc10379cc696d220f0e974ded1f62e "pdflatex"
+  "notes.tex" 1722334356 192486 9856c5b911545a38d08f1e09467ddbc2 ""
+  "notes.toc" 1722334365 7699 b08d853d9bf558dee011964ccb7df0ed "pdflatex"
   (generated)
   "notes.aux"
   "notes.log"

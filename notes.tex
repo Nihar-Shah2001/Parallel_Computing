@@ -88,6 +88,26 @@
     Here it has been assumed that as a prerequisite, the reader has a basic understanding of C programming language 
     and familiarity with Basics of Computer Architecture.
 \end{note}
+\section{Computer Architecture}
+\subsection{How is Data represented?}
+Data in a Computer is represented in a binary form. The smallest unit of data is a bit, which can have two values 0 or 1.
+Bit is denoted by small letter b, Byte is denoted by B, 1 Kilobyte(KB)=$2^{10}$byte, 1Mega byte (MB)=$2^{20}$bytes, and 1 Gigabyte(GB)=$2^{30}$bytes.
+For example, character data is represetned by 8-bit code (7bit code with 1 added parity bit). Parity but is used to check whether the characters are correct or not.
+
+Integer Data can be of two types:
+\begin{itemize}
+\item Signed Integer - It can be positive or negative. The most significant bit is used to represent the sign of the number. 0 for positive and 1 for negative.
+For example, say $x_{n-1}x_{n-2}\ldots x_0$ is a n-bit Signed Integer. Then, the value of the integer is given by:
+\begin{equation}
+    x_{n-1}x_{n-2}\ldots x_{0}=(-1)^{x_{n-1}}+\sum_{i=0}^{n-2} x_i2^i
+\end{equation}
+\item Unsigned Integer - It can only be positive. For example, say $x_{n-1}x_{n-2}\ldots x_0$ is a n-bit Unsigned Integer. Then, the value of the integer is given by:
+\begin{equation}
+    x_{n-1}x_{n-2}\ldots x_{0}=\sum_{i=0}^{n-1} x_i2^i
+\end{equation}
+\end{itemize}
+
+
 
 \section{Introduction}
 Moore's Law states
