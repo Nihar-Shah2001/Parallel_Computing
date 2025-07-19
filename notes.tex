@@ -1,58 +1,91 @@
-%Create a LaTeX template for writing my notes on Parallel Computing with table of contents and proper margin and title
-\documentclass[12pt]{article}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\documentclass[12pt]{book}
+
+% ------------------------------------------------
+% Packages for math and formatting
+% ------------------------------------------------
+\usepackage{amsmath, amssymb}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{hyperref}
-\usepackage{listings}
-\usepackage{color}
-\usepackage{geometry}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{tikz}
 \usepackage{pgfplots}
-\usepackage{subcaption}
+\pgfplotsset{compat=1.18}
 \usepackage{multicol}
-\usepackage{lipsum}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage[authoryear]{natbib}
 
-% Insert links to websites for references
-\newcommand{\weblink}[2]{\href{#1}{\textcolor{blue}{#2}}}
+% ------------------------------------------------
+% Typography and better fonts
+% ------------------------------------------------
+\usepackage{libertinus} % or use mathpazo / newtxtext,newtxmath
 
+% ------------------------------------------------
+% Page layout and geometry
+% ------------------------------------------------
+\usepackage[a4paper, inner=1.2in, outer=1in, top=1in, bottom=1in]{geometry}
 
+% Listings package for beautiful code formatting
+\usepackage{listings}
+\usepackage{xcolor} % for color customization
 
-%Make the code formatting look professional and proper
-%Show the with some colored background
-% Enhanced code formatting for C++
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\footnotesize\ttfamily, % Using monospaced font for code
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2,
-    language=C++, % Specifying the language as C++
-    morekeywords={constexpr, nullptr, noexcept} % Adding C++ specific keywords
+% Define custom C++ style
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,            % Typewriter font
+  keywordstyle=\color{blue}\bfseries,    % Keywords in bold blue
+  commentstyle=\color{gray}\itshape,     % Comments in italic gray
+  stringstyle=\color{green!60!black},    % Strings in green
+  numberstyle=\tiny\color{gray},         % Line numbers
+  numbers=left,                          % Line numbers on the left
+  numbersep=10pt,                        % Space between numbers and code
+  tabsize=4,                             % Tab width
+  showstringspaces=false,                % Don't show spaces in strings
+  breaklines=true,                       % Break long lines
+  breakatwhitespace=true,                % Break only at whitespace
+  frame=single,                          % Frame around code
+  backgroundcolor=\color{gray!5},        % Light gray background
+  captionpos=b                           % Caption at bottom
 }
 
-\lstset{style=mystyle}
-%Make a command to write note
+
+
+
+% ------------------------------------------------
+% Boxed environments (Example, Note, Intuition)
+% ------------------------------------------------
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+\newtcolorbox{example}{
+  enhanced,
+  breakable,
+  colback=blue!5!white,
+  colframe=blue!75!black,
+  fonttitle=\bfseries,
+  title=Example,
+  sharp corners=south,
+  boxrule=0.5pt,
+  arc=4pt,
+  left=6pt, right=6pt, top=6pt, bottom=6pt,
+  before skip=10pt, after skip=10pt
+}
+
+\newtcolorbox{intuition}{
+  enhanced,
+  breakable,
+  colback=yellow!10,
+  colframe=orange!85!black,
+  fonttitle=\bfseries,
+  title=Intuition,
+  sharp corners=south,
+  boxrule=0.5pt,
+  arc=4pt,
+  left=6pt, right=6pt, top=6pt, bottom=6pt,
+  before skip=10pt, after skip=10pt
+}
+
 \newenvironment{note}
 {
     \begin{center}
@@ -67,48 +100,1666 @@
     \end{tikzpicture}
     \end{center}
 }
-\setlength{\headheight}{14.49998pt}
 
+% ------------------------------------------------
+% Hyperlinks and metadata
+% ------------------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={Notes on Parallel Computing},
+    pdfauthor={Nihar Shah},
+    pdfkeywords={Parallel Computing, OpenMP, MPI, CUDA, HPC},
+}
+
+\newcommand{\weblink}[2]{\href{#1}{\textcolor{blue}{#2}}}
+
+% ------------------------------------------------
+% Headers and footers
+% ------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\setlength{\headheight}{14.49998pt}
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{Page \thepage \hspace{1pt} of \pageref{LastPage}}
+\rhead{Page \thepage\ of \pageref{LastPage}}
 \lhead{Parallel Computing}
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
 
-\pgfplotsset{compat=1.18}
+% ------------------------------------------------
+% Chapter and TOC styling (Optional)
+% ------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\Huge}{\chaptername\ \thechapter}{20pt}{\Huge}
+
+\usepackage{tocloft}
+\renewcommand{\cftchapfont}{\bfseries}
+\renewcommand{\cftchappagefont}{\bfseries}
+
+% Optional: chapters start without blank page
+\let\cleardoublepage\clearpage
+
+% ------------------------------------------------
+% Start document
+% ------------------------------------------------
 \begin{document}
+
+\frontmatter
 \title{Notes on Parallel Computing}
 \author{Nihar Shah}
+\date{\today}
 \maketitle
-\newpage
-\tableofcontents
-\newpage
-\begin{note}
-    Here it has been assumed that as a prerequisite, the reader has a basic understanding of C programming language 
-    and familiarity with Basics of Computer Architecture.
-\end{note}
-\section{Computer Architecture}
-\subsection{How is Data represented?}
-Data in a Computer is represented in a binary form. The smallest unit of data is a bit, which can have two values 0 or 1.
-Bit is denoted by small letter b, Byte is denoted by B, 1 Kilobyte(KB)=$2^{10}$byte, 1Mega byte (MB)=$2^{20}$bytes, and 1 Gigabyte(GB)=$2^{30}$bytes.
-For example, character data is represetned by 8-bit code (7bit code with 1 added parity bit). Parity but is used to check whether the characters are correct or not.
 
-Integer Data can be of two types:
+\tableofcontents
+\mainmatter
+
+\chapter{Computer Architecture} \label{chap:computer-architecture}
+
+\begin{note}
+    Here, it is assumed that the reader has a basic beginner-level understanding of the C programming language.
+\end{note}
+
+\section{How is Data Represented?} \label{sec:data-represented}
+
+In a digital computer, data is represented in binary form. This means everything—from numbers to text—is stored using only two symbols: 0 and 1.
+
+The smallest unit of data is called a \textbf{bit}. A bit can take only two values: 0 or 1.
+
+Some commonly used units of data are:
 \begin{itemize}
-\item Signed Integer - It can be positive or negative. The most significant bit is used to represent the sign of the number. 0 for positive and 1 for negative.
-For example, say $x_{n-1}x_{n-2}\ldots x_0$ is a n-bit Signed Integer. Then, the value of the integer is given by:
-\begin{equation}
-    x_{n-1}x_{n-2}\ldots x_{0}=(-1)^{x_{n-1}}+\sum_{i=0}^{n-2} x_i2^i
-\end{equation}
-\item Unsigned Integer - It can only be positive. For example, say $x_{n-1}x_{n-2}\ldots x_0$ is a n-bit Unsigned Integer. Then, the value of the integer is given by:
-\begin{equation}
-    x_{n-1}x_{n-2}\ldots x_{0}=\sum_{i=0}^{n-1} x_i2^i
-\end{equation}
+    \item \textbf{bit (b)} — smallest unit of data
+    \item \textbf{Byte (B)} — 1 Byte = 8 bits
+    \item \textbf{Kilobyte (KB)} — $1\ \text{KB} = 2^{10}$ Bytes = 1024 Bytes
+    \item \textbf{Megabyte (MB)} — $1\ \text{MB} = 2^{20}$ Bytes
+    \item \textbf{Gigabyte (GB)} — $1\ \text{GB} = 2^{30}$ Bytes
+\end{itemize}
+
+These units are based on powers of two because binary is the foundation of all digital computation.
+
+\medskip
+
+For example, character data is often represented using an 8-bit code. In many systems, a 7-bit code is used to encode the character itself, and 1 extra bit is added as a \textbf{parity bit}.
+
+The purpose of the parity bit is to help check whether the character data is correct or not. It acts as a basic form of error detection—if a bit gets flipped accidentally during storage or transmission, the system can sometimes catch the mistake using this bit.
+
+\subsection{Integer Data Representation} \label{subsec:integer-data}
+
+Integer data can be of two types:
+\begin{itemize}
+    \item \textbf{Signed Integer} — This type of integer can represent both positive and negative values. The most significant bit (MSB) is used to indicate the sign of the number:
+    \begin{itemize}
+        \item $0$ for positive numbers
+        \item $1$ for negative numbers
+    \end{itemize}
+    
+    Suppose $x_{n-1}x_{n-2}\ldots x_0$ is an $n$-bit signed integer. Then its value can be calculated using:
+    \begin{equation} \label{eq:signed-magnitude}
+        x_{n-1}x_{n-2}\ldots x_0 = (-1)^{x_{n-1}} + \sum_{i=0}^{n-2} x_i 2^i
+    \end{equation}
+    Here, $x_0$ is the least significant bit (LSB) and $x_{n-1}$ is the most significant bit (MSB), which represents the sign.
+
+    \medskip
+    \textbf{Two's Complement}\\
+    Another way to represent signed integers is using \textbf{Two's Complement}. In this method, negative numbers are represented by inverting all bits of their positive counterpart and then adding 1 to the result.
+
+    The value of a signed integer in two's complement form is computed as:
+    \begin{equation} \label{eq:twos-complement}
+        x_{n-1}x_{n-2}\ldots x_0 = -x_{n-1} \cdot 2^{n-1} + \sum_{i=0}^{n-2} x_i 2^i
+    \end{equation}
+    This representation allows the same hardware to perform both signed and unsigned arithmetic, which makes it widely used.
+
+    \begin{example}
+        \textbf{Steps to convert a negative decimal number to its two's complement representation:}
+        \begin{enumerate}
+            \item Convert the absolute value of the number to binary.
+            \item Add a 0 (or 0s) in front if needed to reach the desired number of bits.
+            \item Flip all 0s to 1s and 1s to 0s.
+            \item Add 1 to the result.
+        \end{enumerate}
+
+        Let's take $-14$ as an example.
+
+        \begin{itemize}
+            \item The binary of $14$ is $1110$.
+            \item To convert this to 5-bit representation, we pad a 0 in front: $01110$.
+            \item Now, flip the bits: $10001$.
+            \item Add 1: $10001 + 1 = 10010$.
+        \end{itemize}
+
+        So, the two's complement representation of $-14$ in 5 bits is $10010$.
+
+        \medskip
+        Similarly, to represent $-14$ in 32 bits:
+        \begin{itemize}
+            \item Binary of $14$: $1110$.
+            \item Pad with zeros: $000\ldots0001110$ (total 32 bits).
+            \item Flip all bits: $111\ldots1110001$.
+            \item Add 1: $111\ldots1110010$.
+        \end{itemize}
+
+        Thus, $111\ldots1110010$ is the two's complement representation of $-14$ in 32 bits.
+        Thus, the decimal number $-14_{10}$ using two's complement:
+        \begin{itemize}
+            \item In 5 bits: $10010$ (i.e., $-16 + 2$)
+            \item In 6 bits: $110010$ (i.e., $-32 + 16 + 2$)
+            \item In 32 bits: $111\ldots1110010$
+        \end{itemize}
+    \end{example}
+
+    \item \textbf{Unsigned Integer} — This type of integer can only represent non-negative values. It does not use any sign bit, so all bits contribute to the magnitude of the number.
+
+    If $x_{n-1}x_{n-2}\ldots x_0$ is an $n$-bit unsigned integer, then its value is computed using:
+    \begin{equation} \label{eq:unsigned}
+        x_{n-1}x_{n-2}\ldots x_0 = \sum_{i=0}^{n-1} x_i 2^i
+    \end{equation}
+
+\item \textbf{Hexadecimal} — This is a base-16 number system. It uses the following 16 symbols to represent values: \texttt{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F}.
+
+Each hexadecimal digit corresponds to a unique 4-bit binary sequence. That is why we need at least 4 bits to represent a single hexadecimal digit. For example:
+\[
+A_{16} = 1010_2
+\]
+
+Let us take another example. The decimal number $14$ in 32-bit binary representation is:
+\[
+0000\ldots00001110
+\]
+In two's complement form (to represent $-14$), it becomes:
+\[
+1111\ldots11110010
+\]
+This binary sequence corresponds to the hexadecimal value \texttt{FFFFFFF2}. In C programming, we often prefix hexadecimal constants with \texttt{0x}, so this would be written as \texttt{0xFFFFFFF2}.
+
+\medskip
+The table below shows how each hexadecimal digit maps to its binary equivalent:
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Hexadecimal} & \textbf{Binary} \\
+\hline
+0 & 0000 \\
+1 & 0001 \\
+2 & 0010 \\
+3 & 0011 \\
+4 & 0100 \\
+5 & 0101 \\
+6 & 0110 \\
+7 & 0111 \\
+8 & 1000 \\
+9 & 1001 \\
+A & 1010 \\
+B & 1011 \\
+C & 1100 \\
+D & 1101 \\
+E & 1110 \\
+F & 1111 \\
+\hline
+\end{tabular}
+\end{center}
+
+\item \textbf{Real Data} — Real numbers are usually represented using floating point notation. This means the decimal point can ``float" to any position, allowing us to represent both very small and very large numbers efficiently.
+
+In contrast, \textbf{fixed point} representation reserves a fixed number of bits for the integer and fractional parts, and the decimal point is fixed in one place. For example, suppose we allocate (1 bit for sign, 8 bits for integer part and 7 bits for fractional part):
+
+\[
+\underbrace{0}_{\text{sign bit}} \underbrace{00001101}_{\text{integer part}} \cdot \underbrace{0110000}_{\text{fractional part}}
+\]
+This represents $13.25$ because $00001101_2 = 13$ and $0110000_2 = 0.25$.
+
+\medskip
+\textbf{IEEE 754 Floating Point Standard:} Real numbers in modern computers are represented using the IEEE 754 standard. For a 32-bit float, the layout is as follows:
+\begin{itemize}
+    \item \textbf{Sign Bit (1 bit):} It is the most significant bit. It is $0$ for positive numbers and $1$ for negative numbers.
+    \item \textbf{Exponent (8 bits):} These next 8 bits store the exponent. The value stored here is in \textit{Excess-127} or \textit{Bias-127} format, which means the actual exponent is: 
+    \[
+    \text{Exponent}_{\text{actual}} = \text{Exponent}_{\text{stored}} - 127
+    \]
+    \item \textbf{Fraction (23 bits):} These represent the fractional part of the number. The full number is stored in normalized form as $1.f$, where $f$ is the binary fractional part.
+\end{itemize}
+
+The floating point number represented is:
+\[
+(-1)^s \times 1.f \times 2^{e - 127}
+\]
+
+\medskip
+\textbf{Steps to convert a real number to IEEE 754 format:}
+\begin{enumerate}
+    \item Convert the number to binary.
+    \item Normalize it to the form $1.f \times 2^e$.
+    \item Add $127$ to the exponent value.
+    \item Determine the sign bit ($0$ for positive, $1$ for negative).
+    \item Write the exponent in 8-bit binary.
+    \item Write the fraction after the decimal point in 23-bit binary.
+\end{enumerate}
+
+\begin{example}
+Let’s convert $-23.5_{10}$ to IEEE 754 format:
+
+\begin{itemize}
+    \item Binary: $-10111.1_2$
+    \item Normalized: $-1.01111 \times 2^4$
+    \item Exponent: $4 + 127 = 131_{10} = 10000011_2$
+    \item Fraction: $01111000000000000000000$ (pad 0s to make 23 bits)
+    \item Sign bit: $1$
+\end{itemize}
+
+So the 32-bit IEEE 754 representation is:
+\[
+\boxed{1~10000011~01111000000000000000000}
+\]
+and is \texttt{0xC1BC0000} in hexadecimal.
+\end{example}
+
+\medskip
+\textbf{Steps to convert IEEE 754 to decimal:}
+\begin{enumerate}
+    \item Interpret the sign bit.
+    \item Convert the exponent bits to decimal and subtract 127.
+    \item Convert the fraction to decimal by treating it as $1.f$.
+    \item Multiply the result by $(-1)^s$ and $2^{e - 127}$.
+\end{enumerate}
+
+\begin{example}
+Let us convert the IEEE 754 number:
+\[
+1~10000001~01100000000000000000000
+\]
+\begin{itemize}
+    \item Sign bit: $1$ (so the number is negative)
+    \item Exponent: $129$ $\Rightarrow$ $129 - 127 = 2$
+    \item Fraction: $1.011_2 = 1.375$
+\end{itemize}
+So the final number is:
+\[
+-1 \times 1.375 \times 2^2 = -5.5
+\]
+\end{example}
+
+\medskip
+\textbf{Advantages and Limitations:} Floating point allows us to represent a very large range of values. It avoids the limitation of fixed decimal positions. However, it can suffer from rounding errors and loss of precision over many operations.
+
+\medskip
+\textbf{Special Cases (B\&O 2.4.2):}
+\begin{itemize}
+    \item \textbf{Zero:} All exponent and fraction bits are 0.
+    \begin{itemize}
+        \item $+0$: Sign bit $0$
+        \item $-0$: Sign bit $1$
+    \end{itemize}
+    \item \textbf{Infinity:} Exponent bits are all $1$, fraction bits are all $0$.
+    \begin{itemize}
+        \item $+\infty$: Sign bit $0$
+        \item $-\infty$: Sign bit $1$
+    \end{itemize}
+\end{itemize}
+Such special cases are summarised in the following tables~\ref{tab:ieee754-special} and ~\ref{tab:ieee754-operations}. For more details on this topics refer~\cite{rajaraman2016ieee}.
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|X|c|c|X|}
+\hline
+\textbf{Value} & \textbf{Sign} & \textbf{Exponent (8 bits)} & \textbf{Significand (23 bits)} \\
+\hline
+$+0$ & 0 & 00000000 & 00…00 (all 23 bits 0) \\
+\hline
+$-0$ & 1 & 00000000 & 00…00 (all 23 bits 0) \\
+\hline
+$+1.f \times 2^{(e-b)}$ & 0 & 00000001 to 11111110 & $a\,a\,\ldots\,a$ (where $a=0$ or $1$) \\
+\hline
+$-1.f \times 2^{(e-b)}$ & 1 & 00000001 to 11111110 & $a\,a\,\ldots\,a$ (where $a=0$ or $1$) \\
+\hline
+$+\infty$ & 0 & 11111111 & 00…00 (all 23 bits 0) \\
+\hline
+$-\infty$ & 1 & 11111111 & 00…00 (all 23 bits 0) \\
+\hline
+SNaN (Signaling NaN) & 0 or 1 & 11111111 & 000…01 to 011…11 (leading bit 0, at least one 1) \\
+\hline
+QNaN (Quiet NaN) & 0 or 1 & 11111111 & 1000…10 (leading bit 1) \\
+\hline
+Positive subnormal $0.f \times 2^{x+1-b}$ & 0 & 00000000 & 000…01 to 111…11 (at least one 1) \\
+\hline
+\end{tabularx}
+\caption{IEEE 754 Representation for Special Floating-Point Values (32-bit)}
+\label{tab:ieee754-special}
+\end{table}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|
+                                >{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+\hline
+\textbf{Operation} & \textbf{Result} & \textbf{Operation} & \textbf{Result} \\
+\hline
+$n / \pm \infty$ & $0$ & $\pm 0 / \pm 0$ & NaN \\
+\hline
+$\pm \infty / \pm \infty$ & $\pm \infty$ & $\infty - \infty$ & NaN \\
+\hline
+$\pm n / 0$ & $\pm \infty$ & $\pm \infty / \pm \infty$ & NaN \\
+\hline
+$\infty + \infty$ & $\infty$ & $\pm \infty \times 0$ & NaN \\
+\hline
+\end{tabularx}
+\caption{Results of Floating Point Operations Involving Infinity and Zero}
+\label{tab:ieee754-operations}
+\end{table}
+
+
+
+\medskip
+\textbf{Handling Overflow in Arithmetic:}
+
+Sometimes, the result of a floating point operation might not fit in the 23-bit significand. In such cases, we have two options:
+\begin{itemize}
+    \item \textbf{Truncation:} Discard extra bits.
+    \item \textbf{Rounding:}
+    \begin{itemize}
+        \item Rounding upwards: For example, if signifcand is $0.110\ldots 01$ and overflow is by $1$, then the significand after rounding becomes $0.110\ldots 10$, i.e. we add $1$ to the LSB.
+        \item Rounding downwards: The extra bits are ignored.
+    \end{itemize}
+\end{itemize}
+
+\medskip
+\subsection*{IEEE 754 for 64-bit (Double Precision):}  
+For higher precision, we use 64-bit representation:
+\begin{itemize}
+    \item $1$ bit for sign
+    \item $11$ bits for exponent
+    \item $52$ bits for fraction
+\end{itemize}
+\end{itemize}
+
+\subsection{Variables and Data Allocation of Different Lifetimes}
+
+Understanding these memory regions and their respective allocation strategies is fundamental to writing safe and efficient programs, particularly in low-level languages like C and C++. Mistakes such as forgetting to free heap memory, or accessing memory after it has been deallocated, are common sources of bugs and security vulnerabilities. 
+In a computer program, different variables have different lifetimes, depending on where and how they are declared and allocated. These lifetimes determine how long a variable remains in memory during the program's execution. Broadly, there are three primary types of data allocation:
+
+\begin{itemize}
+    \item \textbf{Static Allocation:} 
+    Variables that are statically allocated exist for the entire duration of the program. Their lifetime spans from the beginning to the end of program execution. This includes global variables, as well as static local variables declared with the \texttt{static} keyword in C. These variables are allocated in the data segment of the memory, which is part of the executable file. Since their memory is reserved at compile-time, the size and type of statically allocated data must be known in advance. Both initialized and uninitialized static variables are handled this way: 
+    \begin{itemize}
+        \item Initialized static data is stored in the `.data` segment.
+        \item Uninitialized static data (commonly zero-initialized) is stored in the `.bss` segment.
+    \end{itemize}
+
+    \item \textbf{Heap Allocation:}
+    Heap allocation is used for dynamically allocated data, whose size may not be known at compile-time. This type of allocation allows a program to request and release memory at runtime using functions such as \texttt{malloc}, \texttt{calloc}, or \texttt{realloc} in C. The memory must be explicitly freed using \texttt{free} when it is no longer needed, to avoid memory leaks. The lifetime of a heap-allocated variable begins when it is allocated and ends when it is explicitly deallocated. All such allocations happen in the memory region known as the heap. This is particularly useful when dealing with:
+    \begin{itemize}
+        \item Variable-sized data structures (e.g., linked lists, trees, graphs)
+        \item Data that must persist across function calls
+    \end{itemize}
+
+    \item \textbf{Stack Allocation:}
+    Stack allocation is used for variables that are declared inside functions, including function parameters and local variables. These variables are allocated on the call stack, a special region of memory used to manage function calls and returns. The lifetime of a stack-allocated variable is confined to the duration of the function in which it is declared. That is, memory for such variables is allocated when the function is invoked and deallocated when the function returns. This makes stack allocation highly efficient, as it simply involves moving the stack pointer up and down. However, stack variables are not accessible once the function ends, and returning pointers to such variables leads to undefined behavior.
+\end{itemize}
+For example, when a program begins execution, its memory is organized into distinct regions, as shown in Figure~\ref{fig:memory_layout}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/memory_layout.png}
+    \caption{Memory Layout of a Program}
+    \label{fig:memory_layout}
+\end{figure}
+
+The stack pointer initially points to the top of the stack, which holds the local variables of the \texttt{main()} function. The stack grows downward (towards lower memory addresses), and this region of memory is used to manage function calls and their associated data.
+
+Now suppose the \texttt{main()} function makes a call to another function, say \texttt{func1()}. In that case, the system allocates additional space on the stack for the function call. This includes space for:
+\begin{itemize}
+    \item The return address (i.e., the point in \texttt{main()} to resume execution after \texttt{func1()} finishes),
+    \item Any arguments passed to \texttt{func1()},
+    \item The local variables declared inside \texttt{func1()}.
+\end{itemize}
+
+This updated stack state is illustrated in Figure~\ref{fig:memory_layout_func1}. The stack pointer is now moved to point to the new top of the stack, corresponding to the local variables of \texttt{func1()}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/memory_layout_func1.png}
+    \caption{Memory Layout after a Function Call to \texttt{func1()}}
+    \label{fig:memory_layout_func1}
+\end{figure}
+
+When \texttt{func1()} completes its execution and returns, the stack frame associated with it is deallocated. This involves:
+\begin{itemize}
+    \item Removing the local variables of \texttt{func1()},
+    \item Restoring the return address,
+    \item Adjusting the stack pointer back to its state before the call.
+\end{itemize}
+
+As a result, the stack pointer once again points to the top of the stack containing the local variables of \texttt{main()}, restoring the memory layout to its original state shown in Figure~\ref{fig:memory_layout}.
+This mechanism of pushing function call data onto the stack and popping it off during function return is fundamental to how most programming languages, including C, manage nested and recursive function calls. It also underpins the concept of function call stacks and stack-based memory management.
+
+\subsection{Program and Data}
+
+When a program is compiled and executed, its memory layout is broadly divided into several segments, each serving a specific purpose. These include the code segment, data segments (initialized and uninitialized), heap, and stack.
+
+The code is stored in the \textbf{text segment}, which contains the compiled machine instructions of the program. This segment is typically read-only and does not change during execution.
+
+The \textbf{data segment} holds global and static variables. It is further divided into:
+\begin{itemize}
+    \item \textbf{Initialized Data Segment:} Contains global and static variables that are initialized by the programmer.
+    \item \textbf{Uninitialized Data Segment (also called BSS):} Contains global and static variables that are declared but not explicitly initialized.
+\end{itemize}
+Both the code and data segments are fixed in size once the program starts running.
+
+In contrast, two other regions of memory — the \textbf{heap} and the \textbf{stack} — are dynamic in nature:
+\begin{itemize}
+    \item The \textbf{heap} is used for dynamically allocated memory (e.g., using \texttt{malloc()} in C). The heap grows upwards as new memory is allocated during program execution.
+    \item The \textbf{stack} is used for function call information, such as local variables, parameters, and return addresses. It grows downwards and shrinks as functions are called and returned.
+\end{itemize}
+
+This division and organization of memory during program execution is beautifully depicted in Figure~\ref{fig:program_data}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{images/program_data.png}
+    \caption{Program and Data Memory Layout}
+    \label{fig:program_data}
+\end{figure}
+A program utilizes the main memory in a structured way, with different sections allocated for different types of data and instructions. 
+
+For instance, an instruction such as \texttt{add x, y, z} would be stored in the \textbf{text segment} (also referred to as the code segment) of the memory. This segment contains the compiled machine instructions that the CPU executes. It is typically read-only to prevent accidental overwriting of program instructions during execution.
+
+The variables used in a program, on the other hand, are allocated in different memory segments depending on their lifetime and declaration style:
+
+\begin{itemize}
+    \item An integer variable like \texttt{int x}, if declared within a function, is likely to be \textbf{stack-allocated}. This means that memory for \texttt{x} is reserved on the call stack, and its lifetime is limited to the duration of the function's execution.
+    
+    \item A variable like \texttt{double w}, if allocated dynamically using functions such as \texttt{malloc()} or \texttt{calloc()}, is stored in the \textbf{heap segment}. The programmer must manage the lifetime of such variables explicitly using memory allocation and deallocation functions.
+    
+    \item A variable such as \texttt{float t}, if declared globally or as a static local variable, is stored in the \textbf{data segment}. This data segment can be further divided into:
+    \begin{itemize}
+        \item The \textbf{initialized data segment}, where variables with an explicit initial value reside.
+        \item The \textbf{uninitialized data segment} (often called the BSS segment), which holds variables declared but not explicitly initialized.
+    \end{itemize}
+\end{itemize}
+
+This organization of memory usage is depicted in Figure~\ref{fig:program_memory}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/program_memory.png}
+    \caption{Program Memory Layout}
+    \label{fig:program_memory}
+\end{figure}
+
+
+\section{Basic Computer Organization}
+
+A computer system is broadly organized into three major components, as illustrated in Figure~\ref{fig:computer_organization}:
+
+\begin{itemize}
+    \item \textbf{Central Processing Unit (CPU) or Processor:} Often referred to as the brain of the computer, the CPU is responsible for executing instructions and performing all arithmetic and logical operations.
+    
+    \item \textbf{Main Memory:} This component is used to store both data and instructions temporarily during program execution. Memory is essential for the CPU to retrieve and process data efficiently.
+    
+    \item \textbf{Input/Output Devices (I/O Devices):} These devices enable the computer to interact with the external environment. Examples include keyboards, mice, monitors, and printers. Input devices send data to the computer, while output devices display or produce results.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/computer_organization.png}
+    \caption{Basic Computer Organization}
+    \label{fig:computer_organization}
+\end{figure}
+
+The CPU itself is further divided into the following core components:
+
+\begin{itemize}
+    \item \textbf{Control Unit (CU):} The control unit manages and coordinates the operations of the CPU. It directs how data moves between the CPU, memory, and I/O devices. It decodes instructions and ensures that the correct sequence of operations is followed.
+
+    \item \textbf{Arithmetic Logic Unit (ALU):} This unit performs all arithmetic operations (like addition, subtraction) and logical operations (like AND, OR, NOT). It acts as the computational engine of the CPU.
+
+    \item \textbf{Registers:} Registers are small, high-speed storage locations built directly into the CPU. They hold temporary data and intermediate results while instructions are being executed. Registers play a key role in speeding up the processing as accessing them is significantly faster than accessing main memory.
+    
+    Registers are generally classified into two categories:
+    \begin{itemize}
+        \item \textbf{General Purpose Registers (GPRs):} These registers are available to the programmer for storing temporary values, such as operands or intermediate results. They help in reducing memory accesses. However, CPUs typically have a limited number of GPRs. One reason for using them is that there exists a large speed disparity between the CPU and main memory. For example:
+        \begin{itemize}
+            \item CPU operates at around 2 GHz, which corresponds to about 0.5 nanoseconds per cycle.
+            \item Main memory accesses typically take 50--100 nanoseconds.
+        \end{itemize}
+        Because of this gap, using registers instead of repeatedly accessing memory helps improve performance.
+
+        \item \textbf{Special Purpose Registers (SPRs):} These are reserved for specific control functions within the CPU. An important example is the \textbf{Program Counter (PC)}, which holds the address of the next instruction to be executed. Other SPRs may include status registers, instruction registers, and stack pointers depending on the architecture.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Main Memory and its problems}
+
+One of the primary performance bottlenecks in modern computer systems arises due to the significant speed gap between the CPU and the main memory. While CPUs operate at very high frequencies (in the order of gigahertz), main memory (typically DRAM) is much slower—approximately $100\times$ slower. As a result, even though the CPU is capable of executing instructions rapidly, it often ends up idling while waiting for data to be fetched from the main memory.
+
+Another related limitation is the scarcity of CPU registers. These registers are extremely fast and are used to store immediate data required for computations. However, their number is very limited, which means most data must be retrieved from main memory, further aggravating the memory bottleneck.
+
+\begin{example}
+    Let's consider a toy example to understand the main memory organization where the main memory has a size of 128 Bytes, and it is divided into blocks of size 4 Bytes. Since the memory is byte-addressable, each of the 128 Bytes has a unique memory address. To uniquely represent each of these 128 addresses, we require:
+    \[
+    \log_2 128 = 7 \text{ bits}
+    \]
+    Hence, memory addresses will range from $0000000_2$ to $1111111_2$. 
+
+    The total number of memory blocks is:
+    \[
+    \frac{128}{4} = 32 \text{ blocks}
+    \]
+    
+    Thus the number of bits that are used to identify the block number (since there are 32 blocks):
+    \[
+    \log_2 32 = 5 \text{ bits}
+    \]
+
+    Each block contains 4 Bytes, which requires 2 bits to specify the offset within the block:
+    \[
+    \log_2 4 = 2 \text{ bits}
+    \]
+    
+    Therefore, any 7-bit memory address can be broken down into:
+    \[
+    \underbrace{b_6b_5b_4b_3b_2}_{\text{Block address (5 bits)}} \underbrace{b_1b_0}_{\text{Offset (2 bits)}}
+    \]
+    \begin{itemize}
+        \item \textbf{Block address (5 bits):} Specifies which of the 32 blocks contains the address.
+        \item \textbf{Offset (2 bits):} Specifies which byte within the block is being addressed.
+    \end{itemize}
+
+    This layout allows the system to efficiently locate a specific byte in memory by first identifying the block and then using the offset to access the byte within that block as shown in figure~\ref{fig:memory_addressing}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.5\textwidth]{images/memory_addressing.png}
+        \caption{Memory Address Breakdown}
+        \label{fig:memory_addressing}
+    \end{figure}
+\end{example}
+
+\subsection{Cache Memory and Locality of Reference}
+\textbf{The solution to this problem is the introduction of cache memory.} Cache is a small, high-speed memory that resides very close to or within the CPU itself. It acts as a buffer between the CPU and the main memory, storing frequently accessed data and instructions. If the data the CPU needs is found in the cache (called a \textit{cache hit}), it can be accessed much more quickly than from main memory. Otherwise, a \textit{cache miss} results in fetching data from the slower main memory.
+
+The design of cache memory relies heavily on the \textbf{principle of locality of reference}, which exploits patterns in how programs access memory. There are two major types of locality:
+
+\begin{itemize}
+    \item \textbf{Temporal Locality:} This principle states that memory locations that have been accessed recently are least likely to be accessed again in the near future. For example, if a program accesses a variable, it is likely to access the same variable again soon. This is often seen in loops or repeated function calls where the same data is used multiple times.
+    
+    \item \textbf{Spatial Locality:} This principle states that memory locations near those that have been recently accessed are likely to be accessed soon. For instance, when iterating over an array, accessing one element implies that its neighboring elements will be accessed shortly.
+\end{itemize}
+
+By leveraging these two types of locality, cache memory significantly reduces the average memory access time and helps ensure that the CPU is not left waiting idly for data.
+
+
+\subsection{Cache Composition}
+
+Main memory is much larger than the cache. Hence, it is not possible to keep the entire memory content in the cache at once. So, when the CPU accesses a memory location, a portion of the memory which is a \textbf{memory block} is temporarily copied into the cache.
+
+When the CPU needs to access a data item or an instruction, it refers to a specific memory address.
+A memory address is divided into three fields:
+\begin{itemize}
+    \item \textbf{Tag:} Used to uniquely identify a block of memory among many possible candidates that could reside in the same cache set.
+    \item \textbf{Index:} Identifies the specific cache set to which the memory block maps.
+    \item \textbf{Offset:} Specifies the exact word or byte within the block.
+\end{itemize}
+It's schematic is as shown in the figure~\ref{fig:memory_address} .
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/memory_address.png}
+    \caption{Memory Address Breakdown}
+    \label{fig:memory_address}
+\end{figure}
+A cache can be broadly divided into two parts -cache directory which keep track of the address and information about whether the data is valid or not and the cache ram which actually stores the data. The cache is composed of multiple \textbf{sets}, where each set contains one or more \textbf{cache lines} (also called \textit{slots}). A cache line typically includes the following components:
+\begin{itemize}
+    \item \textbf{Tag:} A portion of the memory address used to verify if the data stored in the cache line corresponds to the requested address.
+    \item \textbf{Valid Bit:} Indicates whether the data in the cache line is valid (i.e., whether it contains up-to-date information from main memory).
+    \item \textbf{Data Block:} The actual data fetched from main memory.
+\end{itemize}
+It's schematic is as shown in the figure~\ref{fig:cache_memory}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/cache_memory.png}
+    \caption{Cache Memory}
+    \label{fig:cache_memory}
+\end{figure}
+
+Main memory is organized into blocks or words, and cache memory is used to store a subset of these blocks for faster access. The cache is divided into small storage units called \textbf{cache lines} (or slots). Each cache line can hold exactly one block of data from the main memory. The process of deciding which cache line should hold which memory block is called \textbf{mapping}. Thus, ``mapping" refers to the rule that assigns a memory block to a particular cache line based on the memory address.
+
+When a memory access occurs, the cache operates as follows:
+\begin{enumerate}
+    \item The \textbf{index} field is used to locate the appropriate cache set.
+    \item Within the identified set, each cache line's tag is compared to the \textbf{tag} field of the memory address.
+    \item If the tag matches and the \textbf{valid bit} is set, it results in a \textbf{cache hit}, and the data is fetched using the offset.
+    \item If the tag does not match any line in the set, it results in a \textbf{cache miss}, and the data must be fetched from main memory.
+\end{enumerate}
+This is as illustrated in figure~\ref{fig:cache_lookup}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/mem_access.png}
+    \caption{Cache Lookup and Access}
+    \label{fig:cache_lookup}
+\end{figure}
+\begin{example}
+Suppose a memory address is 16 bits long and the cache has 64 lines. Then, we need $\log_2 64 = 6$ bits to index the cache lines. These 6 bits are extracted from the memory address and used to determine which cache line the block maps to. So, memory blocks whose addresses share the same 6 index bits will always map to the same cache line.
+\end{example}
+
+The structure and number of sets and lines determine the type of cache organization (e.g., direct-mapped, set-associative, or fully associative, or even $m$-way set-associative), which will be discussed in subsequent sections.
+
+\subsection*{Direct-Mapped Cache}
+In a \textbf{direct-mapped cache}, each cache set contains exactly \textbf{one cache line}. 
+
+
+\subsubsection*{Cache Access Mechanism}
+When the processor needs to access a memory word (instruction or data), it sends the corresponding memory address to the cache. The following steps occur:
+
+\begin{enumerate}
+    \item \textbf{Indexing:} The index bits of the memory address are used to determine the set (or cache line, in the case of direct-mapped cache) where the memory block might reside. This can be done very fast since the index bits refer to an address which can be located very easily.
+    
+    \item \textbf{Tag Comparison:} The remaining significant bits bits of the memory address, called the \emph{tag}, are compared with the tag stored in the selected cache line. Since there is only one cache line in each set, the index bits map to the cache lines directly.
+    
+    \item \textbf{Valid Bit Check:} Along with the tag, each cache line stores a valid bit indicating whether the data in the cache line is meaningful. If the valid bit is set and the tags match, a \textbf{cache hit} occurs.
+    
+    \item \textbf{Cache Hit:} If there is a match and the valid bit is set, the data is fetched directly from the cache, which is very fast compared to main memory access.
+    
+    \item \textbf{Cache Miss:} If the valid bit is not set or the tags do not match, a \textbf{cache miss} occurs. In this case:
+    \begin{itemize}
+        \item The processor fetches the required memory block from the main memory.
+        \item In direct-mapped cache since each cache set contains exactly one cache line. This means that every memory block can map to exactly \emph{one} cache line in the cache. The specific line is determined using the \emph{index bits} of the memory address. These index bits identify which cache set the memory block corresponds to. Thus, a given memory block from main memory always maps to a single fixed location in the cache. If two memory blocks happen to have the same index bits, they will compete for the same cache line. When one is loaded, the other is evicted. This situation is known as a \textbf{conflict miss} and is a known limitation of direct-mapped caches. Thus, the fetched block is stored in the cache line corresponding to the index, replacing the existing block if any.
+        \item The tag and valid bit of the cache line are updated.
+        \item The processor resumes execution with the now-available data.
+    \end{itemize}
+    
+\end{enumerate}
+
+\paragraph{Advantages of Direct-Mapped Cache:}
+\begin{itemize}
+    \item Very simple to implement in hardware.
+    \item Fast lookup due to one-to-one mapping.
+    \item Less hardware cost compared to other mapping schemes.
+\end{itemize}
+
+\paragraph{Disadvantages of Direct-Mapped Cache:}
+\begin{itemize}
+    \item High chance of conflict misses. Two memory blocks in main memory that map to the same cache line will replace each other frequently.
+    \item Poor utilization of cache space if many blocks compete for the same line.
+\end{itemize}
+
+Direct-mapped caches are efficient and fast, but the rigid mapping can lead to performance issues if many memory blocks map to the same cache line.
+
+\subsection*{Fully Associative Cache}
+\label{sec:fully-associative-cache}
+
+In a \textbf{fully associative cache}, any memory block can be stored in any cache line. It can be thought as only one cache set having all the cache lines. There is no fixed mapping between memory addresses and cache lines. So, there are no index bits in the address.
+
+\subsubsection*{Cache Access Mechanism}
+When the processor needs to access a data word or an instruction, it sends the memory address to the cache. The cache performs the following steps:
+
+\begin{enumerate}
+    \item \textbf{Tag Comparison – Associative Search:}  
+    The memory address is divided into two parts: the \textbf{tag} and the \textbf{block offset}. Since any block can go into any cache line, there is no need for index bits.  
+    The cache controller compares the tag of the incoming address with the tags of all cache lines in parallel. This is called an \textit{associative search}.
+
+    \item \textbf{Valid Bit Check:}  
+    Each cache line has a valid bit. It tells whether the content of the cache line is meaningful.  
+    If the valid bit is set and the tag matches, we have a \textit{cache hit}.
+
+    \item \textbf{Cache Hit:}  
+    If there is a tag match and the valid bit is set, the required data is present in the cache. The data is directly sent to the processor. This access is much faster than going to the main memory.
+
+    \item \textbf{Cache Miss:}  
+    If there is no matching tag or the valid bit is not set, it results in a \textit{cache miss}. In this case:
+    \begin{itemize}
+        \item The required memory block is fetched from the main memory.
+        \item The block is then placed into an available cache line.
+        \item If all lines are full, one of the existing blocks is replaced using a \textit{replacement policy}. Common policies include:
+        \begin{itemize}
+            \item \textbf{FIFO (First-In-First-Out)}: Replace the oldest block.
+            \item \textbf{LRU (Least Recently Used)}: Replace the block that was not used for the longest time.
+            \item \textbf{Random}: Replace a randomly chosen block.
+        \end{itemize}
+        \item The tag and valid bit of the chosen cache line are updated.
+        \item The processor resumes execution using the newly fetched data.
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection*{Advantages of Fully Associative Cache}
+\begin{itemize}
+    \item Very flexible. Any memory block can go into any cache line.
+    \item Conflict misses are minimized, as blocks are not restricted to a fixed location.
+\end{itemize}
+
+\subsubsection*{Disadvantages of Fully Associative Cache}
+\begin{itemize}
+    \item Hardware is more complex. The cache must compare the incoming tag with all tags in parallel.
+    \item Associative search uses more power and is slower than simple indexing.
+    \item Cache access time is usually longer compared to a direct-mapped cache.
 \end{itemize}
 
 
 
+\subsection*{Set Associative Cache}
+\label{sec:set-associative-cache}
+
+Set associative mapping is a hybrid between direct-mapped and fully associative caches. In this approach, the cache is divided into multiple \textbf{sets}. A $m$-way set associative means each set contains $m(>1)$ number of cache lines, also called \textit{ways}. A block of main memory maps to exactly one set, but it can go into any line within that set.
+
+For example, consider a 4-way set-associative cache with 128 total cache lines. This means we have:
+\[
+\frac{128}{4} = 32 \text{ sets}
+\]
+Each set has 4 lines. A memory block is first mapped to a set using a portion of its address — typically using a modulo operation as shown in the figure~\ref{fig:set_associative} for a 2-way set-associative. Then, the block can be stored in any of the 4 lines within that set.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/set_associative.png}
+    \caption{Set Associative Mapping}
+    \label{fig:set_associative}
+\end{figure}
+
+\subsubsection*{Cache Access Mechanism}
+
+When the processor needs to access a data word or an instruction, it sends the memory address to the cache. The following steps occur:
+
+\begin{enumerate}
+    \item \textbf{Indexing:}  
+    The index bits from the memory address determine which set to look into. This is a fast and simple operation. It is similar to the indexing used in direct-mapped caches.
+
+    \item \textbf{Tag Comparison (Associative Search within Set):}  
+    The remaining significant bits of the address form the \textbf{tag}. The cache controller compares this tag with the tags of all cache lines inside the selected set. All lines in the set are checked in parallel.
+
+    \item \textbf{Valid Bit Check:}  
+    Each line in the set stores a valid bit. If the valid bit is set and the tag matches, the cache reports a \textbf{hit}.
+
+    \item \textbf{Cache Hit:}  
+    If a match is found, the data is fetched directly from the cache. This is much faster than accessing the main memory.
+
+    \item \textbf{Cache Miss:}  
+    If no matching tag is found or the valid bit is not set, a \textbf{miss} occurs. In that case:
+    \begin{itemize}
+        \item The memory block is fetched from the main memory.
+        \item The block is placed into the corresponding set.
+        \item If there is space (a line with invalid bit), the block is placed there.
+        \item If all lines are occupied, one block is replaced using a replacement policy like:
+        \begin{itemize}
+            \item \textbf{FIFO (First-In-First-Out)}: Replace the oldest block.
+            \item \textbf{LRU (Least Recently Used)}: Replace the least recently accessed block.
+            \item \textbf{Random}: Replace a randomly chosen block.
+        \end{itemize}
+        \item The tag and valid bit are updated, and the processor resumes using the fetched data.
+    \end{itemize}
+\end{enumerate}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/2way_set.png}
+\end{figure}
+\subsubsection*{Advantages}
+\begin{itemize}
+    \item Reduces conflict misses compared to direct-mapped caches.
+    \item More flexible than direct-mapped, but less complex than fully associative.
+    \item Provides a good balance between speed, flexibility, and hardware cost.
+\end{itemize}
+
+\subsubsection*{Disadvantages}
+\begin{itemize}
+    \item Slightly slower than direct-mapped due to the parallel tag comparisons within each set.
+    \item Requires more complex hardware than direct-mapped caches.
+    \item Needs a replacement policy to decide which block to evict on a miss.
+\end{itemize}
+
+\begin{example}
+Consider an example of an $8$ GB main memory (RAM). Let the size of each memory block be $64$ bytes and consider a typical cache size of $64$ KB, and assume a \textbf{2-way set-associative} mapping.
+
+Since $8$ GB = $2^{33}$ bytes, we need $33$ bits to uniquely identify each byte in memory (because $\log_2 2^{33} = 33$). Since the size of each memory block is $2^{64}$ bytes, which is $2^6$ bytes. Therefore, the total number of memory blocks in main memory is:
+\[
+    \frac{2^{33}}{2^6} = 2^{27}
+\]
+So, there are approximately $125 \times 10^6$ memory blocks.
+
+To address these blocks, we need $27$ bits (since $\log_2 2^{27} = 27$). The remaining $6$ bits are used to specify the offset (i.e., the byte position) within a block.
+
+Thus, each $33$-bit memory address can be divided as follows:
+\begin{itemize}
+    \item $27$ bits for the \textbf{block number}
+    \item $6$ bits for the \textbf{offset} within the block
+\end{itemize}
+
+Since each memory block is $64$ bytes, each cache block is also $64$ bytes. In a 2-way set-associative cache, each \textbf{set} contains 2 blocks, meaning each set occupies $2 \times 64 = 128$ bytes.
+
+So, the total number of sets in the cache is:
+\[
+    \frac{64 \text{ KB}}{128 \text{ bytes}} = \frac{2^{16}}{2^7} = 2^9 = 512 \text{ sets}
+\]
+Hence, we require $\log_2 512 = 9$ bits to index the cache sets.
+
+Now recall that we need $27$ bits to address a memory block (from earlier). In set-associative mapping, the \textbf{least significant} $9$ bits of the block number are used as the \textbf{index} into the cache. The \textbf{remaining} $18$ bits serve as the \textbf{tag}, which is stored in the tag directory to check if a block is present in a set.
+
+Finally, we still need the $6$ offset bits to identify the specific byte within the block.
+
+Therefore, the 33-bit memory address is divided into:
+\begin{itemize}
+    \item \textbf{18 tag bits} (for block identification)
+    \item \textbf{9 index bits} (for set selection)
+    \item \textbf{6 offset bits} (for byte within block)
+\end{itemize}
+
+When the processor wants to access some data or an instruction, it sends a 33-bit memory address. This address is first searched in the cache. This also depends on the type of mapping associated with cache.
+
+Since we are using a 2-way set associative cache, each cache set has 2 cache lines. The cache uses some bits of the memory address sent by the processor (called \textbf{index bits}) to find the correct set. Once the set is located, the cache compares the \textbf{tag bits} of the address with the tags stored in the two cache lines of that set. If there is a match, and the \textbf{valid bit} is set, it is a \textbf{cache hit}. This means the data is already in the cache and is sent to the processor. If there is no match, or the valid bit is not set, it is a \textbf{cache miss}. The data must then be fetched from the main memory and placed into one of the cache lines in that set.
+
+In the case of a \textbf{cache miss}, the data or instruction requested by the processor must be fetched from the main memory and placed into the cache. Since the size of cache memory is limited, an existing memory block currently in the cache must be evicted to make room for the newly fetched block. The strategy used to determine which cache line gets replaced is called the \textbf{cache replacement policy}. In an $2$-way \textbf{set-associative cache}, the memory block is mapped to a cache set based on the index bits, and it can replace any of the $2$ cache lines within that set. Again, policies like FIFO or LRU are used to decide which of the $2$ lines in the set will be evicted and replaced by the new block. This design offers a trade-off between the high flexibility of a fully associative cache and the simple implementation of a direct-mapped cache.
+\end{example}
+\begin{note}
+    Note that in this section, we have not gone into the nitty-gritty details of how cache works internally or how it is managed by the system. We have skipped several important topics such as write strategies (like write-through and write-back), cache coherence in multi-core systems, and the structure of real-world cache hierarchies (like L1, L2, and L3 caches). Our goal here was to give a high-level understanding of what a cache is and how it helps speed up memory access. We will revisit some of these advanced topics later in the book if needed. For a deeper explanation, refer to the book~\cite{bryant2016computer}.
+\end{note}
+
+\section{Cache and Programming}
+In this section, we will learn how cache-related performance issues can affect important parts of our programs. We will also look at some simple examples to understand this better. 
+
+For simplicity, we will focus only on the \textbf{data cache}, assuming that instruction and data caches are separate. Let the memory address be of $32$ bits. The configuration of the data cache we will be working with is as follows:
+\begin{itemize}
+    \item Cache type: Direct-mapped
+    \item Cache size: 16 KB
+    \item Block size: 32 Bytes
+\end{itemize}
+
+Since the cache is direct-mapped with a total size of 16 KB and a block size of 32 Bytes, it contains:
+\begin{itemize}
+    \item $\frac{16 \times 1024}{32} = 512$ cache lines (or sets because of direct-mapped cache)
+    \item Thus, $\log_2 512 = 9$ index bits,
+    \item and $\log_2 32 = 5$ block offset bits
+    \item The remaining $18$ bits will be the tag bits.
+\end{itemize}
+\subsection{Example 1: Vector Sum Reduction}
+
+We are interested in computing a scalar value that reduces a vector by summing all its elements. This requires a loop that adds each element of the vector to an accumulator.
+
+\begin{lstlisting}[caption={Vector Sum Reduction}]
+double A[2048], sum = 0.0;
+for (i = 0; i < 2048; i++) sum = sum + A[i];
+\end{lstlisting}
+
+In this example, the array \texttt{A} contains 2048 double-precision values, with each value occupying $8$ bytes (64-bit format). The variable \texttt{sum} is also of type \texttt{double}, and thus occupies $8$ bytes.
+
+The loop iterates through all the elements of the array, adding each value of \texttt{A[i]} to the \texttt{sum} variable. This is a simple example of a vector reduction operation, often used in numerical computations.
+
+To analyze cache behavior, we must examine the program at a level close to machine code to identify memory load and store operations. Specifically, we want to determine which memory accesses occur and in what order, given our data cache configuration—a direct-mapped 16KB cache with 32-byte block size.
+
+For simplicity, we assume that the variables \texttt{i} and \texttt{sum} reside in registers. This is a reasonable assumption, as we can ensure that these variables are kept in registers by the compiler or through manual optimization. As a result, they do not involve memory accesses and therefore do not impact cache performance.
+
+Hence, we will focus only on memory accesses to the array \texttt{A}, since it is the only data structure being read from memory in the loop. Therefore, analyzing the vector sum reduces to understanding what happens when accessing \texttt{A[0]}, \texttt{A[1]}, ..., up to \texttt{A[2047]}. We will now examine how this sequential access translates into memory operations:
+\begin{itemize}
+    \item Each element \texttt{A[i]} (for $i = 0$ to $2047$) must be loaded from memory into a CPU register. Here, a \textbf{load} refers to an instruction that copies data from main memory into a register. Once in a register, the value can be added to the \texttt{sum} variable.
+    
+    \item To proceed with the analysis, we assume that the base address of the array \texttt{A} (i.e., the address of \texttt{A[0]}) is \texttt{0xA000}, which corresponds to the binary address \texttt{10101000000000000}, with all more significant bits set to zero.
+    
+    \item Since our cache is 16KB (i.e., $2^{14}$ bytes) with a block size of 32 bytes (i.e., $2^5$), the cache is divided into $2^9 = 512$ blocks. So, we need 9 index bits and 5 offset bits. We’ll analyze cache behavior by tracking how these 14 bits (9 index + 5 offset) change as the array is accessed sequentially.
+    
+    \item The index bits for \texttt{A[0]} are \texttt{100000000} (which is decimal 256). So \texttt{A[0]} will map to cache index 256.
+    
+    \item Since the array elements are of type \texttt{double}, each occupies 8 bytes. A 32-byte block can thus hold 4 consecutive elements: \texttt{A[0]}, \texttt{A[1]}, \texttt{A[2]}, and \texttt{A[3]}.
+    
+    \item So, when there’s a cache miss for \texttt{A[0]}, the entire block containing \texttt{A[0]} through \texttt{A[3]} is brought into the cache. That means subsequent accesses to \texttt{A[1]}, \texttt{A[2]}, and \texttt{A[3]} will be cache hits.
+    
+    \item The next miss happens at \texttt{A[4]}, which maps to index 257. But again, a full block containing \texttt{A[4]} to \texttt{A[7]} is loaded. So \texttt{A[5]}, \texttt{A[6]}, and \texttt{A[7]} will hit in cache.
+    
+    \item This pattern continues — every 4th access is a miss (cold miss), and the next three accesses are hits due to spatial locality.
+\end{itemize}
+
+We now analyze this behavior assuming the cache is initially empty, which is also known as a \textbf{cold start}. The first access to each block (like \texttt{A[0]}, \texttt{A[4]}, \texttt{A[8]}, etc.) causes a cache miss, but the next three accesses within that block are cache hits. 
+
+So, in total, there are $2048 / 4 = 512$ cache misses (one for every block of 4), and $2048 - 512 = 1536$ cache hits. This gives us a \textbf{hit ratio} of:
+\[
+\frac{1536}{2048} = 0.75 \quad \text{or} \quad 75\%
+\]
+This performance gain comes entirely from \textbf{spatial locality} — because we're accessing data laid out consecutively in memory.
+
+Now suppose we add a loop before the reduction to preload all relevant memory blocks:
+\begin{lstlisting}[caption={Preloading the Array for Temporal Locality}]
+for (i = 0; i < 2048; i++) tmp = A[i]; // preload
+double A[2048], sum = 0.0;
+for (i = 0; i < 2048; i++) sum = sum + A[i];
+\end{lstlisting}
+
+With this change, the second loop sees a \textbf{100\% hit ratio}. This is because:
+\begin{itemize}
+    \item $75\%$ of hits come from \textbf{spatial locality} (within each block), and
+    \item $25\%$ of hits come from \textbf{temporal locality}, since the data was already loaded in the first loop and hasn't been evicted.
+\end{itemize}
+
+Suppose now the array is defined as \texttt{double A[4096]}. Will this make any difference? Consider the case where the loop is preceded by another loop that accesses all array elements in sequential order. The total memory required to store the array is $8 \times 4096 = 32$~KB, while the cache memory is only 16~KB. Hence, the entire array cannot fit into the cache. After execution of the previous loop, the second half of the array will be in the cache and because of the spatial locality of reference it is anyways not going to be used for vector sum. This is just wasting time due to unnecessary memory accesses to no advantage. As a result, our loop will still experience cache misses, just as we analyzed earlier.
+
+Recall that to estimate the data cache hit rate, we made the following assumptions:
+\begin{itemize}
+    \item The variables \texttt{sum} and \texttt{i} are stored in registers; hence, we ignore their memory accesses.
+    \item The base address of \texttt{A[0]} is assumed to be \texttt{0xA000}.
+    \item We consider that only load/store instructions access memory operands; all other instructions use register operands.
+\end{itemize}
+
+\subsection{Example 2: Vector Dot Product}
+In this case, we are interested in computing the dot product (also called the inner product) between two vectors, $A$ and $B$, represented by the arrays \texttt{A} and \texttt{B}. The dot product is computed by taking the running sum of the products of corresponding elements from the two arrays. 
+
+As in the previous example, we will assume similar conditions and ignore the accesses to the loop index variable \texttt{i} and the variable \texttt{sum}, assuming they are stored in registers. Also, we will assume that only load/store instructions access memory operands; all other instructions use register operands.
+
+\begin{lstlisting}[caption={Vector Dot Product}]
+double A[2048], B[2048], sum = 0.0;
+for (i = 0; i < 2048; i++) 
+    sum = sum + A[i] * B[i];
+\end{lstlisting}
+
+We are interested in analyzing the order of reference sequence, which will be: \texttt{load A[0]}, \texttt{load B[0]}, and so on, till \texttt{load A[2047]}, \texttt{load B[2047]}.
+
+We now assume the base addresses of arrays $A$ and $B$ as $0xA000$ and $0xE000$ respectively. Since these arrays are declared as \texttt{double}, each element occupies $8$ bytes, and therefore, $4$ consecutive elements of the array will fit into each $32$-byte cache block.
+
+Now, $0xA000$ in binary is $1010\ 0000\ 0000\ 0000$, which corresponds to cache index $256$. Similarly, $0xE000$ in binary is $1110\ 0000\ 0000\ 0000$, which also maps to the same index $256$.
+
+Because the index bits are the same, both $A[0]$ and $B[0]$ will be loaded into the same cache set (index $256$). This leads to a problem: consider the load sequence. When we first load $A[0]$, there is a cache miss (a cold miss, assuming the cache is initially empty) at cache set index $256$. Thus, it loads $A[0] A[1], A[2], A[3]$ into the cache set memory block. Next, when we load $B[0]$, it maps to the same cache set index and causes another miss — this time a conflict miss, because it replaces the block holding $A[0]$.
+
+A conflict miss occurs when multiple memory blocks map to the same cache set and compete for space under a direct-mapped cache scheme. In this case, since $A[0]$ and $B[0]$ conflict with each other, loading $B[0]$ causes memory block containing $A[0], A[1], A[2], A[3]$ to be evicted and load $B[0], B[1], B[2], B[3]$ into the cache set memory block. Now, when \texttt{load A[1]} is executed, it again maps to the same cache set (index $256$), and because it is not in the cache (recall the memory block containing $A[0], A[1], A[2], A[3]$ was evicted), we get yet another cache miss.
+
+This process continues, resulting in a conflict miss for every access, significantly reducing cache efficiency. Thus, the hit ratio for our program is $0\%$. The source of the problem is that the elements of arrays $A$ and $B$ are accessed in order and both map to the same cache index. As a result, each new access causes the previous entry to be evicted, leading to no cache reuse. The hit ratio would have been better if the base address of array $A$ had been different from that of array $B$, such that the memory blocks mapped to different cache set indices. This would have prevented the conflicts and improved the cache performance.
+
+The question now is: was this a contrived example? The root cause of the problem was that we assumed the base addresses of arrays $A$ and $B$ to be $0xA000$ and $0xE000$, respectively, such that both mapped to the same cache set index. Is this an unreasonable assumption that never occurs in the real world? The answer is no—it is not an unreasonable assumption. In fact, this behavior is consistent with the memory allocation model typically followed by compilers.
+
+To understand this better, we must ask: how are variable addresses assigned by the compiler? Typically, the compiler begins allocating memory from a starting address, which is often outside the programmer’s control. Suppose, for instance, that the compiler begins by placing array $A$ at address $0xA000$. It then assigns memory to subsequent variables in the order they are declared. Since array $A$ consists of $2048$ elements of type \texttt{double} (each 8 bytes), the total space it occupies is $2048 \times 8 = 16384$ bytes, or $0x4000$ in hexadecimal. Therefore, array $B$ will be placed at address $0xA000 + 0x4000 = 0xE000$.
+
+\[
+\text{Address of } B = 0xA000 + 2048 \times 8 = 0xA000 + 0x4000 = 0xE000
+\]
+\[
+\text{Binary: } 1010\ 0000\ 0000\ 0000 + 0100\ 0000\ 0000\ 0000 = 1110\ 0000\ 0000\ 0000
+\]
+
+Thus, both arrays may end up mapping to the same cache set index, causing conflict misses, even though this layout results naturally from how compilers assign addresses in practice.
+
+Thus, the problem arises due to the nature of the cache hardware and the specific issue caused by the vector size of $2048$. The compiler typically assigns addresses to variables in the order they are declared.
+
+Our objective is therefore to shift the base address of array $B$ just enough so that the cache index of $B[0]$ differs from that of $A[0]$:
+\begin{lstlisting}
+double A[2052], B[2048];
+\end{lstlisting}
+
+Now, the base address of $B$ would be
+\[
+0xA000 + 2052 \times 8 = 0xE020,
+\]
+which corresponds to a cache index of $257$. Hence, $B[0]$ and $A[0]$ no longer conflict for the same cache block. The resulting hit ratio will rise to \textbf{75\%}. 
+
+This is a common optimization trick used in languages like \textbf{Fortran}. By doing so, we have improved the cache hit ratio—but what impact does this have on the execution time of the program?
+
+Suppose the following piece of code is a dominant part of the program, i.e., its performance heavily influences the overall execution time. Let us now analyze the number of cycles required for execution.
+
+Assume there are $20$ machine instructions inside the loop: $2$ load instructions and $18$ others (such as additions, register loads, and loop overhead), which do not access memory and thus take only $1$ cycle per instruction. The total number of instructions executed is therefore $20 \times 2048$.
+
+Assume each instruction takes $1$ cycle to execute, and a load miss incurs a penalty of $100$ cycles to fetch the data from memory.
+
+\begin{itemize}
+    \item \textbf{Best Case (100\% hit ratio):}  
+    All instructions take only $1$ cycle. Thus, total cycles =  
+    \[
+    20 \times 2048 = 40960 \text{ cycles}.
+    \]
+    
+    \item \textbf{Worst Case (0\% hit ratio):}  
+    All $18$ non-load instructions take $1$ cycle each. The $2$ load instructions take $100$ cycles each due to cache misses. Thus, the total number of cycles is  
+    \[
+    (18 \times 1 + 2 \times 100) \times 2048 = (18 + 200) \times 2048 = 446464 \text{ cycles}.
+    \]
+    
+    \item \textbf{Intermediate Case (75\% hit ratio):}  
+    $75\%$ of the loads are cache hits (taking $1$ cycle), and $25\%$ are misses (taking $100$ cycles). So the load-related cycles are  
+    \[
+    0.75 \times 2048 \times 2 \times 1 + 0.25 \times 2048 \times 2 \times 100 = 3072 + 102400.
+    \]
+    The remaining $18$ instructions per iteration (which are not memory loads) always take $1$ cycle:  
+    \[
+    18 \times 2048 = 36864.
+    \]
+    Hence, the total number of cycles is  
+    \[
+    3072 + 102400 + 36864 = 142336 \text{ cycles}.
+    \]
+\end{itemize}
+
+Thus, we observe that a better cache hit ratio significantly reduces the execution time—improving performance by almost a factor of $3$ compared to the $0\%$ hit case, and closing the gap toward the ideal case.
+
+
+Another method is called \textbf{Array Merging}, where we merge the arrays $A$ and $B$ together, as shown in the following code:
+
+\begin{lstlisting}
+struct {double A, B;} array[2048];
+for (i = 0; i < 2048; i++) 
+    sum += array[i].A * array[i].B;
+\end{lstlisting}
+
+The nature of the dot product remains the same, but now it picks two elements from the same array element of the newly defined structure. The idea is that spatial locality of reference will help here because the compiler will store \texttt{A[i]} and \texttt{B[i]} adjacent in memory since they are part of the same \texttt{struct}. 
+
+Of course, in many programs, such a redefinition might not be possible, because \texttt{A} and \texttt{B} may have distinct meanings or uses in the calculations being performed, and it may not always be feasible to restructure the data in this way.
+
+In this method, the hit ratio will again be $75\%$ because each cache block will now contain \texttt{A[0]}, \texttt{B[0]}, \texttt{A[1]}, \texttt{B[1]}, and so on. Thus, the first access to \texttt{A[0]} will be a cache miss due to a cold start, but the accesses to \texttt{B[0]}, \texttt{A[1]}, and \texttt{B[1]} will be cache hits.
+
+\subsection{Example 3: DAXPY}
+
+We now consider another famous example called DAXPY (\textbf{D}ouble precision \textbf{AX} \textbf{P}lus \textbf{Y}), where $a$ is a scalar and $X$ and $Y$ are vectors.
+
+\begin{lstlisting}{caption={Double precision AX Plus Y (DAXPY)}}
+double X[2048], Y[2048], a;
+for (i = 0; i < 2048; i++) 
+    Y[i] = a * X[i] + Y[i];
+\end{lstlisting}
+
+This example differs slightly from the previous one, as there are three array references per iteration of the loop. Specifically, for each $i$, we must load \texttt{X[i]}, load \texttt{Y[i]}, and then store the updated value back to \texttt{Y[i]}. 
+
+The reference sequence thus becomes: 
+\begin{center}
+\texttt{load X[0], load Y[0], store Y[0], load X[1], load Y[1], store Y[1],} $\dots$, \texttt{load X[2047], load Y[2047], store Y[2047]}
+\end{center}
+
+Assuming that the base addresses of arrays \texttt{X} and \texttt{Y} do not conflict in the cache, we can compute the hit ratio. In this case, out of every 12 memory references (two loads and one store per iteration), there will typically be 1 miss for \texttt{X[0]} and 1 miss for \texttt{Y[0]} due to cold starts. The remaining references will be cache hits assuming spatial locality is exploited effectively. Thus, the overall hit ratio is approximately $\frac{10}{12}\times 100 =  83.3\%$.
+
+\subsection{Example 4: 2D Matrix Sum}
+We will now look at the sum of two-dimensional matrices as shown below:
+
+\begin{lstlisting}[language=Python]
+double A[1024][1024], B[1024][1024];
+for (j = 0; j < 1024; j++)
+    for (i = 0; i < 1024; i++)
+        B[i][j] = A[i][j] + B[i][j];
+\end{lstlisting}
+
+This is somewhat similar to DAXPY, and the reference memory access sequence would be:  
+\texttt{load A[0,0], load B[0,0], store B[0,0], load A[1,0], load B[1,0], store B[1,0],} and so on.
+
+Before analyzing the cache hit rate, it is important to answer a more fundamental question:  
+\textbf{In what order are the elements of a multidimensional array stored in memory?}
+
+In the case of one-dimensional arrays, the elements are stored contiguously in memory. However, when dealing with two-dimensional matrices, we must ask whether the matrix is stored row by row (row-major order) or column by column (column-major order). Different programming languages make different assumptions regarding this.
+
+Compilers implement address calculations for multidimensional arrays based on the language's assumed storage order. Therefore, to compile a program correctly in terms of memory load and store operations, the compiler must know how the language stores multidimensional arrays. It is assumed that the compiler already knows the language-specific storage convention. Otherwise, it would have to make its own assumptions, which could severely affect performance portability.
+
+\textbf{Performance portability} refers to the idea that even if a program remains functionally correct across different compilers or languages, its performance may vary significantly depending on how the underlying compiler interprets the array storage order.
+
+This storage order convention is a property of the language, not the compiler. The two common conventions are:
+
+\begin{itemize}
+    \item \textbf{Row-major order:}
+    \begin{itemize}
+        \item For a two-dimensional array, the elements of the first row are stored first, followed by the elements of the second row, then the third, and so on.
+        \item This is the convention used in \texttt{C}.
+    \end{itemize}
+    
+    \item \textbf{Column-major order:}
+    \begin{itemize}
+        \item For a two-dimensional array, the elements are stored column by column in memory.
+        \item This is the convention used in \texttt{Fortran}.
+    \end{itemize}
+\end{itemize}
+Now, we are assuming the programming language to be C. In C, multi-dimensional arrays are stored in \textbf{row-major order}, which means that elements like $A[0][0]$, $A[0][1]$, $A[0][2]$, and $A[0][3]$ are stored in adjacent memory locations, typically mapping to the same cache block. Therefore, the given program is written inefficiently. 
+
+To understand this, consider the reference sequence: if we access $A[1][0]$ immediately after $A[0][0]$, these elements are stored in different rows and thus different cache blocks, resulting in a cache miss. This indicates poor \textbf{spatial locality}.
+
+We observe a mismatch between the \textbf{reference order}—the order in which memory is accessed—and the \textbf{storage order}—the way memory is actually laid out. Our program steps through the matrix column by column, resembling \textbf{column-major order}, whereas C stores matrices in \textbf{row-major order}: $A[0][0]$, $A[0][1]$, and so on. As a result, our loop does not exploit spatial locality, although it does demonstrate some \textbf{temporal locality}, since the store operation to $B[0][0]$ immediately follows a load from $B[0][0]$, which remains in the cache.
+
+Thus, the loop will not show any spatial locality. Here, we assume that packing has been done to eliminate conflict misses due to base addresses. However, in this case, it does not really matter, as there is no spatial locality anyway, and temporal locality will not be affected by conflict misses. So we get:
+\begin{itemize}
+    \item A miss on \texttt{load A[0][0]} (due to cold start),
+    \item A miss on \texttt{load B[0][0]} (due to cold start),
+    \item A hit on \texttt{store B[0][0]} (due to temporal locality),
+\end{itemize}
+Now, when we go to the next instruction \texttt{load A[1][0]}, we again get a miss (due to cold start), and so on. Thus, the hit ratio is approximately $33\%$, entirely because of the temporal locality—on the store instructions. There are no hits for the load instructions at all.
+
+Will \texttt{A[0][1]} be in the cache when required later in the loop? 
+
+Now let us analyze the impact of \textbf{loop interchange}. Recall that in the initial version of the loop, the second subscript was in the outer loop and the first subscript was in the inner loop. We now consider the interchanged version, where the first subscript is in the outer loop and the second subscript is in the inner loop, as shown below:
+
+\begin{lstlisting}
+double A[1024][1024], B[1024][1024];
+for (i = 0; i < 1024; i++)
+    for (j = 0; j < 1024; j++)
+        B[i][j] = A[i][j] + B[i][j];
+\end{lstlisting}
+
+In this case, the memory reference sequence would be:
+\begin{itemize}
+    \item \texttt{load A[0][0]}, \texttt{load B[0][0]}, \texttt{store B[0][0]}
+    \item \texttt{load A[0][1]}, \texttt{load B[0][1]}, \texttt{store B[0][1]}
+    \item $\dots$
+\end{itemize}
+
+We observe that the first time \texttt{A[0][0]} is loaded, it results in a cache miss due to a cold start. Similarly, \texttt{load B[0][0]} will also result in a cache miss. However, the subsequent \texttt{store B[0][0]} will be a cache hit, since the value was just loaded and remains in the cache. Similarly, \texttt{load A[0][1]} will likely be a cache hit as it resides in the same cache block as \texttt{A[0][0]}, assuming a typical cache line size of 4 words. The same applies to the accesses for \texttt{B[0][1]}, \texttt{store B[0][1]}, and so on.
+
+Hence, out of the first 12 memory instructions (8 loads and 4 stores), 10 will be cache hits and only 2 will be cache misses. This leads to a cache hit rate of:
+\[
+\frac{10}{12} \times 100 = 83.3\%
+\]
+This improved hit rate demonstrates better \textbf{spatial locality} due to the access pattern now matching the row-major storage layout of C arrays.
+
+This leads to an important question: is it always safe to perform loop interchange? Consider the following example, where the secondary subscript is controlled by the outer loop:
+
+\begin{lstlisting}
+for (j = 1; j < 2048; j++)
+    for (i = 1; i < 2048; i++)
+        A[i][j] = A[i+1][j-1] + A[i][j-1];
+\end{lstlisting}
+
+This ordering is clearly incorrect since the second subscript, which denotes the column (i.e., `j`), is controlled by the outer loop. We have already discussed such cases previously. This example is trivial, but many numerical codes still fall into this trap. We are interested in the version where the `for` loops are interchanged, since we know that doing so can improve spatial locality.
+
+Let us examine the actual behavior of this loop by tracing its first few iterations. For instance:
+\[
+A[1][1] = A[2][0] + A[1][0], \quad A[2][1] = A[3][0] + A[2][0], \quad \text{and so on}.
+\]
+Then, for the next column:
+\[
+A[1][2] = A[2][1] + A[1][1].
+\]
+
+Now let us blindly interchange the two `for` loops and observe the effect:
+
+\begin{lstlisting}
+for (int i = 1; i < 2048; i++)  // interchanged
+    for (int j = 1; j < 2048; j++)
+        A[i][j] = A[i+1][j-1] + A[i][j-1];
+\end{lstlisting}
+
+
+With this ordering, the first few iterations will now be:
+\[
+A[1][1] = A[2][0] + A[1][0], \quad A[1][2] = A[2][1] + A[1][1], \quad \text{and so on,}
+\]
+until we reach:
+\[
+A[2][1] = A[3][0] + A[2][0].
+\]
+
+Notice the subtle but crucial difference. In the original loop nest, the computation of $A[1][2]$ used updated values of both $A[2][1]$ and $A[1][1]$. However, in the interchanged version, the value of $A[1][2]$ is computed using the old value of $A[2][1]$ (since `i = 2` has not yet been processed) and the updated value of $A[1][1]$. This changes the computation semantics and may lead to incorrect results.
+
+Hence, \textbf{loop interchange is not always safe}, especially when data dependencies exist across loop iterations. One must carefully analyze the dependencies before performing such optimizations.
+
+Is there any safer way to modify the loops so that the code remains correct while also achieving better spatial locality? The answer is yes. This can be accomplished by rewriting the loop to iterate over the second subscript from higher to lower values, as shown below:
+
+\begin{lstlisting}
+for (i = 2047; i > 1; i--)
+    for (j = 1; j < 2048; j++)
+        A[i][j] = A[i+1][j-1] + A[i][j-1];
+\end{lstlisting}
+
+This transformation ensures that data accessed in close temporal proximity is also stored in adjacent memory locations, thus taking better advantage of spatial locality.
+
+However, this example also illustrates an important principle: \textbf{loop interchange should not be applied blindly}. Instead, the loop structure should be carefully analyzed or modified to exploit the memory hierarchy effectively. Such strategies can be learned through experience, systematic experimentation, or by exploring various loop arrangements and identifying those that provide the best spatial locality of reference.
+
+\subsection{Example 5: Matrix Multiplication}
+Here is an example for matrix multiplication.
+\begin{lstlisting}
+double X[N][N], Y[N][N], Z[N][N];
+for(i=0;i<N;i++)
+    for (j=0lj<N;j++)
+        for(k=0;k<N;k++)
+            X[i][j] += Y[i][k]*Z[k][j];
+\end{lstlisting}
+Assume that $N$ is a power of $2$. This is the basic form of matrix multiplication we usually learn in high school.
+
+A common way to optimize it is to reduce the number of memory accesses. In the naive version, we access \texttt{X[i][j]} repeatedly in the innermost loop to update the running sum. This can be improved.
+
+We can store the running sum in a temporary variable called \texttt{tmp}, and after the innermost loop finishes, we copy it into \texttt{X[i][j]}. This way, we access \texttt{X[i][j]} only once per iteration, which reduces the load/store pressure.
+
+Here’s how the updated code looks:
+
+\begin{lstlisting}[language=C++, caption={Optimized Matrix Multiplication using temporary variable}, label={lst:opt-matmul}]
+double X[N][N], Y[N][N], Z[N][N];
+for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+        double tmp = 0.0; // Running sum
+        for (int k = 0; k < N; k++) {
+            tmp += Y[i][k] * Z[k][j]; // Dot product
+        }
+        X[i][j] = tmp;
+    }
+}
+\end{lstlisting}
+
+\textbf{Note:} We use \texttt{tmp} to hold the dot product of the $i^{\text{th}}$ row of $Y$ and $j^{\text{th}}$ column of $Z$.
+
+This saves several memory references by avoiding frequent reads/writes to \texttt{X[i][j]}.
+
+Let’s now observe how data is accessed during execution:
+
+\begin{itemize}
+    \item To compute \texttt{X[0][0]}, we load:
+    \begin{itemize}
+        \item \texttt{Y[0][0]}, \texttt{Z[0][0]}
+        \item \texttt{Y[0][1]}, \texttt{Z[1][0]}
+        \item \dots
+        \item \texttt{Y[0][N-1]}, \texttt{Z[N-1][0]}
+    \end{itemize}
+    Then we store \texttt{X[0][0]}.
+
+    \item To compute \texttt{X[0][1]}, we load:
+    \begin{itemize}
+        \item \texttt{Y[0][0]}, \texttt{Z[0][1]}
+        \item \texttt{Y[0][1]}, \texttt{Z[1][1]}
+        \item \dots
+        \item \texttt{Y[0][N-1]}, \texttt{Z[N-1][1]}
+    \end{itemize}
+    Then we store \texttt{X[0][1]}.
+\end{itemize}
+
+And so on, row by row.
+
+In this version of matrix multiplication (loop order \texttt{ijk}), the references to $Y$ happen row-wise: 
+\texttt{Y[0][0]}, \texttt{Y[0][1]}, \dots, and so on. This means $Y$ shows excellent \textit{spatial locality of reference}, since successive elements in memory are accessed in sequence.
+
+However, the references to $Z$ occur column-wise: \texttt{Z[0][0]}, \texttt{Z[1][0]}, \dots. This results in poor spatial locality for $Z$, since non-contiguous memory elements are accessed. 
+
+Therefore, this version of the loop has good cache behavior for $Y$ but poor cache performance for $Z$.
+
+\subsubsection*{Loop intercahnge}
+Let us now explore the idea of \textbf{loop interchange} further. We can rearrange the three nested loops in any order without affecting the correctness of the program. That is, all permutations of the loop order (\texttt{ijk}, \texttt{jik}, \texttt{ikj}, etc.) compute the same result: the matrix product $X = Y \cdot Z$.
+
+For example, we can interchange the $i$ and $k$ loops, resulting in the order \texttt{kji}, as shown below:
+
+\begin{lstlisting}[language=C++, caption={Matrix multiplication with loop order kji}, label={lst:kji-matmul}]
+for (int k = 0; k < N; k++)
+    for (int j = 0; j < N; j++){
+        double tmp = 0.0;
+        tmp = Z[k][j];
+        for (int i = 0; i < N; i++)
+            X[i][j] += Y[i][k] * tmp;
+    }
+\end{lstlisting}
+
+In this version, observe that for each fixed pair $(k, j)$, the value \texttt{Z[k][j]} is reused for all $i$. So it can be loaded into a register once and reused across the innermost loop. This reduces the number of memory references to $Z$ significantly.
+
+However, now the access pattern for $X$ and $Y$ becomes column-wise:
+\begin{itemize}
+    \item Load \texttt{X[0][0]}, load \texttt{Y[0][0]}, store \texttt{X[0][0]}
+    \item Load \texttt{X[1][0]}, load \texttt{Y[1][0]}, store \texttt{X[1][0]}
+    \item \dots
+\end{itemize}
+
+This means both $X$ and $Y$ are accessed in a non-contiguous (column-wise) fashion, which leads to poor spatial locality and a high number of cache misses.
+
+So, although the number of loads for $Z$ is reduced, the cache behavior for $X$ and $Y$ becomes worse.
+
+Thus, we see that there are 6 different possibilities for loop variants: $ijk$, $ikj$, $jik$, $jki$, $kij$, and $kji$. Each of them would be correct in computing the matrix multiplication but would have different cache efficiencies. We already saw the cache efficiencies of the $ijk$ and $kij$ loops. Now let us see the cache efficiencies for the other 4. For example, for $ikj$, the code would be as follows:
+
+\begin{lstlisting}[language=C++, caption={Matrix multiplication with loop order ikj}, label={lst:ikj-matmul}]
+for (int i = 0; i < N; i++)
+    for (int k = 0; k < N; k++) {
+        double tmp = Y[i][k];
+        for (int j = 0; j < N; j++)        
+            X[i][j] += tmp * Z[k][j];
+    }
+\end{lstlisting}
+
+Here, we see that the reference sequence would be: load \texttt{X[0][0]}, load \texttt{Z[0][0]}, store \texttt{X[0][0]}, load \texttt{X[0][1]}, load \texttt{Z[0][1]}, store \texttt{X[0][1]} and so on. Thus, we see that $X$ and $Z$ are accessed in a row-wise manner. Therefore, this would have excellent spatial locality for both $X$ and $Z$.
+
+Now let us consider the $jik$ loop order. The corresponding code is:
+
+\begin{lstlisting}[language=C++, caption={Matrix multiplication with loop order jik}, label={lst:jik-matmul}]
+for (int j = 0; j < N; j++)
+    for (int i = 0; i < N; i++) {
+        double tmp = 0.0;
+        for (int k = 0; k < N; k++)
+            tmp += Y[i][k] * Z[k][j];
+        X[i][j] += tmp;
+    }
+\end{lstlisting}
+
+Here, we see that the reference sequence would be: load \texttt{Y[0][0]}, load \texttt{Z[0][0]}, load \texttt{Y[0][1]}, load \texttt{Z[1][0]}, and so on. The matrix $Y$ is accessed row-wise, and $Z$ is accessed column-wise. After computing the inner loop, we write to \texttt{X[0][0]}.
+
+So, in this case, $Y$ has good spatial locality since it is accessed row-wise. But $Z$ is accessed column-wise and hence shows poor spatial locality. The write to $X[i][j]$ happens once per $(i,j)$, so it is fine.
+
+Thus, this loop order has good cache performance for $Y$, but poor cache behavior for $Z$.
+ 
+Now let us consider the $jki$ loop order. The corresponding code is:
+
+\begin{lstlisting}[language=C++, caption={Matrix multiplication with loop order jki}, label={lst:jki-matmul}]
+for (int j = 0; j < N; j++)
+    for (int k = 0; k < N; k++) {
+        double tmp = Z[k][j];
+        for (int i = 0; i < N; i++)
+            X[i][j] += Y[i][k] * tmp;
+    }
+\end{lstlisting}
+
+Here, we see that the reference sequence would be: load \texttt{X[0][0]}, load \texttt{Y[0][0]}, store \texttt{X[0][0]}, load \texttt{X[1][0]}, load \texttt{Y[1][0]}, store \texttt{X[1][0]}, and so on. So, we observe that both $X$ and $Y$ are accessed column-wise, while $Z[k][j]$ is loaded once per inner loop and reused.
+
+Thus, this version shows good reuse of $Z$ due to register storage, but has poor spatial locality for both $X$ and $Y$ because they are accessed column-wise. Therefore, this loop order results in many cache misses for $X$ and $Y$.
+
+Now let us consider the $kij$ loop order. The corresponding code is:
+
+\begin{lstlisting}[language=C++, caption={Matrix multiplication with loop order kij}, label={lst:kij-matmul}]
+for (int k = 0; k < N; k++)
+    for (int i = 0; i < N; i++) {
+        double tmp = Y[i][k];
+        for (int j = 0; j < N; j++)
+            X[i][j] += tmp * Z[k][j];
+    }
+\end{lstlisting}
+
+Here, we see that the reference sequence would be: load \texttt{X[0][0]}, load \texttt{Z[0][0]}, store \texttt{X[0][0]}, load \texttt{X[0][1]}, load \texttt{Z[0][1]}, store \texttt{X[0][1]}, and so on. This means that both $X$ and $Z$ are accessed row-wise. The element $Y[i][k]$ is loaded once per $(i,k)$ and reused inside the inner loop.
+
+Thus, this version shows excellent spatial locality for both $X$ and $Z$, and good reuse of $Y$. Therefore, this loop order gives very good cache performance.
+
+Thus, we can conclude that out of all the possible variants, the loop orders $ikj$ and $kij$ have the best spatial locality of reference. We can clearly see that both $X$ and $Z$ are accessed row-wise, and thus will have minimal cache misses.
+
+\subsubsection*{Loop Unrolling}
+We will now talk about loop unrolling. Consider the following code:
+\begin{lstlisting}[language=C++, caption = Loop Unrolling]
+double X[10];
+for (i = 0; i < 10; i++)
+    X[i] = X[i] - 1;
+\end{lstlisting}
+
+Now consider the following code, which we call unrolled once:
+\begin{lstlisting}[language=C++, caption = Unrolled Once]
+double X[10];
+for (i = 0; i < 10; i += 2)
+    X[i] = X[i] - 1;
+    X[i + 1] = X[i + 1] - 1;
+\end{lstlisting}
+
+In the unrolled-once version, we have included a statement that corresponds to an additional iteration of the original for loop. Thus, in this version, we have halved the number of iterations of the for loop, but each iteration now performs double the work. For instance, in the first iteration, we execute $X[0] = X[0] - 1$ followed by $X[1] = X[1] - 1$, which corresponds to the first two iterations of the original loop but now combined into a single iteration.
+
+Similarly, we could also have a fully unrolled for loop, where we completely remove the loop and simply write all the statements explicitly as shown:
+\begin{lstlisting}
+X[0] = X[0] - 1;
+X[1] = X[1] - 1;
+X[2] = X[2] - 1;
+...
+X[9] = X[9] - 1;
+\end{lstlisting}
+
+So we can have unrolling once, unrolling twice, and so on. In the case of fully unrolled loops, we get a sequence of statements, each of which explicitly identifies array elements. This operation is called loop unrolling.
+
+Loop unrolling helps because it decreases the overhead involved in managing the loop, such as loading the loop variable \texttt{i}, incrementing \texttt{i}, storing it back, and checking the loop condition $i < 10$, all of which are eliminated in a fully unrolled version. Thus, unrolled loops are guaranteed to perform better from this perspective.
+
+Let us now see how we can unroll matrix multiplication. Consider the original matrix multiplication code that we had:
+\begin{lstlisting}[language=C++]
+double X[N][N], Y[N][N], Z[N][N];
+for(i = 0; i < N; i++)
+    for(j = 0; j < N; j++)
+        for(k = 0; k < N; k++)
+            X[i][j] += Y[i][k] * Z[k][j];
+\end{lstlisting}
+
+Let us unroll the $k$ loop once as shown:
+\begin{lstlisting}[language=C++]
+double X[N][N], Y[N][N], Z[N][N];
+for(i = 0; i < N; i++)
+    for(j = 0; j < N; j++)
+        for(k = 0; k < N; k += 2)
+            X[i][j] += Y[i][k] * Z[k][j] + Y[i][k+1] * Z[k+1][j];
+\end{lstlisting}
+
+We now have a for loop in which there are 5 array references in the innermost loop (anyways, we are not concerned with $X[i][j]$ as it can be replaced with a temporary variable). Note that we are accessing the elements of $Y$ row-wise as $Y[i][k]$ and $Y[i][k+1]$, which provides good spatial locality of reference. However, the $Z$ matrix is accessed column-wise as $Z[k][j]$ and $Z[k+1][j]$, which is not favorable for spatial locality.
+
+Now let us unroll the $j$ loop once as shown:
+\begin{lstlisting}[language=C++]
+double X[N][N], Y[N][N], Z[N][N];
+for(i = 0; i < N; i++)
+    for(j = 0; j < N; j += 2)
+        for(k = 0; k < N; k += 2){
+            X[i][j] += Y[i][k] * Z[k][j] + Y[i][k+1] * Z[k+1][j];
+            X[i][j+1] += Y[i][k] * Z[k][j+1] + Y[i][k+1] * Z[k+1][j+1];
+        }
+\end{lstlisting}
+Now we see that upon unrolling the $j$ loop once, there is a reference to $Z[k][j]$ and in the next statement to $Z[k][j+1]$, and similarly we have references to $Z[k+1][j]$ and $Z[k+1][j+1]$. 
+
+Thus, we observe that $Z[k][j]$ and $Z[k][j+1]$ will likely reside in the same cache block, and similarly, $Z[k+1][j]$ and $Z[k+1][j+1]$ will also be in the same cache block. Therefore, we are now exploiting spatial locality for both the arrays $Y$ and $Z$.
+
+Moreover, we are exploiting the temporal locality of $Y$ since $Y[i][k]$ is accessed in the first statement and then again in the subsequent statement, and similarly $Y[i][k+1]$ is accessed multiple times. Hence, we benefit from both spatial and temporal locality for array accesses.
+
+Note that the four elements of the matrix $Z$ accessed in the two statements are neighboring elements of two consecutive rows and two consecutive columns—forming a neighborhood of size $2 \times 2$. This forms the basis for a more general approach to improving locality in programs that use multi-dimensional arrays, called \textbf{blocking or tiling}. 
+
+The core idea behind blocking is to go beyond the $2 \times 2$ locality created by unrolling, and instead to explicitly construct a locality of arbitrary size by reorganizing the iteration order. This is done by introducing two additional outer loops that iterate over blocks of the matrix. The following code demonstrates this blocking strategy:
+
+\begin{lstlisting}[language=C++, caption=Blocking or Tiling]
+double X[N][N], Y[N][N], Z[N][N];
+for(jj = 0; jj < N; jj += B)
+    for(kk = 0; kk < N; kk += B)
+        for(i = 0; i < N; i++) {
+            for(j = jj; j < min(jj + B, N); j++) {
+                sum = 0.0;
+                for(k = kk; k < min(kk + B, N); k++)
+                    sum += Y[i][k] * Z[k][j];
+                X[i][j] += sum;
+            }
+        }
+\end{lstlisting}
+
+In this code, the loops over \texttt{jj} and \texttt{kk} step in increments of $B$, which represents the blocking size. This effectively divides the matrices $Y$ and $Z$ into smaller submatrices (tiles) of size $B \times B$. 
+
+By doing this, we can load a block of data into the cache and reuse it multiple times within the inner loops, thereby significantly improving cache performance. The three innermost loops perform multiplication over the selected $B \times B$ blocks as defined by the current values of \texttt{jj} and \texttt{kk}. 
+
+This reordering of operations in a cache-aware fashion allows us to control and optimize spatial locality. Importantly, the value of $B$—the block size—can be tuned depending on the cache size and architecture, enabling different levels of locality for different hardware settings. Note that one could experiment with loop interchange as well as blocking in order to optimize even further.
+
+\section{Vector Operations}
+\subsection{Strip mining}
+Consider the following example on computing vector sum:
+\begin{lstlisting}
+double A[2048], B[2048], C[2048];
+for (i = 0; i < 2048; i++) 
+    C[i] = A[i] + B[i];
+\end{lstlisting}
+
+Now, what if a CPU has 4 floating point adders? Then, the CPU is capable of executing 4 iterations of the loop in a single cycle. There is an instruction that helps in using the 4 adders as one. Thus, the architecture can be designed to support an instruction that performs 4 iterations of the vector sum loop at a time. This can be done in the following way:
+
+\begin{lstlisting}
+VADD v1_A[0:3], v2_B[0:3], v3_C[0:3]
+\end{lstlisting}
+
+Here, the operands to the vector instruction are small vector operands. Since the processor has 4 adders, each operand is of size 4. This is called a \textit{vector instruction} and is made available in commonly used processors through multimedia extensions. Hardware support for operations on short vectors is provided in existing microprocessors.
+
+For example, consider 256-bit registers, each split into $4 \times 64$ bits or $8 \times 32$ bits. This allows the register to hold 4 double-precision elements of a vector. Thus, one can load 4 consecutive memory locations—corresponding to neighboring elements of a vector—into a single vector register. A few such registers can then be used as operands to vector add or vector multiplication instructions, thereby exploiting the 4 adders present in the CPU.
+
+This mechanism is built around the idea of registers that can be viewed as containing multiple elements of short vectors. These registers can be loaded by the program using vector load instructions to contain segments of a larger vector, which is the target of the overall computation. There is typically a concept of \textit{maximum vector length} that can be operated on by a single vector instruction. In the case of 4 adders, this length is 4, since we cannot process more than 4 elements of the vector per instruction.
+
+Modern processors implement this through instruction sets like Intel’s SSE (Streaming SIMD Extensions) and AVX (Advanced Vector Extensions). For instance, AVX supports 512-bit registers, which can be used in this vector mode.
+
+From now on, we will use a generic notation as shown:
+\begin{lstlisting}[language=C++]
+C[0:3] = A[0:3] + B[0:3]
+\end{lstlisting}
+
+Note that this is not C programming language syntax, but is simply used here as a notation to understand the behavior of vectorization. This statement implies that the first four elements of vector \texttt{A} and vector \texttt{B} will be loaded into vector registers and then simultaneously added by the four CPU adders. The result will be stored in the corresponding locations of the array \texttt{C}.
+
+Let us look at an example of vectorization, given that the maximum vector length is $VL$. Consider the following \texttt{for} loop:
+
+\begin{lstlisting}
+for (i = 0; i < N; i++)
+    A[i] = A[i] + B[i];
+\end{lstlisting}
+
+The vectorized version of this loop would look like:
+
+\begin{lstlisting}
+for (i = 0; i < N; i += VL)
+    A[i:i+VL-1] = A[i:i+VL-1] + B[i:i+VL-1];
+\end{lstlisting}
+
+This loop does not iterate $N$ times, but only $N/VL$ times. 
+
+What if $N$ is not divisible by $VL$? In that case, we require an additional small loop for the remaining elements, as shown in the following code:
+
+\begin{lstlisting}
+for (i = 0; i < (N - N % VL); i += VL)
+    A[i:i+VL-1] = A[i:i+VL-1] + B[i:i+VL-1];
+
+for (; i < N; i++)
+    A[i] = A[i] + B[i];
+\end{lstlisting}
+
+This technique is called \textbf{strip mining}, because we are going through the entire vector $VL$ elements at a time.
+
+In practice, this can be achieved not by explicitly including vector instructions in our program, but by asking the compiler to automatically vectorize the loops. This technique is called \textit{autovectorization}. Autovectorization is a compiler feature wherein the compiler analyzes the loops in your program and attempts to use vector instructions where possible.
+
+For example, in \texttt{gcc}, the following command-line options are useful:
+\begin{itemize}
+    \item \texttt{-ftree-vectorize} - Enables autovectorization.
+    \item \texttt{-fopt-info-vec} - Provides feedback on autovectorization (e.g., which loops were vectorized).
+\end{itemize}
+
+\noindent \textbf{Note:} These options require an optimization level of at least \texttt{-O2}.
+
+Note that there are a few possible complications one must be aware of before relying on vectorization.
+
+\subsection{Node Splitting}
+For example, if there are dependencies between statements within a loop, then autovectorization will not be able to vectorize that loop.
+
+For example, consider the following code:
+\begin{lstlisting}[language=C]
+for (i = 0; i < N; i++) {
+    A[i] = B[i] + C[i];
+    D[i] = (A[i] + A[i+1]) / 2;
+}
+\end{lstlisting}
+
+In the second statement, observe that both \( A[i] \) and \( A[i+1] \) are used. This introduces a \textbf{data dependency} between iterations, because \( A[i] \) and \( A[i+1] \) may be updated within the same loop execution due to vectorization. 
+
+The issue is not with the first statement, which is trivially vectorizable. However, when executing the second statement, we ideally want the new value of \( A[i] \) (just updated) and the *old* value of \( A[i+1] \). Unfortunately, vectorization updates all values of \( A \) in parallel, so both \( A[i] \) and \( A[i+1] \) may already be updated, leading to incorrect values in \( D[i] \).
+
+This problem can be avoided by a technique called \textbf{node splitting}, where we store the old value of \( A[i+1] \) in a temporary array before updating \( A[i] \), as shown below:
+
+\begin{lstlisting}[language=C]
+for (i = 0; i < N; i++) {
+    temp[i] = A[i+1];
+    A[i] = B[i] + C[i];
+    D[i] = (A[i] + temp[i]) / 2;
+}
+\end{lstlisting}
+
+This kind of loop transformation—where we copy intermediate data to avoid dependencies—is known as \textbf{node splitting}. It helps expose the loop body to vectorization by eliminating cross-iteration dependencies.
+
+\subsection{Scalar Expansion}
+Let’s look at the following code:
+\begin{lstlisting}[language=C++]
+for (i = 0; i < N; i++) {
+    X = A[i] + 1;
+    B[i] = X + C[i];
+}
+\end{lstlisting}
+
+In this code, the first statement cannot be vectorized. That’s because \texttt{A} is an array, but \texttt{X} is just a scalar variable. Even if \texttt{A} is a vector, the result of \texttt{A[i] + 1} is stored in a scalar, so it breaks the vectorization.
+
+Similarly, the second statement cannot be vectorized unless all the variables involved are vectors or constants. To enable vectorization, we can rewrite the code as:
+
+\begin{lstlisting}[language=C++]
+for (i = 0; i < N; i++) {
+    temp[i] = A[i] + 1;
+    B[i] = temp[i] + C[i];
+}
+\end{lstlisting}
+
+Here, we’ve expanded the scalar variable \texttt{X} into a temporary array \texttt{temp}. This is called \textbf{scalar expansion}. Now both operations involve vectors, so the compiler can apply vectorization more easily.
+
+\subsection{Loop fission}
+Now, let’s consider another example:
+\begin{lstlisting}[language=C++]
+for (i = 0; i < N; i++) {
+    A[i] = B[i];
+    C[i] = C[i - 1] + 1;
+}
+\end{lstlisting}
+
+In this code, the two statements appear independent, but they behave differently in terms of dependencies.
+
+\begin{itemize}
+    \item The first statement \texttt{A[i] = B[i]} has \textbf{no data dependency} and can be vectorized.
+    \item The second statement \texttt{C[i] = C[i - 1] + 1} depends on the \textbf{previous} value of \texttt{C}. So, it \textbf{cannot} be vectorized. This is a \textbf{loop-carried dependency}.
+\end{itemize}
+
+To improve performance, we can split the loop (also called \textbf{loop fission}) as follows:
+
+\begin{lstlisting}[language=C++]
+for (i = 0; i < N; i++) A[i] = B[i];
+for (i = 0; i < N; i++) C[i] = C[i - 1] + 1;
+\end{lstlisting}
+
+Now, the first loop can be vectorized since it is fully independent. The second loop still cannot be vectorized due to the dependency, but at least we gained some performance from the first loop.
+
+\subsection{Loop interchange}
+Next, consider this nested loop:
+\begin{lstlisting}[language=C++]
+for (j = 1; j < N; j++)
+    for (i = 2; i < N; i++)
+        A[i][j] = A[i - 1][j] + B[i];
+\end{lstlisting}
+
+This loop iterates over columns first and then rows. Since C/C++ store 2D arrays in \textbf{row-major order}, this access pattern has \textbf{poor spatial locality}. It jumps across memory rows instead of accessing continuous memory locations. This makes it hard for the compiler to vectorize the loop.
+
+To fix this, we can use \textbf{loop interchange}, like this:
+
+\begin{lstlisting}[language=C++]
+for (i = 2; i < N; i++)
+    for (j = 1; j < N; j++)
+        A[i][j] = A[i - 1][j] + B[i];
+\end{lstlisting}
+
+Now the loop accesses elements in a \textbf{row-wise} fashion, which improves memory locality. This helps in two ways:
+\begin{itemize}
+    \item Better cache usage (due to spatial locality),
+    \item Better chances of vectorization.
+\end{itemize}
+
+\subsection{Summary of Techniques}
+
+\begin{center}
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Technique} & \textbf{Description} \\
+\hline
+Strip Mining & Process multiple elements in a single loop iteration to expose parallelism and improve cache usage. \\
+\hline
+Node Splitting & Break up computations by copying intermediate results to avoid dependencies and enable parallel execution. \\
+\hline
+Scalar Expansion & Replace scalar variables with arrays to allow independent computation on each element. \\
+\hline
+Loop Fission & Split a loop into multiple loops to isolate independent and vectorizable operations. \\
+\hline
+Loop Interchange & Swap the order of nested loops to access data in memory-friendly patterns (e.g., row-wise instead of column-wise). \\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Parallel Architecture}
 \section{Introduction}
 Moore's Law states
 \begin{equation}
@@ -2181,30 +3832,26 @@ The summary of all the Communication Modes is as shown in the table \ref{tab:com
 \newpage
 
 %For references to the notes
-\begin{thebibliography}{9}
-    \bibitem{parallelcomputingtutorial} 
-    \weblink{http://www.llnl.gov/computing/tutorials/parallel_comp/}{Parallel Computing Tutorial} - Reference for Introduction, Classification of Architectures - Flynn's Taxonomy, and Classification based on Memory.
-    \bibitem{MathewJacobLecs}
-    \weblink{https://youtu.be/-yMWgtTeQgY?si=_PIhzFH7zZTydzcM}{Mathew Jacob - Parallel Architecture Lectures} - Lecture 38 and Lecture 39 - Reference for Introduction, Classification of Architectures - Flynn's Taxonomy,and Classification based on Memory.
-    %Insert a book reference
-    \bibitem{AnnanthaGramaIntro}
-    Section 2.4 from Kumar, V., Grama, A., Gupta, A., Karypis, G. (1994). Introduction to parallel computing (Vol. 110). Redwood City, CA: Benjamin/Cummings for Network Topology, Shared Memory Architecture and Cache Coherence Protocols.
-    %INsert Other readings
-    \bibitem{NVIDIAGoogleA100}
-    Many-core - Google for NVIDIA A100 white paper
-    \bibitem{CullerandSingh}
-    Section 2.2 and 2.3 - Culler, D., Singh, J. P., Gupta, A. (1998). Parallel computer architecture: a hardware/software approach. Elsevier.
-    \bibitem{hpctutOpenMP}
-    \weblink{https://hpc-tutorials.llnl.gov/openmp/}{OpenMP tutorial} - OpenMP tutorial for parallel programming.
-    \bibitem{IntelOpenMP}
-    \weblink{https://www.youtube.com/watch?v=nE-xN4Bf8XI&list=PLLX-Q6B8xqZ8n8bwjGdzBJ25X2utwnoEG}{OpenMP Tutorials} - Youtube lectures by Intel for OpenMP.
+% \begin{thebibliography}{9}
+%     \bibitem{parallelcomputingtutorial} 
+%     \weblink{http://www.llnl.gov/computing/tutorials/parallel_comp/}{Parallel Computing Tutorial} - Reference for Introduction, Classification of Architectures - Flynn's Taxonomy, and Classification based on Memory.
+%     \bibitem{MathewJacobLecs}
+%     \weblink{https://youtu.be/-yMWgtTeQgY?si=_PIhzFH7zZTydzcM}{Mathew Jacob - Parallel Architecture Lectures} - Lecture 38 and Lecture 39 - Reference for Introduction, Classification of Architectures - Flynn's Taxonomy,and Classification based on Memory.
+%     %Insert a book reference
+%     \bibitem{AnnanthaGramaIntro}
+%     Section 2.4 from Kumar, V., Grama, A., Gupta, A., Karypis, G. (1994). Introduction to parallel computing (Vol. 110). Redwood City, CA: Benjamin/Cummings for Network Topology, Shared Memory Architecture and Cache Coherence Protocols.
+%     %INsert Other readings
+%     \bibitem{NVIDIAGoogleA100}
+%     Many-core - Google for NVIDIA A100 white paper
+%     \bibitem{CullerandSingh}
+%     Section 2.2 and 2.3 - Culler, D., Singh, J. P., Gupta, A. (1998). Parallel computer architecture: a hardware/software approach. Elsevier.
+%     \bibitem{hpctutOpenMP}
+%     \weblink{https://hpc-tutorials.llnl.gov/openmp/}{OpenMP tutorial} - OpenMP tutorial for parallel programming.
+%     \bibitem{IntelOpenMP}
+%     \weblink{https://www.youtube.com/watch?v=nE-xN4Bf8XI&list=PLLX-Q6B8xqZ8n8bwjGdzBJ25X2utwnoEG}{OpenMP Tutorials} - Youtube lectures by Intel for OpenMP.
 
-\end{thebibliography}
-
-
-
-
-
-
+% \end{thebibliography}
+\bibliographystyle{plainnat}
+\bibliography{references}
 
 \end{document}

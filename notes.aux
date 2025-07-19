@@ -13,206 +13,283 @@
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Computer Architecture}{5}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}How is Data represented?}{5}{subsection.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Introduction}{5}{section.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Moore's Law Graph}}{6}{figure.caption.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Classification of Architectures - Flynn's Taxonomy}{7}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}SIMD - Single Instruction Multiple Data}{7}{subsection.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces SIMD Architecture}}{8}{figure.caption.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}Computer Architecture}{1}{chapter.1}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chap:computer-architecture}{{1}{1}{Computer Architecture}{chapter.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}How is Data Represented?}{1}{section.1.1}\protected@file@percent }
+\newlabel{sec:data-represented}{{1.1}{1}{How is Data Represented?}{section.1.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.1}Integer Data Representation}{1}{subsection.1.1.1}\protected@file@percent }
+\newlabel{subsec:integer-data}{{1.1.1}{1}{Integer Data Representation}{subsection.1.1.1}{}}
+\newlabel{eq:signed-magnitude}{{1.1}{2}{Integer Data Representation}{equation.1.1.1}{}}
+\newlabel{eq:twos-complement}{{1.2}{2}{Integer Data Representation}{equation.1.1.2}{}}
+\newlabel{eq:unsigned}{{1.3}{3}{Integer Data Representation}{equation.1.1.3}{}}
+\citation{rajaraman2016ieee}
+\@writefile{lot}{\contentsline {table}{\numberline {1.1}{\ignorespaces IEEE 754 Representation for Special Floating-Point Values (32-bit)}}{6}{table.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:simd}{{2}{8}{SIMD Architecture}{figure.caption.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}MISD - Multiple Instruction Single Data}{9}{subsection.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}MIMD - Mutliple Instruction Multiple Data}{9}{subsection.3.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces MIMD Architecture}}{10}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:mimd}{{3}{10}{MIMD Architecture}{figure.caption.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Classification based on Memory}{10}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Shared Memory}{10}{subsection.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Shared Memory Architecture}}{11}{figure.caption.5}\protected@file@percent }
-\newlabel{fig:shared_memory}{{4}{11}{Shared Memory Architecture}{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Uniform Memory Access (UMA)}{11}{subsubsection.4.1.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Uniform Memory Access Architecture}}{12}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:uma}{{5}{12}{Uniform Memory Access Architecture}{figure.caption.6}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Non-Uniform Memory Access (NUMA)}{12}{subsubsection.4.1.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Non-Uniform Memory Access Architecture}}{13}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:numa}{{6}{13}{Non-Uniform Memory Access Architecture}{figure.caption.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Distributed Memory Architecture}{13}{subsection.4.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Distributed Memory Architecture}}{13}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:distributed_memory}{{7}{13}{Distributed Memory Architecture}{figure.caption.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Shared Memory Architectures: Cache Coherence}{14}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}State Transition Diagram}{15}{subsubsection.4.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces State Transition Diagram for invalidate protocol}}{15}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:state_transition}{{8}{15}{State Transition Diagram for invalidate protocol}{figure.caption.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Implementation of Cache Coherence Protocols}{16}{subsection.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Snooping Protocol}{16}{subsubsection.4.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Directory Based Protocol}{16}{subsubsection.4.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}False Sharing}{17}{subsection.4.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Interconnection networks for a Parallel Computer}{19}{section.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Classification of Interconnection Network}}{19}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:class_network}{{9}{19}{Classification of Interconnection Network}{figure.caption.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Network Topology}{20}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}Bus-based networks}{20}{subsubsection.5.1.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Bus-based Network}}{21}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:bus}{{10}{21}{Bus-based Network}{figure.caption.11}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}Cross-bar Networks}{21}{subsubsection.5.1.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Cross-bar Network}}{22}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:crossbar}{{11}{22}{Cross-bar Network}{figure.caption.12}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Multistage Network}{22}{subsubsection.5.1.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Multistage Network}}{23}{figure.caption.13}\protected@file@percent }
-\newlabel{fig:multistage}{{12}{23}{Multistage Network}{figure.caption.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces A perfect shuffle interconnection for eight inputs and outputs}}{24}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:shuffle}{{13}{24}{A perfect shuffle interconnection for eight inputs and outputs}{figure.caption.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Pass-through and Cross-over configuration of Switching Nodes}}{25}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:switching}{{14}{25}{Pass-through and Cross-over configuration of Switching Nodes}{figure.caption.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Omega Network}}{26}{figure.caption.16}\protected@file@percent }
-\newlabel{fig:omega}{{15}{26}{Omega Network}{figure.caption.16}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.4}Completely Connected Networks}{27}{subsubsection.5.1.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Completely Connected Network}}{28}{figure.caption.17}\protected@file@percent }
-\newlabel{fig:complete}{{16}{28}{Completely Connected Network}{figure.caption.17}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.5}Star Connected Network/Star Topology}{28}{subsubsection.5.1.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Star Connected Network}}{28}{figure.caption.18}\protected@file@percent }
-\newlabel{fig:star}{{17}{28}{Star Connected Network}{figure.caption.18}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.6}Linear Arrays, Meshes and k-d Meshes}{29}{subsubsection.5.1.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Linear Array}}{29}{figure.caption.19}\protected@file@percent }
-\newlabel{fig:linear}{{18}{29}{Linear Array}{figure.caption.19}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Mesh}}{29}{figure.caption.20}\protected@file@percent }
-\newlabel{fig:2dmesh}{{19}{29}{Mesh}{figure.caption.20}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Hypercube}}{30}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:hypercube}{{20}{30}{Hypercube}{figure.caption.21}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces 4D Hypercube}}{31}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:4dhypercube}{{21}{31}{4D Hypercube}{figure.caption.22}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.7}Tree Based Networks}{31}{subsubsection.5.1.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Tree Based Network}}{31}{figure.caption.23}\protected@file@percent }
-\newlabel{fig:tree}{{22}{31}{Tree Based Network}{figure.caption.23}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Fat Tree with 16 Processing Nodes}}{32}{figure.caption.24}\protected@file@percent }
-\newlabel{fig:fattree}{{23}{32}{Fat Tree with 16 Processing Nodes}{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Evaluating Static Networks}{32}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Diameter}{32}{subsubsection.5.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Connectivity}{33}{subsubsection.5.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Bisection Width and Bisection Bandwidth}{33}{subsubsection.5.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.4}Cost}{34}{subsubsection.5.2.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Summary of Static Networks}}{34}{table.caption.25}\protected@file@percent }
-\newlabel{tab:static_network}{{1}{34}{Summary of Static Networks}{table.caption.25}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Graphical Processing Units}{35}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}GPU Architecture}{36}{subsection.6.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces GPU Architecture}}{36}{figure.caption.26}\protected@file@percent }
-\newlabel{fig:gpu}{{24}{36}{GPU Architecture}{figure.caption.26}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces SMX Architecture}}{38}{figure.caption.27}\protected@file@percent }
-\newlabel{fig:smx}{{25}{38}{SMX Architecture}{figure.caption.27}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}CUDA Memory Spaces}{38}{subsection.6.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces CUDA Memory Spaces}}{39}{figure.caption.28}\protected@file@percent }
-\newlabel{fig:cuda_memory}{{26}{39}{CUDA Memory Spaces}{figure.caption.28}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Parallelization Principles}{41}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Evaluation of Parallel Programs}{41}{subsection.7.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces Amdahl's Law}}{44}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:amdahl}{{27}{44}{Amdahl's Law}{figure.caption.29}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Parallel Programming Classification and Steps}{46}{section.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Parallel Program Models}{46}{subsection.8.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Programming Paradigms}{46}{subsection.8.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Parallelizing a Program}{46}{subsection.8.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Data Parallelism and Data Decomposition}{47}{subsection.8.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces Domain Decomposition}}{48}{figure.caption.30}\protected@file@percent }
-\newlabel{fig:domain}{{28}{48}{Domain Decomposition}{figure.caption.30}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Data Distributions}{48}{subsection.8.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces Data Distribution}}{49}{figure.caption.31}\protected@file@percent }
-\newlabel{fig:data_distribution}{{29}{49}{Data Distribution}{figure.caption.31}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.6}Task Parallelism}{49}{subsection.8.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces Task Dependency Graph}}{50}{figure.caption.32}\protected@file@percent }
-\newlabel{fig:task_graph}{{30}{50}{Task Dependency Graph}{figure.caption.32}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.7}Orchestration}{50}{subsection.8.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.7.1}Maximizing data locality: }{50}{subsubsection.8.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.7.2}Minimizing contention and hotspots: }{51}{subsubsection.8.7.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Communication Pattern}}{52}{table.caption.33}\protected@file@percent }
-\newlabel{tab:communication}{{2}{52}{Communication Pattern}{table.caption.33}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.7.3}Overlapping computations with interactions}{52}{subsubsection.8.7.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {8.7.4}Replicating data or computations }{53}{subsubsection.8.7.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.8}Mapping}{53}{subsection.8.8}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Summary of Steps}}{55}{table.caption.34}\protected@file@percent }
-\newlabel{tab:summary}{{3}{55}{Summary of Steps}{table.caption.34}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.9}Example}{55}{subsection.8.9}\protected@file@percent }
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}{\ignorespaces Parallel Program for Averaging}}{56}{lstlisting.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {31}{\ignorespaces Grid Points}}{56}{figure.caption.35}\protected@file@percent }
-\newlabel{fig:grid}{{31}{56}{Grid Points}{figure.caption.35}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {32}{\ignorespaces Block Distribution}}{58}{figure.caption.36}\protected@file@percent }
-\newlabel{fig:block}{{32}{58}{Block Distribution}{figure.caption.36}{}}
-\newlabel{lst:shared}{{2}{58}{Shared Address Space Version}{lstlisting.2}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}{\ignorespaces Shared Address Space Version}}{58}{lstlisting.2}\protected@file@percent }
-\newlabel{lst:solve}{{3}{59}{Solve Function}{lstlisting.3}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}{\ignorespaces Solve Function}}{59}{lstlisting.3}\protected@file@percent }
-\newlabel{lst:solve2}{{4}{62}{Updated Solve Function}{lstlisting.4}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}{\ignorespaces Updated Solve Function}}{62}{lstlisting.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {33}{\ignorespaces Ghost Rows}}{65}{figure.caption.37}\protected@file@percent }
-\newlabel{fig:ghost}{{33}{65}{Ghost Rows}{figure.caption.37}{}}
-\newlabel{lst:mpi}{{5}{66}{Message Passing Version - Generating Processes}{lstlisting.5}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {5}{\ignorespaces Message Passing Version - Generating Processes}}{66}{lstlisting.5}\protected@file@percent }
-\newlabel{lst:solve3}{{6}{66}{MPI - Solve Function}{lstlisting.6}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {6}{\ignorespaces MPI - Solve Function}}{66}{lstlisting.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.10}Notes on Message Passing Version}{68}{subsection.8.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.11}Send and Receive Alternatives}{69}{subsection.8.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.12}Summary}{70}{subsection.8.12}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Summary}}{70}{table.caption.38}\protected@file@percent }
-\newlabel{tab:finsummary}{{4}{70}{Summary}{table.caption.38}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Shared Memory Parallelism - OpenMP}{71}{section.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Introduction}{71}{subsection.9.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Fork-Join Model}{71}{subsection.9.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {34}{\ignorespaces Fork-Join Model}}{72}{figure.caption.39}\protected@file@percent }
-\newlabel{fig:forkjoin}{{34}{72}{Fork-Join Model}{figure.caption.39}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.3}Parallel Construct}{73}{subsection.9.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.4}Work sharing construct}{75}{subsection.9.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.4.1}for-loop}{75}{subsubsection.9.4.1}\protected@file@percent }
-\newlabel{lst:for-example}{{7}{77}{for-Example: Addition of two Arrays}{lstlisting.7}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {7}{\ignorespaces for-Example: Addition of two Arrays}}{77}{lstlisting.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.4.2}Coarse Level parallelism - Sections and Tasks}{77}{subsubsection.9.4.2}\protected@file@percent }
-\newlabel{lst:sections}{{8}{78}{Sections Construct}{lstlisting.8}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {8}{\ignorespaces Sections Construct}}{78}{lstlisting.8}\protected@file@percent }
-\newlabel{lst:tasks}{{9}{78}{Tasks Construct}{lstlisting.9}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {9}{\ignorespaces Tasks Construct}}{78}{lstlisting.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.5}Synchronization Directives}{79}{subsection.9.5}\protected@file@percent }
-\newlabel{lst:flush}{{10}{80}{Flush Directive}{lstlisting.10}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {10}{\ignorespaces Flush Directive}}{80}{lstlisting.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.6}Data Scope Attribute Clauses}{82}{subsection.9.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.6.1}threadprivate}{83}{subsubsection.9.6.1}\protected@file@percent }
-\newlabel{lst:threadprivate}{{11}{83}{threadprivate Directive}{lstlisting.11}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {11}{\ignorespaces threadprivate Directive}}{83}{lstlisting.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.6.2}default-example}{84}{subsubsection.9.6.2}\protected@file@percent }
-\newlabel{lst:default}{{12}{84}{default-Example}{lstlisting.12}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {12}{\ignorespaces default-Example}}{84}{lstlisting.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.7}Library Routines (API)}{85}{subsection.9.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.8}Locks}{86}{subsection.9.8}\protected@file@percent }
-\newlabel{lst:nested}{{13}{87}{Nested lock-Example}{lstlisting.13}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {13}{\ignorespaces Nested lock-Example}}{87}{lstlisting.13}\protected@file@percent }
-\newlabel{lst:nested2}{{14}{87}{Nest lock-Example2}{lstlisting.14}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {14}{\ignorespaces Nest lock-Example2}}{87}{lstlisting.14}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.9}Example 1: Jacobi Solver}{88}{subsection.9.9}\protected@file@percent }
-\newlabel{lst:jacobi}{{15}{88}{jacobi-solver}{lstlisting.15}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {15}{\ignorespaces jacobi-solver}}{88}{lstlisting.15}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {9.10}Breadth First Search (BFS) Algorithm}{89}{subsection.9.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.10.1}Version 1 (Nested Parallelism)}{89}{subsubsection.9.10.1}\protected@file@percent }
-\newlabel{lst:bfsv1}{{16}{89}{BFS-Example}{lstlisting.16}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {16}{\ignorespaces BFS-Example}}{89}{lstlisting.16}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {9.10.2}Version 2 (Task constructs)}{91}{subsubsection.9.10.2}\protected@file@percent }
-\newlabel{lst:bfsv2}{{17}{91}{BFS-Example}{lstlisting.17}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {17}{\ignorespaces BFS-Example}}{91}{lstlisting.17}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10}Message Passing Interface - MPI}{92}{section.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.1}MPI Intrdocution}{92}{subsection.10.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.2}Communication Primitives}{93}{subsection.10.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.2.1}Point-Point Communications}{93}{subsubsection.10.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.2.2}EXAMPLE 1: Finding maximum using 2 processes}{96}{subsubsection.10.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.3}Buffering and Safety}{98}{subsection.10.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.3.1}Blocking Communications}{98}{subsubsection.10.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {10.3.2}Non-Blocking Communications}{100}{subsubsection.10.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.4}Example: Finding a Particular element in an Array}{102}{subsection.10.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {10.5}Communication Modes}{104}{subsection.10.5}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Communication Modes}}{105}{table.caption.40}\protected@file@percent }
-\newlabel{tab:comm_modes}{{5}{105}{Communication Modes}{table.caption.40}{}}
-\bibcite{parallelcomputingtutorial}{1}
-\bibcite{MathewJacobLecs}{2}
-\bibcite{AnnanthaGramaIntro}{3}
-\bibcite{NVIDIAGoogleA100}{4}
-\bibcite{CullerandSingh}{5}
-\bibcite{hpctutOpenMP}{6}
-\bibcite{IntelOpenMP}{7}
-\newlabel{LastPage}{{10.5}{106}{Communication Modes}{page.106}{}}
-\gdef\lastpage@lastpage{106}
-\gdef\lastpage@lastpageHy{106}
-\gdef \@abspage@last{106}
+\newlabel{tab:ieee754-special}{{1.1}{6}{IEEE 754 Representation for Special Floating-Point Values (32-bit)}{table.caption.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.2}{\ignorespaces Results of Floating Point Operations Involving Infinity and Zero}}{6}{table.caption.2}\protected@file@percent }
+\newlabel{tab:ieee754-operations}{{1.2}{6}{Results of Floating Point Operations Involving Infinity and Zero}{table.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.2}Variables and Data Allocation of Different Lifetimes}{7}{subsection.1.1.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces Memory Layout of a Program}}{8}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:memory_layout}{{1.1}{8}{Memory Layout of a Program}{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.2}{\ignorespaces Memory Layout after a Function Call to \texttt  {func1()}}}{9}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:memory_layout_func1}{{1.2}{9}{Memory Layout after a Function Call to \texttt {func1()}}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.3}Program and Data}{9}{subsection.1.1.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.3}{\ignorespaces Program and Data Memory Layout}}{10}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:program_data}{{1.3}{10}{Program and Data Memory Layout}{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.4}{\ignorespaces Program Memory Layout}}{11}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:program_memory}{{1.4}{11}{Program Memory Layout}{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Basic Computer Organization}{11}{section.1.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.5}{\ignorespaces Basic Computer Organization}}{12}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:computer_organization}{{1.5}{12}{Basic Computer Organization}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}Main Memory and its problems}{13}{subsection.1.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.6}{\ignorespaces Memory Address Breakdown}}{14}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:memory_addressing}{{1.6}{14}{Memory Address Breakdown}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Cache Memory and Locality of Reference}{14}{subsection.1.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}Cache Composition}{15}{subsection.1.2.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1.7}{\ignorespaces Memory Address Breakdown}}{15}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:memory_address}{{1.7}{15}{Memory Address Breakdown}{figure.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.8}{\ignorespaces Cache Memory}}{16}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:cache_memory}{{1.8}{16}{Cache Memory}{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.9}{\ignorespaces Cache Lookup and Access}}{17}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:cache_lookup}{{1.9}{17}{Cache Lookup and Access}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {paragraph}{Advantages of Direct-Mapped Cache:}{18}{Item.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Disadvantages of Direct-Mapped Cache:}{18}{Item.23}\protected@file@percent }
+\newlabel{sec:fully-associative-cache}{{1.2.3}{18}{}{Item.23}{}}
+\newlabel{sec:set-associative-cache}{{1.2.3}{19}{}{Item.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.10}{\ignorespaces Set Associative Mapping}}{20}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:set_associative}{{1.10}{20}{Set Associative Mapping}{figure.caption.12}{}}
+\citation{bryant2016computer}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Cache and Programming}{23}{section.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Example 1: Vector Sum Reduction}{23}{subsection.1.3.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.1}{\ignorespaces Vector Sum Reduction}}{23}{lstlisting.1.1}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.2}{\ignorespaces Preloading the Array for Temporal Locality}}{24}{lstlisting.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.2}Example 2: Vector Dot Product}{25}{subsection.1.3.2}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.3}{\ignorespaces Vector Dot Product}}{25}{lstlisting.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.3}Example 3: DAXPY}{28}{subsection.1.3.3}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{caption={Double precision AX Plus Y (DAXPY)}}{28}{lstlisting.1.-3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.4}Example 4: 2D Matrix Sum}{28}{subsection.1.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.5}Example 5: Matrix Multiplication}{31}{subsection.1.3.5}\protected@file@percent }
+\newlabel{lst:opt-matmul}{{1.4}{31}{Optimized Matrix Multiplication using temporary variable}{lstlisting.1.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.4}{\ignorespaces Optimized Matrix Multiplication using temporary variable}}{31}{lstlisting.1.4}\protected@file@percent }
+\newlabel{lst:kji-matmul}{{1.5}{32}{Matrix multiplication with loop order kji}{lstlisting.1.5}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.5}{\ignorespaces Matrix multiplication with loop order kji}}{32}{lstlisting.1.5}\protected@file@percent }
+\newlabel{lst:ikj-matmul}{{1.6}{33}{Matrix multiplication with loop order ikj}{lstlisting.1.6}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.6}{\ignorespaces Matrix multiplication with loop order ikj}}{33}{lstlisting.1.6}\protected@file@percent }
+\newlabel{lst:jik-matmul}{{1.7}{33}{Matrix multiplication with loop order jik}{lstlisting.1.7}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.7}{\ignorespaces Matrix multiplication with loop order jik}}{33}{lstlisting.1.7}\protected@file@percent }
+\newlabel{lst:jki-matmul}{{1.8}{34}{Matrix multiplication with loop order jki}{lstlisting.1.8}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.8}{\ignorespaces Matrix multiplication with loop order jki}}{34}{lstlisting.1.8}\protected@file@percent }
+\newlabel{lst:kij-matmul}{{1.9}{34}{Matrix multiplication with loop order kij}{lstlisting.1.9}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.9}{\ignorespaces Matrix multiplication with loop order kij}}{34}{lstlisting.1.9}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.10}{\ignorespaces Loop Unrolling}}{34}{lstlisting.1.10}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.11}{\ignorespaces Unrolled Once}}{35}{lstlisting.1.11}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1.12}{\ignorespaces Blocking or Tiling}}{36}{lstlisting.1.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}Vector Operations}{37}{section.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4.1}Strip mining}{37}{subsection.1.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4.2}Node Splitting}{38}{subsection.1.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4.3}Scalar Expansion}{39}{subsection.1.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4.4}Loop fission}{39}{subsection.1.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4.5}Loop interchange}{40}{subsection.1.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4.6}Summary of Techniques}{40}{subsection.1.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Parallel Architecture}{41}{chapter.2}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Introduction}{41}{section.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Moore's Law Graph}}{41}{figure.caption.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Classification of Architectures - Flynn's Taxonomy}{42}{section.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}SIMD - Single Instruction Multiple Data}{42}{subsection.2.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces SIMD Architecture}}{43}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:simd}{{2.2}{43}{SIMD Architecture}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}MISD - Multiple Instruction Single Data}{43}{subsection.2.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}MIMD - Mutliple Instruction Multiple Data}{44}{subsection.2.2.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces MIMD Architecture}}{44}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:mimd}{{2.3}{44}{MIMD Architecture}{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Classification based on Memory}{44}{section.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Shared Memory}{44}{subsection.2.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces Shared Memory Architecture}}{45}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:shared_memory}{{2.4}{45}{Shared Memory Architecture}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Uniform Memory Access (UMA)}{45}{figure.caption.17}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces Uniform Memory Access Architecture}}{46}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:uma}{{2.5}{46}{Uniform Memory Access Architecture}{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Non-Uniform Memory Access (NUMA)}{46}{figure.caption.18}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Non-Uniform Memory Access Architecture}}{46}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:numa}{{2.6}{46}{Non-Uniform Memory Access Architecture}{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Distributed Memory Architecture}{47}{subsection.2.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces Distributed Memory Architecture}}{47}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:distributed_memory}{{2.7}{47}{Distributed Memory Architecture}{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Shared Memory Architectures: Cache Coherence}{47}{subsection.2.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{State Transition Diagram}{48}{subsection.2.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces State Transition Diagram for invalidate protocol}}{48}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:state_transition}{{2.8}{48}{State Transition Diagram for invalidate protocol}{figure.caption.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Implementation of Cache Coherence Protocols}{49}{subsection.2.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Snooping Protocol}{49}{subsection.2.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Directory Based Protocol}{49}{subsection.2.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.5}False Sharing}{50}{subsection.2.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Interconnection networks for a Parallel Computer}{51}{section.2.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.9}{\ignorespaces Classification of Interconnection Network}}{51}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:class_network}{{2.9}{51}{Classification of Interconnection Network}{figure.caption.22}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Network Topology}{51}{subsection.2.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Bus-based networks}{51}{subsection.2.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.10}{\ignorespaces Bus-based Network}}{52}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:bus}{{2.10}{52}{Bus-based Network}{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Cross-bar Networks}{52}{figure.caption.23}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.11}{\ignorespaces Cross-bar Network}}{53}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:crossbar}{{2.11}{53}{Cross-bar Network}{figure.caption.24}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Multistage Network}{53}{figure.caption.24}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.12}{\ignorespaces Multistage Network}}{53}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:multistage}{{2.12}{53}{Multistage Network}{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.13}{\ignorespaces A perfect shuffle interconnection for eight inputs and outputs}}{54}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:shuffle}{{2.13}{54}{A perfect shuffle interconnection for eight inputs and outputs}{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.14}{\ignorespaces Pass-through and Cross-over configuration of Switching Nodes}}{55}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:switching}{{2.14}{55}{Pass-through and Cross-over configuration of Switching Nodes}{figure.caption.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.15}{\ignorespaces Omega Network}}{55}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:omega}{{2.15}{55}{Omega Network}{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Completely Connected Networks}{56}{figure.caption.28}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.16}{\ignorespaces Completely Connected Network}}{57}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:complete}{{2.16}{57}{Completely Connected Network}{figure.caption.29}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Star Connected Network/Star Topology}{57}{figure.caption.29}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.17}{\ignorespaces Star Connected Network}}{57}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:star}{{2.17}{57}{Star Connected Network}{figure.caption.30}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Linear Arrays, Meshes and k-d Meshes}{57}{figure.caption.30}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.18}{\ignorespaces Linear Array}}{58}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:linear}{{2.18}{58}{Linear Array}{figure.caption.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.19}{\ignorespaces Mesh}}{58}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:2dmesh}{{2.19}{58}{Mesh}{figure.caption.32}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.20}{\ignorespaces Hypercube}}{59}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:hypercube}{{2.20}{59}{Hypercube}{figure.caption.33}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.21}{\ignorespaces 4D Hypercube}}{59}{figure.caption.34}\protected@file@percent }
+\newlabel{fig:4dhypercube}{{2.21}{59}{4D Hypercube}{figure.caption.34}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Tree Based Networks}{59}{figure.caption.34}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.22}{\ignorespaces Tree Based Network}}{60}{figure.caption.35}\protected@file@percent }
+\newlabel{fig:tree}{{2.22}{60}{Tree Based Network}{figure.caption.35}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.23}{\ignorespaces Fat Tree with 16 Processing Nodes}}{60}{figure.caption.36}\protected@file@percent }
+\newlabel{fig:fattree}{{2.23}{60}{Fat Tree with 16 Processing Nodes}{figure.caption.36}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Evaluating Static Networks}{60}{subsection.2.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Diameter}{61}{subsection.2.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Connectivity}{61}{subsection.2.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Bisection Width and Bisection Bandwidth}{61}{subsection.2.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Cost}{62}{equation.2.4.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces Summary of Static Networks}}{62}{table.caption.37}\protected@file@percent }
+\newlabel{tab:static_network}{{2.1}{62}{Summary of Static Networks}{table.caption.37}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Graphical Processing Units}{63}{section.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}GPU Architecture}{63}{subsection.2.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.24}{\ignorespaces GPU Architecture}}{63}{figure.caption.38}\protected@file@percent }
+\newlabel{fig:gpu}{{2.24}{63}{GPU Architecture}{figure.caption.38}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.25}{\ignorespaces SMX Architecture}}{65}{figure.caption.39}\protected@file@percent }
+\newlabel{fig:smx}{{2.25}{65}{SMX Architecture}{figure.caption.39}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}CUDA Memory Spaces}{65}{subsection.2.5.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.26}{\ignorespaces CUDA Memory Spaces}}{66}{figure.caption.40}\protected@file@percent }
+\newlabel{fig:cuda_memory}{{2.26}{66}{CUDA Memory Spaces}{figure.caption.40}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Parallelization Principles}{68}{section.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6.1}Evaluation of Parallel Programs}{68}{subsection.2.6.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.27}{\ignorespaces Amdahl's Law}}{70}{figure.caption.41}\protected@file@percent }
+\newlabel{fig:amdahl}{{2.27}{70}{Amdahl's Law}{figure.caption.41}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.7}Parallel Programming Classification and Steps}{72}{section.2.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.1}Parallel Program Models}{72}{subsection.2.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.2}Programming Paradigms}{72}{subsection.2.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.3}Parallelizing a Program}{72}{subsection.2.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.4}Data Parallelism and Data Decomposition}{73}{subsection.2.7.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.28}{\ignorespaces Domain Decomposition}}{73}{figure.caption.42}\protected@file@percent }
+\newlabel{fig:domain}{{2.28}{73}{Domain Decomposition}{figure.caption.42}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.5}Data Distributions}{73}{subsection.2.7.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.29}{\ignorespaces Data Distribution}}{74}{figure.caption.43}\protected@file@percent }
+\newlabel{fig:data_distribution}{{2.29}{74}{Data Distribution}{figure.caption.43}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.6}Task Parallelism}{74}{subsection.2.7.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.30}{\ignorespaces Task Dependency Graph}}{74}{figure.caption.44}\protected@file@percent }
+\newlabel{fig:task_graph}{{2.30}{74}{Task Dependency Graph}{figure.caption.44}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.7}Orchestration}{75}{subsection.2.7.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Maximizing data locality: }{75}{subsection.2.7.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Minimizing contention and hotspots: }{76}{subsection.2.7.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.2}{\ignorespaces Communication Pattern}}{76}{table.caption.45}\protected@file@percent }
+\newlabel{tab:communication}{{2.2}{76}{Communication Pattern}{table.caption.45}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Overlapping computations with interactions}{76}{table.caption.45}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Replicating data or computations }{77}{table.caption.45}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.8}Mapping}{77}{subsection.2.7.8}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.3}{\ignorespaces Summary of Steps}}{78}{table.caption.46}\protected@file@percent }
+\newlabel{tab:summary}{{2.3}{78}{Summary of Steps}{table.caption.46}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.9}Example}{78}{subsection.2.7.9}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.1}{\ignorespaces Parallel Program for Averaging}}{79}{lstlisting.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.31}{\ignorespaces Grid Points}}{79}{figure.caption.47}\protected@file@percent }
+\newlabel{fig:grid}{{2.31}{79}{Grid Points}{figure.caption.47}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.32}{\ignorespaces Block Distribution}}{80}{figure.caption.48}\protected@file@percent }
+\newlabel{fig:block}{{2.32}{80}{Block Distribution}{figure.caption.48}{}}
+\newlabel{lst:shared}{{2.2}{81}{Shared Address Space Version}{lstlisting.2.2}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.2}{\ignorespaces Shared Address Space Version}}{81}{lstlisting.2.2}\protected@file@percent }
+\newlabel{lst:solve}{{2.3}{81}{Solve Function}{lstlisting.2.3}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.3}{\ignorespaces Solve Function}}{81}{lstlisting.2.3}\protected@file@percent }
+\newlabel{lst:solve2}{{2.4}{84}{Updated Solve Function}{lstlisting.2.4}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.4}{\ignorespaces Updated Solve Function}}{84}{lstlisting.2.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.33}{\ignorespaces Ghost Rows}}{86}{figure.caption.49}\protected@file@percent }
+\newlabel{fig:ghost}{{2.33}{86}{Ghost Rows}{figure.caption.49}{}}
+\newlabel{lst:mpi}{{2.5}{86}{Message Passing Version - Generating Processes}{lstlisting.2.5}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.5}{\ignorespaces Message Passing Version - Generating Processes}}{86}{lstlisting.2.5}\protected@file@percent }
+\newlabel{lst:solve3}{{2.6}{87}{MPI - Solve Function}{lstlisting.2.6}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.6}{\ignorespaces MPI - Solve Function}}{87}{lstlisting.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.10}Notes on Message Passing Version}{88}{subsection.2.7.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.11}Send and Receive Alternatives}{89}{subsection.2.7.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7.12}Summary}{90}{subsection.2.7.12}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.4}{\ignorespaces Summary}}{90}{table.caption.50}\protected@file@percent }
+\newlabel{tab:finsummary}{{2.4}{90}{Summary}{table.caption.50}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.8}Shared Memory Parallelism - OpenMP}{90}{section.2.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.1}Introduction}{90}{subsection.2.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.2}Fork-Join Model}{91}{subsection.2.8.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2.34}{\ignorespaces Fork-Join Model}}{91}{figure.caption.51}\protected@file@percent }
+\newlabel{fig:forkjoin}{{2.34}{91}{Fork-Join Model}{figure.caption.51}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.3}Parallel Construct}{92}{subsection.2.8.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.4}Work sharing construct}{94}{subsection.2.8.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{for-loop}{94}{subsection.2.8.4}\protected@file@percent }
+\newlabel{lst:for-example}{{2.7}{95}{for-Example: Addition of two Arrays}{lstlisting.2.7}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.7}{\ignorespaces for-Example: Addition of two Arrays}}{95}{lstlisting.2.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Coarse Level parallelism - Sections and Tasks}{96}{lstnumber.2.7.19}\protected@file@percent }
+\newlabel{lst:sections}{{2.8}{96}{Sections Construct}{lstlisting.2.8}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.8}{\ignorespaces Sections Construct}}{96}{lstlisting.2.8}\protected@file@percent }
+\newlabel{lst:tasks}{{2.9}{96}{Tasks Construct}{lstlisting.2.9}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.9}{\ignorespaces Tasks Construct}}{96}{lstlisting.2.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.5}Synchronization Directives}{97}{subsection.2.8.5}\protected@file@percent }
+\newlabel{lst:flush}{{2.10}{98}{Flush Directive}{lstlisting.2.10}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.10}{\ignorespaces Flush Directive}}{98}{lstlisting.2.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.6}Data Scope Attribute Clauses}{99}{subsection.2.8.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{threadprivate}{100}{Item.46}\protected@file@percent }
+\newlabel{lst:threadprivate}{{2.11}{100}{threadprivate Directive}{lstlisting.2.11}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.11}{\ignorespaces threadprivate Directive}}{100}{lstlisting.2.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{default-example}{101}{lstnumber.2.11.13}\protected@file@percent }
+\newlabel{lst:default}{{2.12}{101}{default-Example}{lstlisting.2.12}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.12}{\ignorespaces default-Example}}{101}{lstlisting.2.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.7}Library Routines (API)}{101}{subsection.2.8.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.8}Locks}{103}{subsection.2.8.8}\protected@file@percent }
+\newlabel{lst:nested}{{2.13}{103}{Nested lock-Example}{lstlisting.2.13}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.13}{\ignorespaces Nested lock-Example}}{103}{lstlisting.2.13}\protected@file@percent }
+\newlabel{lst:nested2}{{2.14}{104}{Nest lock-Example2}{lstlisting.2.14}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.14}{\ignorespaces Nest lock-Example2}}{104}{lstlisting.2.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.9}Example 1: Jacobi Solver}{104}{subsection.2.8.9}\protected@file@percent }
+\newlabel{lst:jacobi}{{2.15}{104}{jacobi-solver}{lstlisting.2.15}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.15}{\ignorespaces jacobi-solver}}{104}{lstlisting.2.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.10}Breadth First Search (BFS) Algorithm}{105}{subsection.2.8.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Version 1 (Nested Parallelism)}{105}{subsection.2.8.10}\protected@file@percent }
+\newlabel{lst:bfsv1}{{2.16}{105}{BFS-Example}{lstlisting.2.16}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.16}{\ignorespaces BFS-Example}}{105}{lstlisting.2.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Version 2 (Task constructs)}{106}{lstnumber.2.16.22}\protected@file@percent }
+\newlabel{lst:bfsv2}{{2.17}{106}{BFS-Example}{lstlisting.2.17}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.17}{\ignorespaces BFS-Example}}{106}{lstlisting.2.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.9}Message Passing Interface - MPI}{108}{section.2.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9.1}MPI Intrdocution}{108}{subsection.2.9.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9.2}Communication Primitives}{109}{subsection.2.9.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Point-Point Communications}{109}{subsection.2.9.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{EXAMPLE 1: Finding maximum using 2 processes}{111}{lstnumber.-33.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9.3}Buffering and Safety}{113}{subsection.2.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Blocking Communications}{113}{subsection.2.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Non-Blocking Communications}{114}{subsection.2.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9.4}Example: Finding a Particular element in an Array}{116}{subsection.2.9.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9.5}Communication Modes}{117}{subsection.2.9.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2.5}{\ignorespaces Communication Modes}}{118}{table.caption.52}\protected@file@percent }
+\newlabel{tab:comm_modes}{{2.5}{118}{Communication Modes}{table.caption.52}{}}
+\bibstyle{plainnat}
+\bibdata{references}
+\bibcite{bryant2016computer}{{1}{2016}{{Bryant and O’Hallaron}}{{}}}
+\bibcite{rajaraman2016ieee}{{2}{2016}{{Rajaraman}}{{}}}
+\newlabel{LastPage}{{2.9.5}{119}{Communication Modes}{page.119}{}}
+\gdef\lastpage@lastpage{119}
+\gdef\lastpage@lastpageHy{119}
+\gdef \@abspage@last{122}
