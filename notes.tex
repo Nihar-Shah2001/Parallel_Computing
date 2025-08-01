@@ -167,6 +167,7 @@
 \begin{note}
     Here, it is assumed that the reader has a basic beginner-level understanding of the C programming language.
 \end{note}
+For a gentler introduction refer to first four YouTube lectures by Prof. Mathew Jacob on High Performance Computing (HPC)~\cite{nptel-hpc-intro}.
 
 \section{How is Data Represented?} \label{sec:data-represented}
 
@@ -254,6 +255,17 @@ Integer data can be of two types:
             \item In 32 bits: $111\ldots1110010$
         \end{itemize}
     \end{example}
+
+    \begin{note}
+    Note that in Two's complement representation, positive numbers are represented identically to their standard binary form. For example, to represent the number $65$ as a $32$-bit signed integer using Two's complement, we simply write its binary form padded with leading zeros:
+
+    \[
+    65 = 00000000\ 00000000\ 00000010\ 00000001
+    \]
+
+    Here, the most significant bit (MSB) is $0$, indicating a non-negative number. Since $65$ is positive, no bit inversion or addition is needed — the representation remains the same as the unsigned binary version.
+\end{note}
+
 
     \item \textbf{Unsigned Integer} — This type of integer can only represent non-negative values. It does not use any sign bit, so all bits contribute to the magnitude of the number.
 
@@ -378,11 +390,11 @@ Let us convert the IEEE 754 number:
 \begin{itemize}
     \item Sign bit: $1$ (so the number is negative)
     \item Exponent: $129$ $\Rightarrow$ $129 - 127 = 2$
-    \item Fraction: $1.011_2 = 1.375$
+    \item Fraction: $1.011$
 \end{itemize}
 So the final number is:
 \[
--1 \times 1.375 \times 2^2 = -5.5
+-1 \times 1.011 \times 2^2 = -101.1_2 = -5.5_{10}
 \]
 \end{example}
 
@@ -440,21 +452,42 @@ Positive subnormal $0.f \times 2^{x+1-b}$ & 0 & 00000000 & 000…01 to 111…11 
 \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|
                                 >{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
 \hline
-\textbf{Operation} & \textbf{Result} & \textbf{Operation} & \textbf{Result} \\
+\textbf{Operation} & \textbf{Result} \\
 \hline
-$n / \pm \infty$ & $0$ & $\pm 0 / \pm 0$ & NaN \\
+$n / \pm \infty$ & $0$ \\
 \hline
-$\pm \infty / \pm \infty$ & $\pm \infty$ & $\infty - \infty$ & NaN \\
+$\pm 0 / \pm 0$ & NaN\\
 \hline
-$\pm n / 0$ & $\pm \infty$ & $\pm \infty / \pm \infty$ & NaN \\
+$\pm \infty / \pm \infty$ & $\pm \infty$ \\
 \hline
-$\infty + \infty$ & $\infty$ & $\pm \infty \times 0$ & NaN \\
+$\infty - \infty$ & NaN\\
+\hline
+$\pm n / 0$ & $\pm \infty$ \\
+\hline
+$\pm \infty / \pm \infty$ & NaN\\
+\hline
+$\infty + \infty$ & $\infty$ \\
+\hline
+$\pm \infty \times 0$ & NaN \\
 \hline
 \end{tabularx}
 \caption{Results of Floating Point Operations Involving Infinity and Zero}
 \label{tab:ieee754-operations}
 \end{table}
 
+\begin{note}
+    Note that table~\ref{tab:ieee754-special} can be similarly extended for 64-bit representations. Here's a fun question to think about: What is the largest number that can be represented in 32-bit IEEE 754 format (excluding special values like $+\infty$)?
+
+    A natural answer might be: all $1$s in the exponent bits and all $1$s in the significand (fraction) bits. However, this combination represents a NaN (Not a Number), since according to the IEEE 754 standard, an exponent of all $1$s and a non-zero significand encodes a NaN.
+
+    Therefore, the largest representable finite number in 32-bit IEEE 754 format corresponds to an exponent of $11111110$ (i.e., $254$ in decimal), and a significand of all $1$s (i.e., the largest fraction just below 1). This gives the largest normal floating-point number just before $+\infty$.
+
+    Similarly, for the smallest positive number (magnitude-wise) in 64-bit representation, it is not simply all zeros, since that would correspond to $+0$ (or $-0$ if the sign bit is $1$). There are two interpretations of the “smallest number”:
+    \begin{itemize}
+        \item The smallest \textbf{positive} subnormal number is represented by: sign bit = $0$, exponent = all $0$s, and fraction = $000\ldots 01$. This is the smallest positive number greater than zero.
+        \item The smallest \textbf{(most negative) representable number} is given by: sign bit = $1$, exponent = $111\ldots10$, and fraction = all $1$s. This is the largest-magnitude negative number (i.e., most negative finite number).
+    \end{itemize}
+\end{note}
 
 
 \medskip
@@ -465,7 +498,7 @@ Sometimes, the result of a floating point operation might not fit in the 23-bit 
     \item \textbf{Truncation:} Discard extra bits.
     \item \textbf{Rounding:}
     \begin{itemize}
-        \item Rounding upwards: For example, if signifcand is $0.110\ldots 01$ and overflow is by $1$, then the significand after rounding becomes $0.110\ldots 10$, i.e. we add $1$ to the LSB.
+        \item Rounding upwards: For example, if significand is $0.110\ldots 01$ and overflow is by $1$, then the significand after rounding becomes $0.110\ldots 10$, i.e. we add $1$ to the LSB.
         \item Rounding downwards: The extra bits are ignored.
     \end{itemize}
 \end{itemize}
@@ -913,7 +946,7 @@ When the processor needs to access a data word or an instruction, it sends the m
 \begin{example}
 Consider an example of an $8$ GB main memory (RAM). Let the size of each memory block be $64$ bytes and consider a typical cache size of $64$ KB, and assume a \textbf{2-way set-associative} mapping.
 
-Since $8$ GB = $2^{33}$ bytes, we need $33$ bits to uniquely identify each byte in memory (because $\log_2 2^{33} = 33$). Since the size of each memory block is $2^{64}$ bytes, which is $2^6$ bytes. Therefore, the total number of memory blocks in main memory is:
+Since $8$ GB $\approx 2^{33}$ bytes, we need $33$ bits to uniquely identify each byte in memory (because $\log_2 2^{33} = 33$). Since the size of each memory block is $2^{64}$ bytes, which is $2^6$ bytes. Therefore, the total number of memory blocks in main memory is:
 \[
     \frac{2^{33}}{2^6} = 2^{27}
 \]
@@ -952,6 +985,47 @@ Since we are using a 2-way set associative cache, each cache set has 2 cache lin
 
 In the case of a \textbf{cache miss}, the data or instruction requested by the processor must be fetched from the main memory and placed into the cache. Since the size of cache memory is limited, an existing memory block currently in the cache must be evicted to make room for the newly fetched block. The strategy used to determine which cache line gets replaced is called the \textbf{cache replacement policy}. In an $2$-way \textbf{set-associative cache}, the memory block is mapped to a cache set based on the index bits, and it can replace any of the $2$ cache lines within that set. Again, policies like FIFO or LRU are used to decide which of the $2$ lines in the set will be evicted and replaced by the new block. This design offers a trade-off between the high flexibility of a fully associative cache and the simple implementation of a direct-mapped cache.
 \end{example}
+
+\begin{example}
+The table below gives the parameters for a number of different caches. For each cache, determine $S$, $t$, $s$, and $b$.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+    \hline
+    Cache & $m$ & $C$ & $B$ & $E$ & $S$ & $t$ & $s$ & $b$ \\
+    \hline
+    1 & 32 & 1024 & 4  & 256 & \textcolor{blue}{1}  & \textcolor{blue}{30} & \textcolor{blue}{0} & \textcolor{blue}{2} \\
+    \hline
+    2 & 32 & 1024 & 8  & 128 & \textcolor{blue}{1}  & \textcolor{blue}{29} & \textcolor{blue}{0} & \textcolor{blue}{3} \\
+    \hline
+    3 & 32 & 1024 & 32 & 32  & \textcolor{blue}{1}  & \textcolor{blue}{27} & \textcolor{blue}{0} & \textcolor{blue}{5} \\
+    \hline
+    4 & 32 & 1024 & 32 & 2   & \textcolor{blue}{16} & \textcolor{blue}{23} & \textcolor{blue}{4} & \textcolor{blue}{5} \\
+    \hline
+\end{tabular}
+\end{center}
+
+\vspace{1em}
+\textbf{Explanation for Cache 1:}
+
+Given:
+\begin{itemize}
+    \item $m = 32$, $C = 1024$ bytes, $B = 4$ bytes, $E = 256$
+\end{itemize}
+
+Then:
+\begin{itemize}
+    \item Total blocks $= \frac{C}{B} = \frac{1024}{4} = 256$
+    \item Number of sets $S = \frac{C}{B\cdot E} = \frac{256}{256} = 1$
+    \item Block offset bits $b = \log_2 B = \log_2 4 = 2$
+    \item Set index bits $s = \log_2 S = \log_2 1 = 0$
+    \item Tag bits $t = m - s - b = 32 - 0 - 2 = 30$
+\end{itemize}
+
+The same formulas can be used for the other entries.
+\end{example}
+
+
 \begin{note}
     Note that in this section, we have not gone into the nitty-gritty details of how cache works internally or how it is managed by the system. We have skipped several important topics such as write strategies (like write-through and write-back), cache coherence in multi-core systems, and the structure of real-world cache hierarchies (like L1, L2, and L3 caches). Our goal here was to give a high-level understanding of what a cache is and how it helps speed up memory access. We will revisit some of these advanced topics later in the book if needed. For a deeper explanation, refer to the book~\cite{bryant2016computer}.
 \end{note}
@@ -1537,6 +1611,70 @@ By doing this, we can load a block of data into the cache and reuse it multiple 
 
 This reordering of operations in a cache-aware fashion allows us to control and optimize spatial locality. Importantly, the value of $B$—the block size—can be tuned depending on the cache size and architecture, enabling different levels of locality for different hardware settings. Note that one could experiment with loop interchange as well as blocking in order to optimize even further.
 
+\begin{example}
+    Consider the following matrix transpose routine:
+    \begin{lstlisting}[style=cppstyle]
+typedef int array[4][4];
+void transpose(array dst, array src){
+    int i,j;
+    for(i=0; i<4;i++){
+        for (j=0;j<4;j++){
+            dst[j][i]=src[i][j];
+        }
+    }
+}
+    \end{lstlisting}
+    
+    Assume the code runs on a machine with the following properties:
+    \begin{itemize}
+        \item Size of integer $= 4$ bytes.
+        \item The \texttt{src} array starts at address $0$ and the \texttt{dst} array starts at address $64$ (decimal).
+        \item There is a single L1 data cache that is direct-mapped with a block size of $16$ bytes.
+        \item The cache has a total data size of $128$ bytes and the cache is initially empty.
+    \end{itemize}
+
+    For each \texttt{dst[row][col]}, indicate whether the access is a hit (H) or a miss (M):
+
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+         & Col 0 & Col 1 & Col 2 & Col 3 \\
+        \hline
+        Row 0 & \textcolor{red}{M} & \textcolor{blue}{H}&\textcolor{blue}{H}& \textcolor{blue}{H}\\
+        \hline
+        Row 1 & \textcolor{red}{M}&\textcolor{blue}{H}&\textcolor{blue}{H}&\textcolor{blue}{H} \\
+        \hline
+        Row 2 &\textcolor{red}{M}&\textcolor{blue}{H}&\textcolor{blue}{H}& \textcolor{blue}{H}\\
+        \hline
+        Row 3 &\textcolor{red}{M} &\textcolor{blue}{H} &\textcolor{blue}{H}&\textcolor{blue}{H}\\
+        \hline
+    \end{tabular}
+    \end{center}
+
+    \textbf{Explanation:} \\
+    The \texttt{src} array starts at address $0$ and occupies $64$ bytes. The \texttt{dst} array starts at address $64$ and occupies another $64$ bytes, totaling $128$ bytes — the same as the cache size. Hence, both arrays can entirely reside in the cache.
+
+    The block size is $16$ bytes, which means each block can store $16 / 4 = 4$ integers. Thus:
+    \begin{itemize}
+        \item Number of blocks in the cache: $128 / 16 = 8$
+        \item Block offset bits: $\log_2(16) = 4$
+    \end{itemize}
+
+    Execution order:
+    \begin{lstlisting}[style=cppstyle]
+load src[0][0], store dst[0][0], 
+load src[0][1], store dst[1][0], ...
+    \end{lstlisting}
+
+    The first access to each \texttt{dst[row][0]} is a cold miss (first use), but subsequent accesses to \texttt{dst[row][1]}, \texttt{dst[row][2]}, and \texttt{dst[row][3]} hit the same cache block already loaded, resulting in cache hits.
+
+    Since no evictions occur (due to sufficient cache size), all misses are cold-start misses. The pattern shows four cold misses — one for each row — followed by hits.
+
+\end{example}
+
+
+
+
 \section{Vector Operations}
 \subsection{Strip mining}
 Consider the following example on computing vector sum:
@@ -1727,40 +1865,6 @@ Loop Interchange & Swap the order of nested loops to access data in memory-frien
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \chapter{Parallel Architectures}
 
 \section{Motivation}
@@ -1853,7 +1957,7 @@ Some common examples of SIMD-based systems and technologies include:
     \label{fig:simd}
 \end{figure}
 
-You can read more about SIMD and other parallel computing concepts in this excellent tutorial:  
+You can read more Introduction, Classification of Architectures - Flynn's Taxonomy, and Classification based on Memory, SIMD and other parallel computing concepts in this excellent tutorial:  
 \href{http://www.llnl.gov/computing/tutorials/parallel_comp/}{Parallel Computing Tutorial by LLNL}~\cite{llnl-parallel}.
 
 \bigskip
@@ -2235,8 +2339,6 @@ In such cases, we employ a technique called \textbf{padding}, which involves add
 
 To summarize: false sharing occurs when multiple processors access different variables that happen to reside in the same cache line. Any write to a variable by one processor causes the entire line to be invalidated in others' caches, even if those processors were using different parts of the data. This leads to unnecessary triggering of cache coherence protocols and performance penalties.
 
-For more details on Parallelization Architectures refer section 2.4 in ~\cite{grama2008introduction}.
-
 \chapter{Interconnection networks for a Parallel Computer}
 Interconnection networks for a parallel computer provide mechanisms for data transfer between processing nodes or between
 processor and memory modules. A black-box view of interconnection network consists of n inputs and m outputs. Interconnections networks are build using links and switches.\textbf{Links} are set of wires 
@@ -2534,7 +2636,7 @@ All of this has been summarise in the following table \ref{tab:static_network}.
     \caption{Summary of Static Networks}
     \label{tab:static_network}
 \end{table}
-For further deatils refer to sections 3.1 and 3.5 and 5.1 to 5.6 in ~\cite{grama2008introduction} and sections 2.2 and 2.3 in~\cite{culler1998parallel}.
+For more details on Interconnection networks for Parallel computers refer section 2.4 in ~\cite{kumar1994introduction}. 
 
 \chapter{Graphical Processing Units}
 
@@ -2757,7 +2859,7 @@ In summary:
 \end{itemize}
 
 \end{itemize}
-    
+For further details refer to sections 5.1 to 5.6 in ~\cite{kumar1994introduction}.
 
 
 \chapter{Parallel Programming Classification and Steps}
@@ -3465,7 +3567,7 @@ Asynchronous operations can be further categorized into \textbf{blocking asynchr
     \caption{Comparison between Shared Address Space and Message Passing Models}
     \label{tab:finsummary}
 \end{table}
-
+For more details on parallelization principles refer to sections 3.1 and 3.5 in~\cite{kumar1994introduction} and sections 2.2 and 2.3 in~\cite{culler1998parallel} for example.
 
 \chapter{Shared Memory Parallelism - OpenMP}
 
@@ -4219,10 +4321,11 @@ In this version:
 
 This method is more \textbf{adaptive} and \textbf{scalable}, especially in graphs with high variation in vertex degrees, since tasks can be scheduled independently and load-balanced across cores at runtime.
 
+For further details on OpenMP, I would suggest the reader to refer to~\cite{llnlOpenMP} for tutorials on OpenMP or YouTube Lectures by Intel~\cite{openmpYoutube} and official website of OpenMP~\cite{openmpOfficial} to get a more indepth and broader understanding of OpenMP concepts. The ppt referred in the lectures can be found in the YouTube description and serves as an excellent guide for understanding the lectures as well as OpenMP overall in general.
 
 \chapter{Message Passing Interface (MPI)}
 
-MPI is a standardized and portable message-passing system designed to enable distributed-memory parallelism. Unlike shared memory paradigms such as OpenMP—where parallelism is achieved implicitly through directives—MPI requires explicit communication and synchronization between processes. This results in higher programming complexity, as each process must execute a specific program that communicates with others explicitly.
+MPI is a standardized and portable message-passing system designed to enable distributed-memory parallelism. Unlike shared memory paradigms such as OpenMP—where parallelism is achieved implicitly through directives—MPI requires explicit communication and synchronization between processes. This results in higher programming complexity, as each process must execute a specific program that communicates with others explicitly. For a gentler introduction refer to the last four YouTube lectures by Prof. Mathew Jacob on High performance Computing (HPC)~\cite{nptel-hpc-intro}.
 
 Despite its complexity, MPI remains the dominant model for large-scale high-performance computing (HPC). This is because, although modern compute nodes may contain many cores and support shared-memory programming within a node, large-scale scientific and engineering problems often exceed the capacity of a single node. In such cases, multiple nodes must collaborate. Since nodes cannot directly access each other’s memory, communication between them must occur via message passing. This is where MPI becomes indispensable.
 
@@ -4750,33 +4853,14 @@ The \textbf{ready mode} (\texttt{MPI\_Rsend}) offers a highly efficient communic
 
 Table~\ref{tab:comm_modes} summarizes the differences between the four communication modes supported by MPI. The choice of mode can significantly impact program correctness, safety, and performance. Buffered and ready sends are typically used for performance-critical applications with strict control over program flow, while standard and synchronous sends offer safer defaults.
 
-For further details refer~\cite{snir1998mpi} which is a complete reference guide on MPI.
-
+For a complete reference guide on MPI refer~\cite{snir1998mpi}.
 
 \chapter{CUDA}
 
 For details refer to~\cite{nvidia2011nvidia}.
 
-%For references to the notes
-% \begin{thebibliography}{9}
-%     \bibitem{parallelcomputingtutorial} 
-%     \weblink{http://www.llnl.gov/computing/tutorials/parallel_comp/}{Parallel Computing Tutorial} - Reference for Introduction, Classification of Architectures - Flynn's Taxonomy, and Classification based on Memory.
-%     \bibitem{MathewJacobLecs}
-%     \weblink{https://youtu.be/-yMWgtTeQgY?si=_PIhzFH7zZTydzcM}{Mathew Jacob - Parallel Architecture Lectures} - Lecture 38 and Lecture 39 - Reference for Introduction, Classification of Architectures - Flynn's Taxonomy,and Classification based on Memory.
-%     %Insert a book reference
-%     \bibitem{AnnanthaGramaIntro}
-%     Section 2.4 from Kumar, V., Grama, A., Gupta, A., Karypis, G. (1994). Introduction to parallel computing (Vol. 110). Redwood City, CA: Benjamin/Cummings for Network Topology, Shared Memory Architecture and Cache Coherence Protocols.
-%     %INsert Other readings
-%     \bibitem{NVIDIAGoogleA100}
-%     Many-core - Google for NVIDIA A100 white paper
-%     \bibitem{CullerandSingh}
-%     Section 2.2 and 2.3 - Culler, D., Singh, J. P., Gupta, A. (1998). Parallel computer architecture: a hardware/software approach. Elsevier.
-%     \bibitem{hpctutOpenMP}
-%     \weblink{https://hpc-tutorials.llnl.gov/openmp/}{OpenMP tutorial} - OpenMP tutorial for parallel programming.
-%     \bibitem{IntelOpenMP}
-%     \weblink{https://www.youtube.com/watch?v=nE-xN4Bf8XI&list=PLLX-Q6B8xqZ8n8bwjGdzBJ25X2utwnoEG}{OpenMP Tutorials} - Youtube lectures by Intel for OpenMP.
 
-% \end{thebibliography}
+
 \bibliographystyle{plainnat}
 \bibliography{references}
 
