@@ -141,12 +141,44 @@
 \titleformat{\chapter}[display]
   {\normalfont\bfseries\Huge}{\chaptername\ \thechapter}{20pt}{\Huge}
 
+\usepackage{etoolbox}
+\AtBeginEnvironment{algorithm}{\addtocontents{loa}{\protect\vspace{5pt}}}
+
 \usepackage{tocloft}
 \renewcommand{\cftchapfont}{\bfseries}
 \renewcommand{\cftchappagefont}{\bfseries}
 
 % Optional: chapters start without blank page
 \let\cleardoublepage\clearpage
+
+% ------------------------------------------------
+% Pseudocode environments
+% ------------------------------------------------
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% Custom styling for algorithms
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}  % For input
+\algrenewcommand\algorithmicensure{\textbf{Output:}}  % For output
+\algrenewcommand\algorithmiccomment[1]{\hfill$\triangleright$ \textit{#1}}  % Comment style
+
+% Optional: box around algorithm (if you want it to look consistent)
+\usepackage{tcolorbox}
+\newtcolorbox{algobox}{
+  enhanced,
+  breakable,
+  colback=white,
+  colframe=black!60,
+  boxrule=0.4pt,
+  arc=4pt,
+  top=4pt,
+  bottom=4pt,
+  left=6pt,
+  right=6pt,
+  before skip=10pt,
+  after skip=10pt
+}
+
 
 % ------------------------------------------------
 % Start document
@@ -482,7 +514,7 @@ $\pm \infty \times 0$ & NaN \\
 
     Therefore, the largest representable finite number in 32-bit IEEE 754 format corresponds to an exponent of $11111110$ (i.e., $254$ in decimal), and a significand of all $1$s (i.e., the largest fraction just below 1). This gives the largest normal floating-point number just before $+\infty$.
 
-    Similarly, for the smallest positive number (magnitude-wise) in 64-bit representation, it is not simply all zeros, since that would correspond to $+0$ (or $-0$ if the sign bit is $1$). There are two interpretations of the “smallest number”:
+    Similarly, for the smallest positive number (magnitude-wise) in 64-bit representation, it is not simply all zeros, since that would correspond to $+0$ (or $-0$ if the sign bit is $1$). There are two interpretations of the ``smallest number":
     \begin{itemize}
         \item The smallest \textbf{positive} subnormal number is represented by: sign bit = $0$, exponent = all $0$s, and fraction = $000\ldots 01$. This is the smallest positive number greater than zero.
         \item The smallest \textbf{(most negative) representable number} is given by: sign bit = $1$, exponent = $111\ldots10$, and fraction = all $1$s. This is the largest-magnitude negative number (i.e., most negative finite number).
@@ -538,7 +570,7 @@ In a computer program, different variables have different lifetimes, depending o
 \end{itemize}
 For example, when a program begins execution, its memory is organized into distinct regions, as shown in Figure~\ref{fig:memory_layout}.
 
-\begin{figure}[h!]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/memory_layout.png}
     \caption{Memory Layout of a Program}
@@ -556,7 +588,7 @@ Now suppose the \texttt{main()} function makes a call to another function, say \
 
 This updated stack state is illustrated in Figure~\ref{fig:memory_layout_func1}. The stack pointer is now moved to point to the new top of the stack, corresponding to the local variables of \texttt{func1()}.
 
-\begin{figure}[h!]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/memory_layout_func1.png}
     \caption{Memory Layout after a Function Call to \texttt{func1()}}
@@ -594,7 +626,7 @@ In contrast, two other regions of memory — the \textbf{heap} and the \textbf{s
 
 This division and organization of memory during program execution is beautifully depicted in Figure~\ref{fig:program_data}.
 
-\begin{figure}[H]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.25\textwidth]{images/program_data.png}
     \caption{Program and Data Memory Layout}
@@ -620,7 +652,7 @@ The variables used in a program, on the other hand, are allocated in different m
 
 This organization of memory usage is depicted in Figure~\ref{fig:program_memory}.
 
-\begin{figure}[H]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{images/program_memory.png}
     \caption{Program Memory Layout}
@@ -2124,7 +2156,7 @@ In NUMA systems, memory is physically divided and parts of it are closer to some
     \label{fig:numa}
 \end{figure}
 
-As shown in Figure~\ref{fig:numa}, each processor has a portion of memory that is physically closer to it. Accessing this “local” memory is faster than accessing “remote” memory, which belongs to another processor.
+As shown in Figure~\ref{fig:numa}, each processor has a portion of memory that is physically closer to it. Accessing this ``local" memory is faster than accessing ``remote" memory, which belongs to another processor.
 
 This variation in access time adds complexity. Programmers must be aware of data locality to get good performance. Data structures should ideally be placed in memory close to the processor that uses them the most.
 
@@ -2637,99 +2669,6 @@ All of this has been summarise in the following table \ref{tab:static_network}.
     \label{tab:static_network}
 \end{table}
 For more details on Interconnection networks for Parallel computers refer section 2.4 in ~\cite{kumar1994introduction}. 
-
-\chapter{Graphical Processing Units}
-
-A CPU typically has up to 32 cores, with each core supporting multiple threads—usually up to 8. It is well-suited for serial processing and is referred to as a multi-core architecture.
-
-However, for highly parallel computations, we need architectures with significantly more cores. This is where Graphical Processing Units (GPUs) come into play. GPUs can have thousands of lightweight cores and are optimized for parallel processing. Consequently, they are often termed many-core architectures.
-
-GPU cores are not as powerful as CPU cores individually, but they are designed to execute a vast number of simple operations simultaneously. In the early days, before 2014, NVIDIA GPUs were primarily used for gaming and video-related applications. These tasks involved multiple stages, such as pixel reading, shading, and rendering—each of which can be executed independently. For instance, the reading of one pixel does not depend on the reading of another, making it ideal for parallel execution. The high core count in GPUs allows such operations to be performed in real-time.
-
-Because each GPU core is relatively lightweight and suited for simple computations rather than complex tasks, GPUs are used to accelerate operations that exhibit high degrees of parallelism. Typically, CPUs and GPUs coexist in a heterogeneous computing environment. GPUs are not used in a standalone manner. A program is usually executed on the CPU, which handles control and coordination, while delegating specific light-weight, data-parallel tasks to the GPU.
-
-NVIDIA's GPU architecture supports CUDA (Compute Unified Device Architecture), a parallel computing platform and API developed by NVIDIA. CUDA enables developers to write programs in C/C++ that can offload computations to the GPU. It allows for efficient expression of data-parallelism and is widely used in domains requiring high-performance parallel computing.
-
-Although GPUs were initially designed for graphical workloads, they have also proven to be highly efficient for numerical computations—particularly matrix operations. This makes them essential not only in gaming and graphics, but also in scientific computing, machine learning, and deep learning applications.
-
-
-\section{GPU Architecture}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{images/gpu.png}
-    \caption{GPU Architecture}
-    \label{fig:gpu}
-\end{figure}
-
-A schematic of the GPU architecture is shown in Figure~\ref{fig:gpu}. The architecture consists of the following major components:
-\begin{itemize}
-    \item \textbf{TPC} – Texture Processing Clusters
-    \item \textbf{SMX} – Streaming Multiprocessors
-    \item \textbf{SP} – Single Precision Cores (GPU cores)
-    \item \textbf{DRAM} – Device RAM (GPU memory)
-    \item \textbf{ROP} – Render Output Units
-\end{itemize}
-
-GPU cores are referred to as \textbf{Streaming Multiprocessors} (SMX), while individual scalar cores inside an SMX are called \textbf{Single Precision} (SP) cores. Coarse-level parallel tasks are handled by the SMX units, which further distribute fine-grained parallel tasks to the SP cores. This structure supports both coarse-grain and fine-grain parallelism.
-
-For instance, NVIDIA's Kepler architecture consists of 15 SMX units, each containing 192 SP cores, resulting in a total of $15 \times 192 = 2880$ SP cores. Although the clock speed of each core (approximately 745 MHz) is lower than that of a typical CPU core, the massively parallel structure of GPUs allows them to deliver high throughput for data-parallel tasks.
-
-GPUs operate using the \textbf{SIMT} (Single Instruction Multiple Threads) model. Each SMX is equipped with its own 32-bit registers used to store the execution context of GPU threads. NVIDIA GPUs also feature a memory hierarchy including L2 cache, common memory, and local caches per SMX.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{images/smx.png}
-    \caption{Architecture of a single SMX unit}
-    \label{fig:smx}
-\end{figure}
-
-Figure~\ref{fig:smx} illustrates the internal architecture of an SMX. It typically includes:
-\begin{itemize}
-    \item 65536 registers
-    \item 192 SP cores for single-precision computations
-    \item 64 DP (Double Precision) cores
-    \item 32 Special Function Units (SFUs) for evaluating transcendental functions
-    \item 32 Load/Store units for data movement between global and shared memory
-    \item 16 Texture Filtering Units
-    \item Shared memory of size 64 KB (often configurable as 48 KB shared memory and 16 KB L1 cache, or vice versa)
-\end{itemize}
-
-The CUDA programming model provides explicit control over shared memory allocation. The programmer can allocate a portion of this 64 KB memory as shared memory (manually managed) and the rest as L1 cache (automatically managed by the hardware).
-
-Computations are organised as blocks. Blocks are given to SMX. A block consists of many threads and threads are given to SP cores.
-
-\subsection{CUDA Memory Spaces}
-Consider the figure \ref{fig:cuda_memory} of CUDA Memory Spaces. CPU pushes the relevant data to Global memory to be executed on GPU.
-It spawns GPU kernels/functions which are executed on SMX. Each thread in SMX loads data from global memory/device memory to shared memory.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{images/cuda_memory.png}
-    \caption{CUDA Memory Spaces}
-    \label{fig:cuda_memory}
-\end{figure}
-The memory spaces in CUDA are:
-\begin{itemize}
-    \item \textbf{Global Memory} — It is the main memory of the GPU. It is accessible for read/write by all the threads in all the SMXs. 
-    It can also be accessed by host (CPU). For Kepler K40 it is around 12 GB. It has a latency of around 200–400 clock cycles (300 ns).
-    
-    \item \textbf{Constant Memory} — It is read-only memory. It is used to store constants that are used by all the threads in all the blocks.
-    
-    \item \textbf{Texture Memory} — It can be accessed by all threads. It is used to store textures, used for texture mapping. It is used to improve performance of reads that exhibit spatial locality among the threads.
-    
-    \item \textbf{Shared Memory} — Each SMX has its own individual memory. It is the memory shared by all the threads in a block executing in an SMX. It is faster than global memory. Shared memory has a latency of 20–30 clock cycles (5 ns). The threads can read/write to this memory.
-    
-    \item \textbf{Local Memory} — It is the memory local to each thread, used to store temporary variables. Each thread has read/write access to this memory.
-    
-    \item \textbf{Registers} — They are present in each SMX. It is the memory local to each thread. It is used to store the context of the thread. Kepler K40 has 64K registers in each SMX.
-\end{itemize}
-The host can read/write global, constant, and texture memory. GPUs prefer to access data from shared memory rather than device memory because of latency.
-
-\textbf{Difference between CPU and GPU Threads:} There are a few differences between CPU and GPU threads regarding context switching. Context switching is much faster in GPUs because the state of a thread (or thread block) is stored in shared memory, and threads remain active until execution is complete. 
-
-Unlike in CPUs, where in the case of a context switch, memory related to that thread gets dumped to main memory or disk, in GPUs, this overhead is avoided. In CPUs, loading the data for the next thread requires retrieving it from main memory or disk, which is slow. Thus, context switching is faster in GPUs as there is no need to bring in any data—it is already loaded in shared memory.
-
-Also, in the case of GPUs, the cache is explicitly managed by the programmer. The programmer has to explicitly bring frequently accessed data from device memory to shared memory. This differs from CPUs, where cache management is handled automatically by the hardware. For further details refer~\cite{nvidia2020a100}.
 
 
 \chapter{Parallelization Principles}
@@ -4853,13 +4792,1908 @@ The \textbf{ready mode} (\texttt{MPI\_Rsend}) offers a highly efficient communic
 
 Table~\ref{tab:comm_modes} summarizes the differences between the four communication modes supported by MPI. The choice of mode can significantly impact program correctness, safety, and performance. Buffered and ready sends are typically used for performance-critical applications with strict control over program flow, while standard and synchronous sends offer safer defaults.
 
+\section{Collective Communications}
+Collective communications refer to communication operations that involve a group of processes, rather than just two. These operations are extremely useful because a significant portion of parallel programs written using MPI rely heavily on collective communication for coordination, data distribution, and aggregation.
+
+
+\subsection{Allgather, Allgatherv}
+
+Let us now look at an example of matrix-vector multiplication. Suppose we wish to multiply an $M \times N$ matrix $A$ with a $N \times 1$ vector $b$, resulting in a $M \times 1$ vector $x$, i.e., $Ab = x$.
+
+Now, using an MPI domain decomposition strategy, suppose we divide the matrix and the vectors \textbf{across the rows}, such that the first set of rows belongs to process $P_0$, the next set belongs to process $P_1$, and so on as shown in figure~\ref{fig:row-wise}.
+
+Let us consider the rows assigned to some process $P_i$. To compute its portion of the result vector $x$, process $P_i$ must multiply its local rows of $A$ with the \textbf{entire} vector $b$. 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/Row-wise.png}
+    \caption{Row-wise Matrix-Vector Multiplication}
+    \label{fig:row-wise}
+\end{figure}
+Note the following:
+
+\begin{itemize}
+    \item The matrix rows are already local to $P_i$, so no communication is needed for accessing the matrix.
+    \item The corresponding output elements of $x$ that result from multiplying the local rows are also stored locally, and thus need not be communicated to other processes.
+    \item However, the input vector $b$ is \textbf{distributed across all the processes}, so process $P_i$ only has access to a part of $b$. Therefore, each process must obtain the \textbf{entire} $b$ vector to perform its computation.
+\end{itemize}
+
+One solution is to use point-to-point communication primitives such as \texttt{MPI\_Send} and \texttt{MPI\_Recv}. Each process could, in a loop, send its part of the $b$ vector to all the other processes and receive the missing parts from them. While this is logically correct, it results in a verbose and cumbersome implementation.
+
+Instead, observe the communication pattern here: all processes require \textbf{the same global data} — the full $b$ vector — which is initially distributed among them. This is a textbook use case for the \textbf{all-gather} communication pattern.
+
+In \texttt{MPI\_Allgather}, each process contributes its piece of data (in this case, a chunk of the $b$ vector), and all processes collect the entire assembled vector. That is, all processes end up with the full $b$ vector. This makes \texttt{MPI\_Allgather} the ideal communication primitive for this scenario.
+
+Thus, using \texttt{MPI\_Allgather}, the row-wise matrix-vector multiplication can be implemented efficiently and clearly in MPI.
+\begin{lstlisting}[style=cppstyle]
+MPI_Allgather(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, comm)
+\end{lstlisting}
+
+The entire communication pattern involving sending and receiving data between all processes can be captured using a single collective communication call — namely, \texttt{MPI\_Allgather}. Instead of writing a for loop of \texttt{MPI\_Send} and \texttt{MPI\_Recv} calls, each process now simply invokes a one-line function call with its local data. This local data can be a single element, an array, or even a matrix.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/all_gather.png}
+    \caption{\texttt{MPI\_Allgather} operation}
+    \label{fig:allgather}
+\end{figure}
+For example, process 0 may send its portion of the data (say, $A_0$) by filling the appropriate \texttt{sendbuf}, \texttt{sendcount}, and \texttt{sendtype}. Simultaneously, all processes will gather the full dataset into their local \texttt{recvbuf}, with corresponding \texttt{recvcount} and \texttt{recvtype}. Thus, all processes allocate a receive buffer, and after the \texttt{MPI\_Allgather} call, this buffer will contain the entire combined dataset from all processes. It is as shown in the figure~\ref{fig:allgather}. This function must be called by all processes that are part of the communicator \texttt{comm}, as it is a collective communication operation.
+
+There is also a vector variant called \texttt{MPI\_Allgatherv}, which allows different processes to contribute different amounts of data:
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Allgatherv(sendbuf, sendcount, sendtype, 
+               recvbuf, recvcounts, displs, recvtype, comm);
+\end{lstlisting}
+
+Here, \texttt{recvcounts} is an array that specifies how much data each process contributes, and \texttt{displs} specifies where in the receive buffer each contribution should be placed.
+
+Let us now consider an example using \texttt{MPI\_Allgather} to perform matrix-vector multiplication:
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Comm_size(comm, &size);
+MPI_Comm_rank(comm, &rank);
+nlocal = n / size;
+
+MPI_Allgather(local_b, nlocal, MPI_DOUBLE, b, nlocal, MPI_DOUBLE, comm);
+
+for (i = 0; i < nlocal; i++) {
+    x[i] = 0.0;
+    for (j = 0; j < n; j++) {
+        x[i] += a[i*n + j] * b[j];
+    }
+}
+\end{lstlisting}
+
+In this code:
+\begin{itemize}
+    \item Each process first determines the total number of processes (\texttt{size}) and its own rank (\texttt{rank}) in the communicator.
+    \item The matrix $A$ is assumed to have $n$ total rows and is divided evenly among the processes, so each process works on $n_\text{local} = n / \texttt{size}$ rows.
+    \item Each process possesses a local portion of the input vector $b$ (stored in \texttt{local\_b}) and needs the full vector $b$ to compute its portion of the result vector $x$.
+    \item To achieve this, all processes perform a single \texttt{MPI\_Allgather} call to collect the full $b$ vector.
+\end{itemize}
+
+The final loop then performs the dot product between each local row of matrix $A$ and the global vector $b$, and stores the result in the local portion of $x$.
+
+Using collective communication like \texttt{MPI\_Allgather} significantly reduces programming complexity. More importantly, it gives the MPI library knowledge of the global communication pattern, allowing it to choose an efficient communication algorithm optimized for the underlying architecture. In contrast, if only point-to-point communication (i.e., \texttt{MPI\_Send} and \texttt{MPI\_Recv}) is used, the MPI library cannot infer any global pattern and thus cannot optimize the communication strategy.
+
+\textbf{Note:} The order in which data is stored in the receive buffer is based on process ranks. That is, data from process 0 appears first, followed by data from process 1, and so on.
+
+
+\subsection{Reduce, AllReduce}
+
+Suppose we now divide the matrix $A$ column-wise, such that the first set of columns resides in process $0$, the second set in process $1$, and so on. Since $b$ and $x$ are vectors, they are still divided row-wise as shown in figure~\ref{fig:column-wise}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/Column-wise.png}
+    \caption{Column-wise matrix-Vector Multiplication}
+    \label{fig:column-wise}
+\end{figure}
+In this layout, the communication requirements change. For computing the inner product (i.e., matrix-vector multiplication), each processor already owns the portion of vector $b$ corresponding to the local columns of matrix $A$. Therefore, \textbf{no communication is required beforehand} — each process can compute its local contribution to the final result independently.
+
+However, once local computations are complete, communication is required to \textbf{aggregate} these local results. Each processor computes a partial result (a local vector), and these must be \textbf{summed across all processes} to obtain the final result vector $x$. This is an example of a \textbf{reduction} communication pattern, where all processes contribute values that are combined using some operator (e.g., sum, max, min), and the final result is stored in a particular process.
+
+Here is the MPI-based implementation of this scheme:
+\begin{lstlisting}[style=cppstyle]
+MPI_Comm_size(comm, &size);
+MPI_Comm_rank(comm, &rank);
+nlocal = n / size;
+
+/* Compute partial dot-products */
+for (i = 0; i < n; i++) {
+    px[i] = 0.0;
+    for (j = 0; j < nlocal; j++) {
+        px[i] += a[i * nlocal + j] * b[j];
+    }
+}
+\end{lstlisting}
+
+As we can see, each process computes its part of the dot product and stores it in the local vector \texttt{px}. No communication is needed in this step.
+
+To aggregate the local vectors into the final result $x$, MPI provides collective reduction operations such as \texttt{MPI\_Reduce}:
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Reduce(px, x, n, MPI_DOUBLE, MPI_SUM, 0, comm);
+\end{lstlisting}
+
+This function performs the following:
+\begin{itemize}
+    \item \texttt{px} is the local array being sent (partial result from each process).
+    \item \texttt{x} is the receive buffer in the root process (rank 0 in this example), where the final result will be stored.
+    \item \texttt{n} is the number of elements in the arrays.
+    \item \texttt{MPI\_DOUBLE} specifies the data type.
+    \item \texttt{MPI\_SUM} is the operation used to combine data — in this case, addition.
+    \item \texttt{0} is the rank of the root process where the result is stored.
+    \item \texttt{comm} is the communicator.
+\end{itemize}
+
+MPI also provides other predefined operations such as:
+\begin{itemize}
+    \item \texttt{MPI\_MAX} — for computing the maximum of corresponding elements,
+    \item \texttt{MPI\_MIN} — for computing the minimum,
+    \item \texttt{MPI\_PROD} — for product,
+    \item and many more.
+\end{itemize}
+
+In addition, MPI allows users to define \textbf{custom reduction operations} using the \texttt{MPI\_Op\_create} interface. This gives the programmer flexibility to implement and register user-defined functions that operate element-wise on arrays and pass them as operators in collective calls like \texttt{MPI\_Reduce} or \texttt{MPI\_Allreduce}.
+
+Column-wise decomposition simplifies the local computation of matrix-vector multiplication but requires a global reduction to finalize the result. MPI’s reduction operations such as \texttt{MPI\_Reduce} help implement this efficiently and scalably.
+
+In certain situations, it is desirable for the result of a reduction operation to be made available to \textbf{all} participating processes, rather than just a single root process. In such cases, one uses the collective communication:
+
+\begin{lstlisting}[style=cppstyle]
+MPI_ALLREDUCE(sendbuf, recvbuf, count, datatype, op, comm)
+\end{lstlisting}
+Here, there is \textbf{no root process}, and the final reduced result is stored in the \texttt{recvbuf} of every process. This is especially useful in parallel applications where all processes need the final computed result (e.g., for norm calculations, convergence checks, etc.).
+
+\vspace{1em}
+
+\subsection{\texttt{Scatter}, \texttt{Scatterv}, \texttt{Gather}, \texttt{Gatherv}}
+Another essential collective communication is the \texttt{MPI\_SCATTER} operation. In this pattern, a single process (typically rank 0) possesses a large buffer of data and wants to distribute \textbf{equal-sized chunks} of it to all processes in the communicator group.
+
+\begin{lstlisting}[style=cppstyle]
+MPI_SCATTER(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, root, comm)
+\end{lstlisting}
+
+
+All processes must call this function collectively. The root process provides the data to distribute in \texttt{sendbuf}, and each process receives its chunk in \texttt{recvbuf}. This operation is widely used during the initialization phase of parallel programs when data is to be distributed from a central source.
+
+When the data to be distributed to each process is of \textbf{different sizes}, we use the more general variant:
+
+\begin{lstlisting}[style=cppstyle]
+MPI_SCATTERV(sendbuf, sendcounts, displs, sendtype, recvbuf, recvcount, recvtype, root, comm)
+\end{lstlisting}
+
+Here, \texttt{sendcounts} is an array indicating how many elements each process should receive, and \texttt{displs} gives the starting offset for each process in the \texttt{sendbuf}.
+
+The \texttt{MPI\_GATHER} collective communication operation is similar to \texttt{MPI\_SCATTER}, but in the reverse direction. In this pattern, we want to gather data from all processes in the communication group into a single root process.
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Gather(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, root, comm);
+\end{lstlisting}
+
+Here,
+\begin{itemize}
+    \item Each process sends \texttt{sendcount} elements from its \texttt{sendbuf} of type \texttt{sendtype}.
+    \item The root process receives all the data in its \texttt{recvbuf}, expecting \texttt{recvcount} elements from each process, all of type \texttt{recvtype}.
+    \item \texttt{root} is the rank of the process that gathers the data.
+    \item All processes must call this function, but only the root process needs to provide valid \texttt{recvbuf}.
+\end{itemize}
+
+\vspace{1em}
+The \texttt{MPI\_GATHERV} operation is a more flexible variant of \texttt{MPI\_GATHER}, where each process can send a different number of elements. This is particularly useful when the data sizes to be gathered from different processors are not uniform.
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Gatherv(sendbuf, sendcount, sendtype, recvbuf, recvcounts, displs, recvtype, root, comm);
+\end{lstlisting}
+
+Here,
+\begin{itemize}
+    \item \texttt{recvcounts} is an array of integers specifying the number of elements expected from each process.
+    \item \texttt{displs} is an array of displacements (i.e., starting indices in \texttt{recvbuf}) where data from each process should be placed.
+    \item This allows variable-length contributions from each process to be gathered efficiently into the root's receive buffer.
+\end{itemize}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/scatter_gather.png}
+    \caption{\texttt{Scatter} and \texttt{Gather} collective communication operations}
+    \label{fig:scattergather}
+\end{figure}
+
+\vspace{1em}
+Let us return to our example of column-wise matrix-vector multiplication. After all processes compute their local partial dot products and store them in \texttt{px}, we need to reduce them and distribute the final result. This can be achieved as follows:
+
+\begin{lstlisting}[style=cppstyle]
+/* Summing the dot-products */
+MPI_Reduce(px, fx, n, MPI_DOUBLE, MPI_SUM, 0, comm);
+
+/* Now all values of x are stored in process 0. 
+   Need to scatter them to all processes */
+MPI_Scatter(fx, nlocal, MPI_DOUBLE, x, nlocal, MPI_DOUBLE, 0, comm);
+\end{lstlisting}
+
+Here, we first use \texttt{MPI\_Reduce} to gather and sum all partial dot products into the buffer \texttt{fx} in process 0. Since we want the final vector $x$ to be distributed across all processes, we follow it up with a \texttt{MPI\_Scatter} to send $n_\text{local}$ values of $x$ to each process.
+
+Alternatively, instead of gathering all values in process 0 and then redistributing them, we can use a clever method where each segment of the partial result \texttt{px} is reduced directly into the corresponding process:
+
+\begin{lstlisting}[style=cppstyle]
+for (i = 0; i < size; i++) {
+    MPI_Reduce(px + i * nlocal, x, nlocal, MPI_DOUBLE, MPI_SUM, i, comm);
+}
+\end{lstlisting}
+
+This results in each process directly receiving its portion of the reduced vector $x$, eliminating the need for an explicit scatter operation afterward.
+
+\vspace{1em}
+Collective communications offer two major advantages:
+\begin{enumerate}
+    \item \textbf{Reduced Programming Complexity:} Using one-line collective calls like \texttt{MPI\_Allreduce}, \texttt{MPI\_Scatter}, etc., avoids complex loops involving point-to-point communication.
+    \item \textbf{Performance Optimization:} When using collective calls, the MPI library can detect communication patterns and apply optimized algorithms (such as tree-based or ring-based communication) for better efficiency. In contrast, such optimization is not possible with arbitrary combinations of \texttt{MPI\_Send} and \texttt{MPI\_Recv}.
+\end{enumerate}
+
+Up until \textbf{MPI-2}, only \textbf{blocking collective communication} routines were available. Starting from \textbf{MPI-3}, MPI introduced \textbf{non-blocking collective communication} routines. These behave similarly to their point-to-point counterparts like \texttt{MPI\_Isend} and \texttt{MPI\_Irecv}, allowing the program to initiate a communication and proceed with computation before explicitly waiting for its completion.
+
+Just as \texttt{MPI\_Reduce} is used for a blocking reduction, we can now use:
+\begin{center}
+    \texttt{MPI\_Ireduce(..., \&request)}
+\end{center}
+to perform a non-blocking reduction, where \texttt{request} is an \texttt{MPI\_Request} object that can later be passed to \texttt{MPI\_Wait} or \texttt{MPI\_Test} to complete the communication.
+
+Note the following important characteristics:
+\begin{itemize}
+    \item Non-blocking collectives in MPI-3 support only the \textbf{standard mode} of communication. Unlike point-to-point routines, \textbf{buffered}, \textbf{synchronous}, or \textbf{ready} modes are \textit{not supported} for collective routines.
+    \item There is \textbf{no need for message tags} in collective communication. In point-to-point communication, message tags are used to provide scope or context to distinguish between multiple messages. However, collective operations are inherently well-scoped and synchronized across the communicator group. Therefore, the scope is implicit and tags are unnecessary.
+\end{itemize}
+
+\vspace{1em}
+
+We also observed that many collective communication routines have both a \textbf{simple variant} (where equal-sized data is involved for all processes) and a \textbf{vector variant} (where data sizes may differ across processes). For example:
+\begin{itemize}
+    \item \texttt{MPI\_Allgather} and \texttt{MPI\_Allgatherv}
+    \item \texttt{MPI\_Scatter} and \texttt{MPI\_Scatterv}
+    \item \texttt{MPI\_Gatherv}, \texttt{MPI\_Reduce\_scatter}, etc.
+\end{itemize}
+
+Further, it is important to distinguish between routines that require a \textbf{root process} and those that do not:
+\begin{itemize}
+    \item Collectives like \texttt{MPI\_Scatter}, \texttt{MPI\_Gather}, and \texttt{MPI\_Reduce} require a \texttt{root} process argument, which acts as the sender or receiver of data.
+    \item On the other hand, collectives like \texttt{MPI\_Allgather}, \texttt{MPI\_Allreduce}, and \texttt{MPI\_Bcast} do \textbf{not require} a root argument—they involve all processes equally.
+\end{itemize}
+
+\vspace{1em}
+
+\textbf{Communication Pattern Classification:}
+\begin{itemize}
+    \item \textbf{One-to-all:} A single process sends data to all others. \\
+        \textit{Example:} \texttt{MPI\_Bcast}, \texttt{MPI\_Scatter}
+    \item \textbf{All-to-one:} All processes send data to one process. \\
+        \textit{Example:} \texttt{MPI\_Reduce}, \texttt{MPI\_Gather}
+    \item \textbf{All-to-all:} Every process sends and receives data from every other process. \\
+        \textit{Example:} \texttt{MPI\_Allgather}, \texttt{MPI\_Allreduce}, \texttt{MPI\_Alltoall}
+\end{itemize}
+
+This classification helps in identifying the nature of communication and optimizing the parallel program based on the data flow requirement.
+
+\subsection{Barrier}
+
+We have already encountered the utility of barriers in earlier examples, particularly in the context of the grid solver, where synchronization between iterations was crucial. The \texttt{MPI\_Barrier} function provides a mechanism to ensure that all processes in a communicator reach a common synchronization point before any of them can proceed further. This is especially useful in iterative algorithms where the correctness of the next iteration depends on the completion of the previous one.
+ 
+When a process calls \texttt{MPI\_Barrier}, it will be blocked until all other processes in the communicator have also called \texttt{MPI\_Barrier}. Once all processes have reached this point, they are released simultaneously. This ensures coordinated progress across all processes.
+
+\paragraph{Implementing a Barrier using Point-to-Point Communication}  
+Even though MPI provides \texttt{MPI\_Barrier} as a collective operation, it's important to note that any collective communication can, in principle, be implemented using point-to-point primitives like \texttt{MPI\_Send} and \texttt{MPI\_Recv}.
+
+One naïve way to implement a barrier might be as follows:
+\begin{itemize}
+    \item Process $P_0$ sends a "finished" message to $P_1$.
+    \item $P_1$ receives this message, performs its barrier work, then sends a message to $P_2$, and so on.
+    \item Eventually, $P_{n-1}$ receives from $P_{n-2}$, completes its work, and then sends an acknowledgment message back to all the previous processes.
+\end{itemize}
+This approach involves $n - 1$ forward messages and $n - 1$ backward acknowledgments, resulting in $2(n - 1)$ sequential point-to-point communications.
+
+\paragraph{Time Complexity:}  
+The time complexity of this naïve linear chain barrier is $\mathcal{O}(n)$, where $n$ is the number of processes. This becomes a performance bottleneck for large-scale parallel programs.
+
+\paragraph{Can We Do Better? Butterfly Barrier (Eugene Brooks)}  
+Yes—we can reduce the time complexity from $\mathcal{O}(n)$ to $\mathcal{O}(\log_2 n)$ using a communication pattern called the \textbf{Butterfly Barrier}, proposed by Eugene Brooks.
+
+This algorithm leverages the fact that $\log_2 n$ rounds of pairwise exchanges are sufficient for all processes to share synchronization status. In each round $r$, every process communicates with a partner process determined by flipping the $r$-th least significant bit of its rank. After $\log_2 n$ such rounds, all processes are guaranteed to have participated in a global barrier.
+
+We will describe and illustrate this butterfly pattern in detail in the next subsection.
+\subsubsection{Butterfly Barrier Implementation}
+
+The butterfly barrier algorithm was proposed by Eugene Brooks II and is a classic example of an efficient synchronization method. For $n$ processes, it requires at most $\mathcal{O}(2\log_2 n)$ pairwise synchronizations in the worst case. This approach was originally designed for shared-memory multiprocessors but is widely applicable due to its scalability and simplicity.
+
+\paragraph{Algorithm Idea:}  
+The core idea is that in each round $k$, process $i$ synchronizes with process $i \oplus 2^k$, where $\oplus$ denotes the bitwise XOR operation. The algorithm proceeds in $\log_2 n$ rounds, with each round doubling the number of processes each participant is aware of having synchronized.
+
+Let us consider an example with $n = 8$ processes (numbered $0$ through $7$). The synchronization proceeds as follows:
+
+\begin{itemize}
+    \item \textbf{Stage 0:} Each process $i$ synchronizes with $i \oplus 1$. This forms the pairs (0,1), (2,3), (4,5), and (6,7).
+    \item \textbf{Stage 1:} Each process $i$ synchronizes with $i \oplus 2$. Now, we get (0,2), (1,3), (4,6), and (5,7).
+    \item \textbf{Stage 2:} Each process $i$ synchronizes with $i \oplus 4$. This leads to (0,4), (1,5), (2,6), and (3,7).
+\end{itemize}
+
+At the end of each round, the synchronization knowledge propagates exponentially. For example, by the end of Stage 1, process 5 has directly synchronized with 4 and 7 and indirectly with 6 (via 7). By the end of Stage 2, every process has synchronized—directly or transitively—with all others. Therefore, for $n=8$ processes, the barrier completes in $\log_2 8 = 3$ stages.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/Buttefly_barrier.png}
+    \caption{Butterfly barrier implementation for 8 processes}
+    \label{fig:butterfuly_barrier}
+\end{figure}
+
+\paragraph{Shared Memory Implementation:}  
+In the original shared-memory setting, explicit communication was replaced by shared flags. For instance, process 0 sets a flag to indicate it has reached the barrier. Process 1, upon reading this flag, knows process 0 is ready, and vice versa. This read/write pattern continues in the butterfly shape across rounds, hence the name.
+
+\paragraph{Non-Power-of-Two Case:}  
+The algorithm works optimally when $n$ is a power of two. However, if $n$ is not a power of two, we can emulate a power-of-two barrier by using the next higher power of two and assigning some processes to play the role of ``dummy" partners. This leads to redundant communications and, in the worst case, increases the number of pairwise synchronizations to $\mathcal{O}(2\log_2 n)$.
+
+The butterfly barrier is efficient, scalable, and well-suited to high-performance parallel computing systems. Compared to the naïve linear chain barrier (which takes $\mathcal{O}(n)$ time), the butterfly barrier reduces synchronization complexity to $\mathcal{O}(\log_2 n)$—a significant improvement for large-scale systems.
+
+\subsection{Broadcast}
+
+Another important collective communication operation in MPI is \textbf{broadcast}. In a broadcast operation, a single process (called the \textbf{root}) sends the same piece of data to all other processes within the communicator. This is often used in parallel programs when one process has input data that needs to be shared with all other processes before computation begins.
+
+MPI provides a standard interface for broadcast:
+
+\begin{lstlisting}
+MPI_BCAST(buffer, count, datatype, root, comm)    
+\end{lstlisting}
+
+\begin{itemize}
+    \item \texttt{buffer}: The starting address of the data to be broadcast.
+    \item \texttt{count}: Number of elements to broadcast.
+    \item \texttt{datatype}: MPI datatype of the data.
+    \item \texttt{root}: Rank of the process broadcasting the data.
+    \item \texttt{comm}: Communicator involving all participating processes.
+\end{itemize}
+
+All processes in the communicator must call \texttt{MPI\_BCAST}, regardless of whether they are the root or a receiver.
+
+\vspace{1em}
+Although a naïve implementation would simply have the root process send the data individually to each of the $P - 1$ processes (which takes $\mathcal{O}(P)$ time), this is inefficient for large $P$. Instead, optimized implementations use a tree-based approach where communication happens in a hierarchical, staged fashion.
+
+For example, using a binary tree scheme:
+\begin{itemize}
+    \item In the first step, the root sends data to two processes.
+    \item In the second step, those two send to two more, and so on.
+\end{itemize}
+This results in a time complexity of $\mathcal{O}(\log_2 P)$ and significantly improves scalability.
+
+MPI implementations typically use variations of binomial or pipeline trees for high efficiency, especially on large systems.
+
+\vspace{1em}
+\textbf{Important Notes:}
+\begin{itemize}
+    \item All processes must participate in the broadcast for it to succeed.
+    \item The function is \emph{synchronous}, in the sense that all processes wait for the operation to complete before proceeding.
+    \item Unlike point-to-point communication, there is no need for tags in collective communications. The scope and context are implied by the collective function itself.
+\end{itemize}
+
+\subsection{All-to-All}
+
+This operation is somewhat similar to \texttt{MPI\_Allgather}, but with a key difference. In \texttt{MPI\_Allgather}, each process sends data that is broadcast to all other processes, and all processes receive the same global result. However, in \texttt{MPI\_Alltoall}, each process sends distinct data to every other process, and similarly receives distinct data from every other process. Thus, each process ends up with a unique collection of data from all other processes.
+
+This pattern is particularly useful in scenarios where a distributed matrix needs to be transposed across processes, or when each process has some unique data for every other process. The result of this operation is conceptually equivalent to a transpose of a communication matrix. This is shown in figure~\ref{fig:alltoall}, where each process has multiple data items, each destined for a different target.
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Alltoall(sendbuf, sendcount, sendtype,
+             recvbuf, recvcount, recvtype, comm)
+\end{lstlisting}
+
+The vector variant of this communication, where different amounts of data are sent to different processes, is:
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Alltoallv(sendbuf, array_of_sendcounts, array_of_displs, sendtype,
+              recvbuf, array_of_recvcounts, array_of_displs, recvtype, comm)
+\end{lstlisting}
+
+Note that unlike collectives such as \texttt{MPI\_Bcast} or \texttt{MPI\_Reduce}, it is not possible to implement \texttt{MPI\_Alltoall} with $\mathcal{O}(\log_2 P)$ complexity. This is because each process must send a distinct message to every other process, which fundamentally requires $\mathcal{O}(P)$ communications.
+
+\vspace{1em}
+\textbf{Naïve vs Optimized Communication Pattern:}
+
+A naïve implementation might look like the following:
+
+\begin{lstlisting}[style=cppstyle]
+// Naive All-to-All (sequential and bottlenecked)
+for all processes i in order {
+    if (i != my_proc) {
+        send to process i;
+        receive from process i;
+    }
+}
+\end{lstlisting}
+
+This approach introduces serialization and communication hotspots due to synchronization around a fixed global order. A better strategy is to ``break symmetry" and have each process follow its own order in a round-robin fashion. This avoids bottlenecks and maximizes parallelism:
+
+\begin{lstlisting}[style=cppstyle]
+// Optimized All-to-All using ring pattern
+for (i = 0; i < P; i++) {
+    dest = (my_proc + i) % P;
+    src  = (my_proc - i + P) % P;
+    send to dest;
+    receive from src;
+}
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{images/alltoall.png}
+    \caption{Schematic representation of All-to-All communication pattern}
+    \label{fig:alltoall}
+\end{figure}
+
+This circular scheduling pattern ensures full utilization of communication links and avoids contention, making the operation significantly faster on large systems.
+\subsection{\texttt{ReduceScatter}, \texttt{Scan}}
+
+The idea behind \texttt{MPI\_Reduce\_scatter} is to first perform a reduction across all processes and then scatter the results among the processes, as illustrated in Figure~\ref{fig:reducescatter}. This collective operation combines the functionalities of both \texttt{MPI\_Reduce} and \texttt{MPI\_Scatter}.
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Reduce_scatter(sendbuf, recvbuf,
+                   array_of_recvcounts, datatype, op, comm);
+\end{lstlisting}
+
+The \texttt{MPI\_Scan} operation is known as a prefix sum or partial reduction operation. Unlike \texttt{MPI\_Reduce}, where the final result is available at a single process, in \texttt{MPI\_Scan}, each process receives the result of combining its data with the data from all lower-ranked processes. This is also called an \textbf{inclusive scan} or \textbf{inclusive prefix sum}. The behavior is illustrated in Figure~\ref{fig:scan}.
+
+\begin{lstlisting}[style=cppstyle]
+MPI_Scan(sendbuf, recvbuf, count,
+         datatype, op, comm);
+\end{lstlisting}
+
+For example:
+\begin{itemize}
+    \item Process 0 has no prior process, so its result remains unchanged.
+    \item Process 1 receives the combination (according to the given operator) of process 0 and process 1's data.
+    \item Process 2 receives the combined result of processes 0, 1, and 2, and so on.
+\end{itemize}
+
+These kinds of operations are useful in many distributed algorithms, particularly in numerical computations, parallel prefix algorithms, and histogram computations.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/reducescatter.png}
+    \caption{Conceptual diagram of \texttt{MPI\_Reduce\_scatter}}
+    \label{fig:reducescatter}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/scan.png}
+    \caption{Inclusive prefix sum using \texttt{MPI\_Scan}}
+    \label{fig:scan}
+\end{figure}
+
+\subsubsection{Example of Ring-based \texttt{Allgather} Strategy:}
+In general, the efficiency of collective operations like \texttt{Allgather}, \texttt{Alltoall}, and \texttt{Scan} heavily depends on the hardware topology, communication latency, and network contention.
+
+As an example, suppose we implement a ring-based \texttt{Allgather} operation. The idea is that in each stage, every process sends data to its right neighbor and receives data from its left neighbor. This process continues for $n - 1$ steps if there are $n$ processes, resulting in an $\mathcal{O}(n)$ time complexity.
+At stage 0:
+\begin{itemize}
+    \item Process 0 sends its data $A_0$ to Process 1.
+    \item Process 1 sends its data $A_1$ to Process 2, and so on.
+\end{itemize}
+
+At the end of stage 0:
+\begin{itemize}
+    \item Each process $P_i$ now holds $A_i$ and $A_{i-1}$ (modulo $n$).
+\end{itemize}
+
+At stage 1:
+\begin{itemize}
+    \item Each process sends what it received in the previous stage to its right neighbor.
+\end{itemize}
+
+This continues until all $n$ pieces of data are circulated around the ring. Hence, it takes $\mathcal{O}(n)$ stages. This is as shown in figure~\ref{fig:allgather_examp}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/allgather_examp.png}
+    \caption{All gather operation for a ring-based topology}
+    \label{fig:allgather_examp}
+\end{figure}
+
+
+
 For a complete reference guide on MPI refer~\cite{snir1998mpi}.
 
-\chapter{CUDA}
+\chapter{Graphical Processing Units}
 
-For details refer to~\cite{nvidia2011nvidia}.
+A CPU typically has up to 32 cores, with each core supporting multiple threads—usually up to 8. It is well-suited for serial processing and is referred to as a multi-core architecture.
+
+However, for highly parallel computations, we need architectures with significantly more cores. This is where Graphical Processing Units (GPUs) come into play. GPUs can have thousands of lightweight cores and are optimized for parallel processing. Consequently, they are often termed many-core architectures.
+
+GPU cores are not as powerful as CPU cores individually, but they are designed to execute a vast number of simple operations simultaneously. In the early days, before 2014, NVIDIA GPUs were primarily used for gaming and video-related applications. These tasks involved multiple stages, such as pixel reading, shading, and rendering—each of which can be executed independently. For instance, the reading of one pixel does not depend on the reading of another, making it ideal for parallel execution. The high core count in GPUs allows such operations to be performed in real-time.
+
+Because each GPU core is relatively lightweight and suited for simple computations rather than complex tasks, GPUs are used to accelerate operations that exhibit high degrees of parallelism. Typically, CPUs and GPUs coexist in a heterogeneous computing environment. GPUs are not used in a standalone manner. A program is usually executed on the CPU, which handles control and coordination, while delegating specific light-weight, data-parallel tasks to the GPU.
+
+NVIDIA's GPU architecture supports CUDA (Compute Unified Device Architecture), a parallel computing platform and API developed by NVIDIA. CUDA enables developers to write programs in C/C++ that can offload computations to the GPU. It allows for efficient expression of data-parallelism and is widely used in domains requiring high-performance parallel computing.
+
+Although GPUs were initially designed for graphical workloads, they have also proven to be highly efficient for numerical computations—particularly matrix operations. This makes them essential not only in gaming and graphics, but also in scientific computing, machine learning, and deep learning applications.
 
 
+\section{GPU Architecture}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/gpu.png}
+    \caption{GPU Architecture}
+    \label{fig:gpu}
+\end{figure}
+
+A schematic of the GPU architecture is shown in Figure~\ref{fig:gpu}. The architecture consists of the following major components:
+\begin{itemize}
+    \item \textbf{TPC} – Texture Processing Clusters
+    \item \textbf{SMX} – Streaming Multiprocessors
+    \item \textbf{SP} – Single Precision Cores (GPU cores)
+    \item \textbf{DRAM} – Device RAM (GPU memory)
+    \item \textbf{ROP} – Render Output Units
+\end{itemize}
+
+GPU cores are referred to as \textbf{Streaming Multiprocessors} (SMX), while individual scalar cores inside an SMX are called \textbf{Single Precision} (SP) cores. Coarse-level parallel tasks are handled by the SMX units, which further distribute fine-grained parallel tasks to the SP cores. This structure supports both coarse-grain and fine-grain parallelism.
+
+For instance, NVIDIA's Kepler architecture consists of 15 SMX units, each containing 192 SP cores, resulting in a total of $15 \times 192 = 2880$ SP cores. Although the clock speed of each core (approximately 745 MHz) is lower than that of a typical CPU core, the massively parallel structure of GPUs allows them to deliver high throughput for data-parallel tasks.
+
+GPUs operate using the \textbf{SIMT} (Single Instruction Multiple Threads) model. Each SMX is equipped with its own 32-bit registers used to store the execution context of GPU threads. NVIDIA GPUs also feature a memory hierarchy including L2 cache, common memory, and local caches per SMX.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/smx.png}
+    \caption{Architecture of a single SMX unit}
+    \label{fig:smx}
+\end{figure}
+
+Figure~\ref{fig:smx} illustrates the internal architecture of an SMX. It typically includes:
+\begin{itemize}
+    \item 65536 registers
+    \item 192 SP cores for single-precision computations
+    \item 64 DP (Double Precision) cores
+    \item 32 Special Function Units (SFUs) for evaluating transcendental functions
+    \item 32 Load/Store units for data movement between global and shared memory
+    \item 16 Texture Filtering Units
+    \item Shared memory of size 64 KB (often configurable as 48 KB shared memory and 16 KB L1 cache, or vice versa)
+\end{itemize}
+
+The CUDA programming model provides explicit control over shared memory allocation. The programmer can allocate a portion of this 64 KB memory as shared memory (manually managed) and the rest as L1 cache (automatically managed by the hardware).
+
+Computations are organised as blocks. Blocks are given to SMX. A block consists of many threads and threads are given to SP cores.
+
+\section{CUDA Memory Spaces}
+Consider the figure \ref{fig:cuda_memory} of CUDA Memory Spaces. CPU pushes the relevant data to Global memory to be executed on GPU.
+It spawns GPU kernels/functions which are executed on SMX. Each thread in SMX loads data from global memory/device memory to shared memory.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/cuda_memory.png}
+    \caption{CUDA Memory Spaces}
+    \label{fig:cuda_memory}
+\end{figure}
+The memory spaces in CUDA are:
+\begin{itemize}
+    \item \textbf{Global Memory} — It is the main memory of the GPU. It is accessible for read/write by all the threads in all the SMXs. 
+    It can also be accessed by host (CPU). For Kepler K40 it is around 12 GB. It has a latency of around 200–400 clock cycles (300 ns).
+    
+    \item \textbf{Constant Memory} — It is read-only memory. It is used to store constants that are used by all the threads in all the blocks.
+    
+    \item \textbf{Texture Memory} — It can be accessed by all threads. It is used to store textures, used for texture mapping. It is used to improve performance of reads that exhibit spatial locality among the threads.
+    
+    \item \textbf{Shared Memory} — Each SMX has its own individual memory. It is the memory shared by all the threads in a block executing in an SMX. It is faster than global memory. Shared memory has a latency of 20–30 clock cycles (5 ns). The threads can read/write to this memory.
+    
+    \item \textbf{Local Memory} — It is the memory local to each thread, used to store temporary variables. Each thread has read/write access to this memory.
+    
+    \item \textbf{Registers} — They are present in each SMX. It is the memory local to each thread. It is used to store the context of the thread. Kepler K40 has 64K registers in each SMX.
+\end{itemize}
+The host can read/write global, constant, and texture memory. GPUs prefer to access data from shared memory rather than device memory because of latency.
+
+\textbf{Difference between CPU and GPU Threads:} There are a few differences between CPU and GPU threads regarding context switching. Context switching is much faster in GPUs because the state of a thread (or thread block) is stored in shared memory, and threads remain active until execution is complete. 
+
+Unlike in CPUs, where in the case of a context switch, memory related to that thread gets dumped to main memory or disk, in GPUs, this overhead is avoided. In CPUs, loading the data for the next thread requires retrieving it from main memory or disk, which is slow. Thus, context switching is faster in GPUs as there is no need to bring in any data—it is already loaded in shared memory.
+
+Also, in the case of GPUs, the cache is explicitly managed by the programmer. The programmer has to explicitly bring frequently accessed data from device memory to shared memory. This differs from CPUs, where cache management is handled automatically by the hardware. For further details refer~\cite{nvidia2020a100}.
+
+\section{CUDA}
+A common way to program GPU architectures is by using the CUDA programming model. CUDA supports a hierarchical parallelism model, where computations in your program are structured as \textbf{grids}, which can be thought of as different phases of your program. These grids (or phases) execute one after another. Each grid consists of a number of \textbf{blocks}. This organization is specified by the programmer. That is, the programmer expresses computations in terms of grids and blocks.
+
+The programmer launches a GPU \textbf{kernel} with a given number of blocks. A kernel corresponds to a grid. The blocks within a grid can be arranged in one, two, or three dimensions. At runtime, the GPU scheduler assigns these blocks to \textbf{Streaming Multiprocessors (SMs)}. A block can be assigned to only one SM, but an SM can execute multiple blocks concurrently. For example, in many NVIDIA GPU architectures, a maximum of 16 thread blocks can be executed concurrently per SM.
+
+Each block consists of \textbf{elements}, and each element is computed by a \textbf{thread}. In many architectures, the maximum number of threads per thread block is 1024. It is this thread — the \textbf{GPU thread} — that gets executed on a GPU core (also called an SP core). Similar to blocks, the elements within a block can be arranged in one-, two-, or three-dimensional layouts. This is illustrated in Figure~\ref{fig:cuda_layout}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/Cuda_layout.png}
+    \caption{Decomposing result data into a grid of blocks partitioned into elements to be computed in parallel}
+    \label{fig:cuda_layout}
+\end{figure}
+
+In Figure~\ref{fig:cuda_layout}, we see that the grids are two-dimensional and will execute sequentially. Inside a single grid, we see two-dimensional blocks, and each block, in turn, consists of multiple threads organized in two-dimensions.
+
+\subsection{Thread Blocks}
+A \textbf{thread block} is an array of concurrent threads that execute the same program (kernel) and cooperate to compute the result. Thread blocks can be arranged in one-, two-, or three-dimensional layouts (i.e., they have shape and dimensions).
+
+Each thread within a thread block is uniquely identified by a \texttt{threadIdx} value, which may be one-, two-, or three-dimensional (e.g., \texttt{threadIdx.x}, \texttt{threadIdx.y}, \texttt{threadIdx.z}) depending on how the block is organized. These indices are essential for identifying and managing the work done by each thread within a block.
+
+Importantly, all threads within a thread block execute on the same \textbf{Streaming Multiprocessor (SM)}, and therefore they can share fast, low-latency \textbf{shared memory}. This shared memory allows threads in the same block to cooperate and synchronize their execution efficiently.
+
+\subsection{Kernels}
+A \textbf{kernel} is a GPU function that is executed by a grid of thread blocks. In the CUDA programming model, a grid corresponds to a single invocation of a kernel. Just like the terms ``element" and ``thread" can often be used interchangeably in context, the terms ``grid" and ``thread blocks" are sometimes loosely interchanged when discussing GPU execution.
+
+To compute a grid, we launch (or ``call") the corresponding GPU kernel function. While launching, we specify various execution parameters: the number of blocks in the grid, how these blocks are arranged (in 1D, 2D, or 3D), and how each block itself is arranged in terms of threads or elements (also in 1D, 2D, or 3D). Once the kernel is launched with these parameters, the GPU scheduler handles the parallel execution of threads across the available SMs (Streaming Multiprocessors).
+
+Each kernel call thus represents one phase of computation on the GPU, and multiple kernel calls can be used to structure a larger GPU program.
+
+A \textbf{thread block} is a batch of threads that can cooperate with each other by:
+
+\begin{itemize}
+    \item \textbf{Sharing data through shared memory.} Since each block is assigned to a single Streaming Multiprocessor (SM), all threads in a block reside within the same SM. SMs provide a shared memory space accessible to all threads of the block, which allows efficient data sharing and coordination.
+    
+    \item \textbf{Synchronizing their execution.} Threads in a block can use built-in synchronization mechanisms (such as \texttt{\_\_syncthreads()}) to coordinate their execution, ensuring consistent results.
+\end{itemize}
+
+However, an important limitation is that threads from \emph{different blocks} \textbf{cannot directly cooperate}. This is because thread blocks may be assigned to different SMs, and SMs do not share memory. As a result, there's no shared memory space available for inter-block communication.
+
+\begin{note}
+With advancements in GPU architecture, it is now possible for multiple kernels to be executed \textbf{simultaneously} on the GPU. By default, kernel launches are serialized, but modern GPUs support concurrent kernel execution if certain conditions are met and if the programmer uses the appropriate API (such as CUDA streams).
+\end{note}
+
+Execution of a CUDA program always begins on the CPU (host). From the host, we invoke GPU execution using specific CUDA kernel launch syntax. Before launching a kernel, we typically allocate and transfer data to the GPU’s global (device) memory. Once the kernel completes its execution, data can be copied back from the device memory to the host.
+
+While it is technically possible for threads from different blocks to communicate via \textbf{global memory} using locks or atomic operations, such communication is expensive and error-prone. Hence, it is best to design GPU programs so that \textbf{only threads within the same block} need to cooperate. This allows full use of the fast shared memory and efficient synchronization within an SM.
+
+
+For an overview of CUDA memory spaces, refer to Figure~\ref{fig:cuda_memory}. Each thread in CUDA has access to various memory spaces, with different scopes and performance characteristics:
+
+\begin{itemize}
+    \item Read/write access to its own \textbf{per-thread registers}
+    \item Read/write access to its own \textbf{per-thread local memory}
+    \item Read/write access to \textbf{per-block shared memory}
+    \item Read/write access to \textbf{per-grid global memory}
+    \item \textbf{Read-only} access to \textbf{per-grid constant memory}
+    \item \textbf{Read-only} access to \textbf{per-grid texture memory}
+\end{itemize}
+
+The host (CPU) can access the global, constant, and texture memories, all of which reside in device DRAM.
+
+\vspace{0.5em}
+\noindent
+Given the high access latency of global memory (typically hundreds of cycles), it is crucial to minimize global memory accesses in performance-critical code. Instead, threads should make efficient use of \textbf{shared memory}—which resides within the SM and has significantly lower latency (around 10--20 cycles).
+
+\textbf{Global and shared memory} are the most commonly used memory types in GPU computations. Other memory types—\textbf{local, constant, and texture memory}—are specialized for convenience or performance optimizations:
+
+\begin{itemize}
+    \item \textbf{Local memory} is used by the compiler to store automatic array variables that cannot be held in registers.
+    \item \textbf{Constant memory} is suitable for read-only data that is accessed uniformly by all threads. It is cached for fast access. See the CUDA Programming Guide~\cite{nvidia2011nvidia} for more details.
+    \item \textbf{Texture memory} is optimized for spatially coherent, read-only data with random access patterns. It is also cached and supports features like address clamping and wrapping.
+\end{itemize}
+
+The characteristics of these memory types are summarized in Table~\ref{tab:cuda_memoryspaces}.
+
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+        \textbf{Memory} & \textbf{Location} & \textbf{Cached} & \textbf{Access} & \textbf{Scope (``Who?")} \\
+        \hline
+        Local & Off-chip & No & Read/Write & One thread \\
+        \hline 
+        Shared & On-chip & N/A & Read/Write & All threads in a block \\
+        \hline
+        Global & Off-chip & No & Read/Write & All threads + host \\
+        \hline 
+        Constant & Off-chip & Yes & Read & All threads + host \\
+        \hline
+        Texture & Off-chip & Yes & Read & All threads + host \\
+        \hline
+    \end{tabular}
+    \caption{CUDA Memory Spaces}
+    \label{tab:cuda_memoryspaces}
+\end{table}
+
+\vspace{1em}
+
+CUDA is a programming language designed for expressing threaded parallelism on GPUs. It is a minimal extension of the C programming language, meaning most CUDA programs consist of standard C code augmented with GPU-specific constructs—similar to what we saw with OpenMP and MPI.
+
+A CUDA program typically begins execution on the CPU (host). At appropriate points, it launches GPU kernels—parallel functions that execute on the GPU (device). The main application runs on the CPU, while the compute-intensive kernels run across many parallel threads on the GPU. The programmer organizes these threads into a hierarchy of \textbf{thread blocks} and \textbf{grids}.
+
+The parallel portions of the application are executed on the device as \textbf{kernels}. One or more kernels can be executed at a time, with many threads executing each kernel.
+
+One of the key differences between CUDA threads and CPU threads is their lightweight nature. CUDA threads incur very little overhead for creation and context switching because register and shared memory data are persistent across switches. They do not get swapped out in the conventional sense, which makes switching between threads nearly instantaneous.
+
+CUDA achieves efficiency by launching thousands of lightweight threads, whereas even multicore CPUs typically manage only a few heavyweight threads.
+
+\textbf{Note:} From this point onward, we will refer to the GPU as the \emph{device} and the CPU as the \emph{host}. Kernels are special functions written to execute on the device.
+
+\section{CUDA C}
+We will now explore the fundamental CUDA C constructs and built-in variables that are essential for writing GPU kernels.
+
+\begin{itemize}
+    \item \texttt{threadIdx.\{x, y, z\}} — Threads are arranged in one-, two-, or three-dimensional configurations within a block. To uniquely identify a thread within a block, we use the built-in variable \texttt{threadIdx} along with the appropriate dimension index.
+    
+    \item \texttt{blockIdx.\{x, y, z\}} — Similarly, to identify a thread block within a grid, we use \texttt{blockIdx} along with its dimensional coordinate(s). Each block in the grid has a unique ID.
+
+    \item \texttt{blockDim.\{x, y, z\}} — This gives the dimension layout of the threads within a block. For example, if each block has $16 \times 16$ threads, then \texttt{blockDim.x = 16} and \texttt{blockDim.y = 16}.
+    
+    \item \texttt{gridDim.\{x, y, z\}} — This specifies how blocks are arranged within a grid. For example, if the grid has $8 \times 8$ blocks, then \texttt{gridDim.x = 8} and \texttt{gridDim.y = 8}.
+    
+    \item \texttt{kernel<<<nBlocks, nThreads>>>(args)} — This is the syntax to invoke a GPU kernel function. Unlike calling a CPU function, where one simply passes arguments to a function name, invoking a kernel requires special triple angle-bracket syntax \texttt{<<<...>>>} to indicate the number of thread blocks and number of threads per block. This lets the compiler know that a GPU kernel is being launched.
+\end{itemize}
+
+\subsection{Example: Summing Up}
+Suppose we want to add the elements of two matrices $A$ and $B$ and store the result in matrix $C$. Assume that the matrices are of size $N \times N$ and stored as single-dimensional arrays in row-major order. The CPU version of the code looks like:
+
+\begin{lstlisting}[style=cppstyle]
+void addMatrix(float *a, float *b, float *c, int N)
+{
+    int i, j, idx;
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            idx = j + i * N;
+            c[idx] = a[idx] + b[idx];
+        }
+    }
+}
+
+void main()
+{
+    ...
+    addMatrix(a, b, c, N);
+}
+\end{lstlisting}
+
+The corresponding GPU implementation using CUDA would look like:
+
+\begin{lstlisting}[style=cppstyle]
+__global__ void addMatrixG(float *a, float *b, float *c, int N)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int j = blockIdx.y * blockDim.y + threadIdx.y;
+    int idx = i + j * N;
+
+    if (i < N && j < N)
+        c[idx] = a[idx] + b[idx];
+}
+
+void main()
+{
+    ...
+    dim3 dimBlock(blocksize, blocksize);
+    dim3 dimGrid(N / dimBlock.x, N / dimBlock.y);
+
+    addMatrixG<<<dimGrid, dimBlock>>>(a, b, c, N);
+    ...
+}
+\end{lstlisting}
+
+In the \texttt{main} program, we define a \texttt{blocksize}, which specifies the number of threads per dimension in each thread block. Using this, we determine the number of blocks per grid dimension and define the \texttt{dimGrid} and \texttt{dimBlock} variables accordingly.
+
+The kernel function \texttt{addMatrixG} is then launched using the special CUDA syntax \texttt{<<<dimGrid, dimBlock>>>}. Each thread computes a unique global index $(i, j)$ using its \texttt{blockIdx}, \texttt{blockDim}, and \texttt{threadIdx} values. It then computes its corresponding linear index \texttt{idx} and performs the addition operation on that single element.
+
+This is a form of SIMD (Single Instruction, Multiple Data) parallelism. In the GPU context, we often refer to this model as SIMT (Single Instruction, Multiple Threads) parallelism, where each thread executes the same instruction sequence but operates on different data elements.
+
+\subsection{Variable Qualifiers (GPU code)}
+The CUDA programming model provides several qualifiers to specify where variables reside in GPU memory. These qualifiers help in controlling data access scope, lifetime, and performance:
+
+\begin{itemize}
+    \item \texttt{\_\_device\_\_} – Declares a variable stored in global (device) memory. This memory is large but has high latency and no cache. Such variables are typically allocated using \texttt{cudaMalloc()} (the \texttt{\_\_device\_\_} qualifier is implied). These variables are accessible by all threads across all blocks. Their lifetime is the duration of the application.
+    
+    \item \texttt{\_\_constant\_\_} – Declares a variable in constant memory. It behaves like \texttt{\_\_device\_\_} memory but is cached and read-only for GPU threads. It must be initialized from the host using \texttt{cudaMemcpyToSymbol(...)}. The lifetime is also the duration of the application.
+    
+    \item \texttt{\_\_shared\_\_} – Declares a variable stored in shared memory, which resides on-chip and has very low latency. It is accessible by all threads in the same thread block. The lifetime is the duration of a kernel launch.
+\end{itemize}
+
+Variables that are scalars or built-in vector types without any qualifier are typically stored in registers. Arrays of more than 4 elements that are not explicitly shared or constant are stored in global device memory.
+
+\subsubsection*{Typical CUDA Execution Steps}
+A standard CUDA program follows these steps:
+
+\begin{enumerate}
+    \item Allocate memory on the device using \texttt{cudaMalloc()}.
+    \item Copy input data from the host (CPU) to the device (GPU) using \texttt{cudaMemcpy()}.
+    \item Launch the kernel on the GPU.
+    \item Optionally, perform additional computation on the host while the GPU kernel runs (asynchronous execution).
+    \item Copy the result back from the device to the host using \texttt{cudaMemcpy()}.
+    \item Free the device memory using \texttt{cudaFree()}.
+\end{enumerate}
+
+By default, the CPU does not wait for the GPU kernel to finish execution. This allows for hybrid CPU–GPU computing, where while the GPU is executing, the CPU can simultaneously perform communication or computation.
+
+\subsubsection*{Best Practices}
+To make effective use of CUDA:
+
+\begin{itemize}
+    \item \textbf{Minimize} data transfer between CPU and GPU, as these transfers are expensive.
+    \item \textbf{Maximize} parallelism by launching a large number of threads on the GPU.
+\end{itemize}
+
+\subsubsection*{Important CUDA Constructs}
+\begin{itemize}
+    \item \texttt{cudaMalloc(void **devPtr, size\_t size)} – Allocates memory on the device.
+    \item \texttt{cudaMemcpy(void *dst, const void *src, size\_t count, cudaMemcpyKind kind)} – Copies memory between host and device.
+    \item \texttt{cudaFree(void *devPtr)} – Frees the allocated memory on the device.
+    \item \texttt{\_\_syncthreads()} – Synchronizes all threads within a block (acts like a barrier).
+\end{itemize}
+
+\section{Example: Matrix-Vector Multiplication}
+
+Consider the following CUDA code for computing the matrix-vector multiplication $Ax = y$:
+
+\begin{lstlisting}[style=cppstyle]
+__global__ void matvec_mul(int m, int n, double *A, double *x, double *y)
+{
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    double sum = 0;
+
+    if (row < m) {
+        for (int col = 0; col < n; col++) {
+            sum += A[row * n + col] * x[col];
+        }
+        y[row] = sum;
+    }
+}
+\end{lstlisting}
+
+Here, each entry of the output vector $y$ can be computed independently. So, each thread is assigned a unique row of the matrix $A$ using its global thread ID (computed from \texttt{blockIdx}, \texttt{blockDim}, and \texttt{threadIdx}). It performs a dot product of that row with the input vector $x$ and stores the result in $y$.
+
+The corresponding host code is as follows:
+
+\begin{lstlisting}[style=cppstyle]
+int main(int argc, char* argv[]) {
+    int m = ...; // number of rows
+    int n = ...; // number of columns
+
+    size_t size_A = sizeof(double) * m * n;
+    size_t size_x = sizeof(double) * n;
+    size_t size_y = sizeof(double) * m;
+
+    double *A = (double*) malloc(size_A);
+    double *x = (double*) malloc(size_x);
+    double *y = (double*) malloc(size_y);
+
+    double *dA, *dx, *dy;
+
+    // Allocate memory on the device
+    cudaMalloc((void**) &dA, size_A);
+    cudaMalloc((void**) &dx, size_x);
+    cudaMalloc((void**) &dy, size_y);
+
+    // Initialize A and x
+    // ...
+
+    // Initialize y to 0
+    for (int i = 0; i < m; i++) y[i] = 0;
+
+    // Copy data to the device
+    cudaMemcpy(dA, A, size_A, cudaMemcpyHostToDevice);
+    cudaMemcpy(dx, x, size_x, cudaMemcpyHostToDevice);
+
+    // Launch the kernel
+    int numThreadsPerBlock = 1024;
+    int numBlocks = (m + numThreadsPerBlock - 1) / numThreadsPerBlock;
+
+    dim3 dimGrid(numBlocks);
+    dim3 dimBlock(numThreadsPerBlock);
+
+    matvec_mul<<<dimGrid, dimBlock>>>(m, n, dA, dx, dy);
+
+    // Copy the result back to host
+    cudaMemcpy(y, dy, size_y, cudaMemcpyDeviceToHost);
+
+    // Free device memory
+    cudaFree(dA);
+    cudaFree(dx);
+    cudaFree(dy);
+
+    // Free host memory
+    free(A);
+    free(x);
+    free(y);
+
+    return 0;
+}
+\end{lstlisting}
+
+\noindent
+\textbf{Note:} In CUDA, you can only pass and manipulate one-dimensional arrays in device memory. Multidimensional arrays must be flattened manually. This is why in the kernel we access elements of $A$ using \texttt{A[row * n + col]}.
+
+Recall that after calling a GPU kernel, control immediately returns to the host CPU, and the subsequent lines of code execute without waiting for the GPU kernel to finish. However, if a \texttt{cudaMemcpy} function or another kernel that depends on the results of the previous kernel is called, then the GPU ensures that the earlier kernel completes before proceeding.
+
+Thus, a dependency is implicitly created between the kernel call and \texttt{cudaMemcpy}, since we are copying the result vector $y$ from device memory (which was computed by the kernel) back to the host memory. The \texttt{cudaMemcpy} call will block the CPU until the GPU kernel finishes execution and the data is available for transfer. Note that each thread in the kernel operates on a particular element of the output vector $y$.
+
+\subsection{Example 1, Version 2: Access from Shared Memory}
+
+Here, we present a modified version of the matrix-vector multiplication example that uses shared memory to improve cooperation among threads and reduce global memory access latency. Consider the following code:
+
+\begin{lstlisting}[style=cppstyle]
+__global__ void matvec_mul(int m, int n, double *A, double *x, double *y)
+{
+    int row = blockIdx.x * blockDim.x + threadIdx.x;
+    double sum = 0;
+
+    // Declare shared memory for x
+    __shared__ double sx[BLOCK_SIZE];
+
+    // Each thread loads one element of x into shared memory
+    if (threadIdx.x < n)
+        sx[threadIdx.x] = x[threadIdx.x];
+
+    __syncthreads(); // Ensure all threads have loaded their x values
+
+    if (row < m) {
+        for (int col = 0; col < n; col++) {
+            sum += A[row * n + col] * sx[col];
+        }
+        y[row] = sum;
+    }
+}
+\end{lstlisting}
+
+\noindent
+This version assumes that the number of columns $n$ is less than or equal to the block size (typically $\leq 1024$ for many NVIDIA architectures). This is because each thread in the block is responsible for loading one element of $x$ into shared memory.
+
+This optimization improves performance because all threads now access the vector $x$ from shared memory (\texttt{sx}) instead of repeatedly accessing the global memory. Shared memory resides on-chip and has much lower latency compared to global memory.
+
+Note that in this version, the host (CPU) code remains the same as in the previous example.
+
+\section{Example 2: Matrix-Matrix Multiplication}
+
+Suppose we want to compute the product $C = A \cdot B$, where:
+\begin{itemize}
+    \item $A$ is of size $(h_A, w_A)$
+    \item $B$ is of size $(w_A, w_B)$
+    \item Hence, $C$ is of size $(h_A, w_B)$
+\end{itemize}
+
+The idea is to decompose matrix $C$ into blocks, and assign each block to a thread block in two dimensions. Each thread block will:
+\begin{enumerate}
+    \item Load a sub-matrix of $A$ and a sub-matrix of $B$ into shared memory.
+    \item Compute a partial result for the corresponding block of $C$.
+    \item Iterate this process across the width of $A$ (or height of $B$), updating its partial result.
+\end{enumerate}
+
+Each thread in a thread block computes one element of a sub-matrix of $C$. The element is computed as a dot product between a row of $A$ and a column of $B$. This is as shown in figure~\ref{fig:matmul_cuda}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/matmul_cuda.png}
+    \caption{Matrix multiplication}
+    \label{fig:matmul_cuda}
+\end{figure}
+\subsection*{Host Code}
+\begin{lstlisting}[style=cppstyle]
+void Mul(const float *A, const float *B, int hA, int wA, int wB, float *C)
+{
+    float *Ad, *Bd, *Cd;
+    size_t size;
+
+    // Allocate and copy A
+    size = hA * wA * sizeof(float);
+    cudaMalloc((void**) &Ad, size);
+    cudaMemcpy(Ad, A, size, cudaMemcpyHostToDevice);
+
+    // Allocate and copy B
+    size = wA * wB * sizeof(float);
+    cudaMalloc((void**) &Bd, size);
+    cudaMemcpy(Bd, B, size, cudaMemcpyHostToDevice);
+
+    // Allocate C
+    size = hA * wB * sizeof(float);
+    cudaMalloc((void**) &Cd, size);
+
+    // Set up execution configuration
+    dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
+    dim3 dimGrid(wB / dimBlock.x, hA / dimBlock.y);
+
+    // Launch kernel
+    Muld<<<dimGrid, dimBlock>>>(Ad, Bd, wA, wB, Cd);
+
+    // Copy result back to host
+    cudaMemcpy(C, Cd, size, cudaMemcpyDeviceToHost);
+
+    // Free device memory
+    cudaFree(Ad); cudaFree(Bd); cudaFree(Cd);
+}
+\end{lstlisting}
+
+\subsection*{Kernel Code}
+\begin{lstlisting}[style=cppstyle]
+__global__ void Muld(float *A, float *B, int wA, int wB, float *C)
+{
+    //Setup aBegin, aend, aStep, bBegin, bStep based on Block index and Block size
+    
+    // The element of the block sub-matrix that is computed by the thread
+    float Csub = 0;
+    // Loop over all the sub-matrices of A and B required to compute the block sub-matrix
+    for(int a = aBegin, b = bBegin; a <= aEnd; a += aStep, b += bStep){
+    
+        // Shared memory for the sub-matrices of A and B
+        __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
+        __shared__ float Bs[BLOCK_SZIE][BLCOK_SIZE];
+        
+        // Load the matrices form gloabl memory to shared memory; each thread loads on element of each matrix
+        As[ty][tx] = A[a+wA *ty +tx];
+        Bs[ty][tx] = B[b+wB*ty+tx];
+    
+        // Synchronize to make sure the matrices are loaded
+        __syncthreads();
+
+        // Multiply the two sub-matrices
+        for (int k = 0; k < BLOCK_SIZE; ++k)
+            Csub += As[ty][k] * Bs[k][tx];
+
+        __syncthreads();
+    }
+
+    //Write the block sub-matrix to global memory; each thread writes own element
+    int c = wB * BLOCK_SIZE *by+BLCOK_SIZE *bx;
+    C[c+wB *ty+tx] = Csub;
+}
+\end{lstlisting}
+
+\noindent
+Note:
+\begin{itemize}
+    \item We assume that matrix dimensions are divisible by \texttt{BLOCK\_SIZE}.
+    \item Each thread computes one element of the output matrix $C$.
+    \item Shared memory is used to load tiles (blocks) of $A$ and $B$, reducing global memory traffic.
+\end{itemize}
+
+\section{Example 3: Reduction}
+
+We now study a binary tree-based reduction algorithm. Given an array, we wish to compute a scalar value — such as the sum, minimum, or maximum of all its elements.
+
+\subsection*{Basic Idea}
+
+The reduction process involves iteratively combining pairs of values in the array using a binary tree pattern. At each level:
+\begin{itemize}
+    \item $\frac{N}{2}$ threads add adjacent pairs of values.
+    \item In the next pass, $\frac{N}{4}$ threads operate on results from the previous pass.
+    \item This continues until a single thread computes the final result.
+\end{itemize}
+
+At each level, threads must synchronize to ensure all intermediate computations are complete before the next level begins. This requires explicit synchronization using \texttt{\_\_syncthreads()}.
+
+\subsection*{Case 1: Fits in One Block}
+
+If the number of elements $N$ is less than or equal to the number of threads allowed in a single block (typically 1024), then the entire reduction can be carried out within a single thread block. In this case:
+\begin{itemize}
+    \item Synchronization across threads can be done using \texttt{\_\_syncthreads()}.
+    \item Shared memory can be used for fast communication among threads.
+    \item This is an efficient and straightforward implementation.
+\end{itemize}
+
+\subsection*{Case 2: Too Large for One Block}
+
+If $N$ is larger than the number of threads per block, multiple thread blocks are launched. Each block performs a partial reduction and writes its result to global memory. However, the final result is not yet available — further reduction on these partial results is needed.
+
+\subsection*{Challenge: Synchronizing Across Blocks}
+
+CUDA does not allow synchronization across thread blocks within a single kernel launch, since blocks are scheduled independently and may run concurrently on different SMs. Thus, \texttt{\_\_syncthreads()} only synchronizes threads within a block.
+
+To solve this:
+\begin{itemize}
+    \item One option is to use \textbf{atomic operations} and global flags to track completion. However, this is expensive and error-prone.
+    \item A better solution is to use \textbf{multiple kernel launches}. Since CUDA guarantees that kernels are executed sequentially by default, each kernel launch acts as a global synchronization point.
+\end{itemize}
+
+\subsection*{Multiple Kernel Strategy}
+
+\begin{enumerate}
+    \item Launch a kernel where each thread block reduces a portion of the array and stores one partial result in global memory.
+    \item Launch a second kernel to reduce these partial results.
+    \item Repeat until the number of results is small enough to be reduced in a single thread block.
+\end{enumerate}
+
+\begin{note}
+In this multi-kernel strategy, all data remains on the GPU. There is no need to copy data back and forth between the host and device across kernel calls. The kernels read/write from the global memory allocated on the device, improving performance.
+\end{note}
+
+\subsection*{Global Synchronization via Kernels}
+
+This approach works because:
+\begin{itemize}
+    \item CUDA guarantees that kernel calls are \textbf{blocking} on the host — the second kernel starts only after the first completes.
+    \item This provides a convenient global synchronization mechanism between thread blocks.
+\end{itemize}
+
+Hence, the reduction is carried out level by level (as in a binary tree), with each level corresponding to a separate kernel invocation. This process continues until a final result is computed by a single block using intra-block reduction and synchronization.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/reduction.png}
+    \caption{Reduction using multiple kernel launches for global synchronization}
+    \label{fig:reduction}
+\end{figure}
+
+Let us now look at the host code for performing the reduction using multiple kernel calls:
+
+\begin{lstlisting}[style=cppstyle]
+int* h_idata, h_odata; /* host data*/
+int* d_data, d_odata; /* device data*/
+
+/* copying inputs to device memeory*/
+cudaMemcpy(d_idata, h_idata, bytes, cudaMemcpyHostToDevice);
+cudaMemcpy(d_odata, h_idata, numBlocks*sizeof(int), cudaMemcpyHostToDevice);
+
+int numThreadsperBlock = (n,maxthreadsperBlock) ? n:maxthreadsperBlock;
+int numBlocks = n/numThreadsperBlock;
+dim 3 dimBlock(numThreads, 1, 1); dim3 dimGrid(numBlocks, 1, 1);
+reduce<<<dimGrid, dimBlock>>>(_data, d_odata);
+int s=numBlocks;
+while(s>1){
+    numThreadsperBlock = (s<maxThreadsperBlock)?s:maxThreadsperBlock;
+    numBlocks = s/numThreadsperBlock;
+    dimBlock(numThreads, 1, 1); dimgrid(numBlocks, 1, 1);
+    educe<<<dimGrid, dimBlock, smemSize>>>(d_idata, d_odata);
+    s =s/numthreadsperBlock;
+}
+\end{lstlisting}
+We will now look at the GPU kernel code used for binary tree-based reduction:
+\begin{lstlisting}[style=cppstyle]
+__gloabl__ void reduce(int*g_idata, int*g_odata)
+{
+    extern __shared__ int sdata[];
+    //load shared mem
+    unsigned int tid = threadidx.x;
+    unsigned int i = blockIdx.x * blockDimx.x + threadiIdx.x;
+    sdata[tid]=g_idata[i];
+    __synchthreads();
+
+    // do reduction in shared mem
+    for (unsigned int s = 1; s < blockDimx.x; s *= 2){
+    if (tid%(2*s)==0)
+        sdata[tid]+=sdata[tid+s];
+        __synchthreads();
+    }
+    // write result for this block to global mem
+    if (tid==0) g_odata[blockIdx.x]=sdata[0];
+}
+\end{lstlisting}
+Note that in the device code, we have utilized shared memory to perform the intermediate computations during the reduction process. We do not copy data back to global memory until we are certain that the reduction is complete. This strategy avoids frequent transfers between device and host memory, which are typically time-consuming and should be minimized for efficiency. 
+
+At each step of the reduction, data is copied from global memory into shared memory. Shared memory offers much lower latency compared to global memory and allows for significantly faster computation due to its on-chip nature. After computing the partial results, the outcome from shared memory is written back to global memory.
+
+Furthermore, after each kernel invocation, the output array is copied into the input array to serve as the input for the next reduction iteration. This process continues until a single value remains, representing the final reduction result.
+
+\subsection{Example 4: Prefix Sum (Scan)}
+
+We now present a parallel algorithm for prefix sum (also called \textit{scan}) computations on arrays using a divide-and-conquer strategy.
+
+Given an input array $X$ of size $n$, the goal is to compute the prefix sum array $S$ such that:
+\[
+S[i] = \sum_{j=0}^{i} X[j], \quad \text{for } 0 \leq i < n.
+\]
+
+\paragraph{Step 1: Partitioning}
+The array $X$ is partitioned into $P$ subarrays, one for each processor (assuming $n$ is divisible by $P$ for simplicity). Each processor $P_i$ is assigned a subarray $X_i$ of size $n/P$.
+
+\paragraph{Step 2: Local Prefix Computation}
+Each processor computes the prefix sum of its local subarray $X_i$ independently and in parallel. This produces local prefix sum arrays:
+\[
+S_i[j] = \sum_{k=0}^{j} X_i[k], \quad \text{for } 0 \leq j < n/P.
+\]
+
+\paragraph{Step 3: Compute Block Sums}
+Each processor writes the final value of its local prefix array (i.e., the sum of its block) to a separate auxiliary array $Y$ of size $P$, where:
+\[
+Y[i] = \sum_{j=0}^{n/P - 1} X_i[j].
+\]
+
+\paragraph{Step 4: Global Prefix of Block Sums}
+Using a sequential or parallel prefix sum algorithm (e.g., binary tree), the prefix sum of the array $Y$ is computed to get array $Z$, where:
+\[
+Z[i] = \sum_{k=0}^{i-1} Y[k], \quad \text{with } Z[0] = 0.
+\]
+
+This array $Z$ stores the cumulative sum of all blocks that precede block $i$.
+
+\paragraph{Step 5: Final Adjustment}
+Each processor $P_i$ adds $Z[i]$ to every element of its local prefix array $S_i$:
+\[
+S_i[j] \gets S_i[j] + Z[i], \quad \text{for all } j.
+\]
+
+\paragraph{Result}
+After this step, the local arrays $S_i$ together represent the final global prefix sum array $S$.
+
+\paragraph{Time Complexity}
+\begin{itemize}
+    \item Local prefix sums: $O(n/P)$ time (done in parallel).
+    \item Global prefix sum of $Y$: $O(\log P)$ time using a binary tree algorithm.
+    \item Adjustment step: $O(n/P)$ time.
+\end{itemize}
+
+Hence, the total parallel time is:
+\[
+T(n, P) = O\left(\frac{n}{P} + \log P\right).
+\]
+
+This is efficient and scalable for large $n$ and moderate $P$.
+
+\section{Prefix Sum (Scan) using CUDA}
+
+We now present an efficient algorithm for computing the \textbf{prefix sum (scan)} in parallel using CUDA. This is a fundamental building block for many parallel algorithms such as stream compaction, sorting, histogram generation, etc.
+
+\paragraph{Definition:}
+The all-prefix-sums operation takes a binary associative operator $\oplus$ and an input array of $n$ elements:
+\[
+[a_0, a_1, a_2, \ldots, a_{n-1}]
+\]
+and returns the array:
+\[
+[a_0, (a_0 \oplus a_1), (a_0 \oplus a_1 \oplus a_2), \ldots, (a_0 \oplus a_1 \oplus \cdots \oplus a_{n-1})]
+\]
+
+We assume $\oplus$ to be an associative binary operation such as addition, multiplication, or bitwise OR, AND, etc.
+
+\paragraph{Approach:} 
+We solve this using a binary tree method with two main phases:
+\begin{enumerate}
+    \item \textbf{Up-Sweep (Reduce) Phase:} A bottom-up traversal of the binary tree structure that computes partial sums at internal nodes.
+    \item \textbf{Down-Sweep Phase:} A top-down traversal that uses the partial results to compute the final prefix sums.
+\end{enumerate}
+
+This algorithm has a parallel time complexity of $O(\log_2 n)$ using $O(n)$ work, assuming $n$ is a power of two.
+
+\subsubsection{Up-Sweep Phase (Reduce)}
+In the up-sweep phase, we perform pairwise addition of elements with increasing stride. Each level in the tree reduces the number of active threads by half, while the distance between elements being combined doubles.
+
+Initially, each thread performs:
+\[
+X[i] = X[i] + X[i - d], \quad \text{where } d = 2^k \text{ in the $k$-th iteration}
+\]
+
+The process continues until the final element contains the sum of the entire array. This phase stores partial results needed for the down-sweep.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/upsweep.png}
+    \caption{Up-Sweep Phase of Prefix Sum}
+    \label{fig:upsweep}
+\end{figure}
+
+\subsubsection{Down-Sweep Phase}
+In the down-sweep phase, we traverse the binary tree from root to leaves. The idea is to propagate prefix values down the tree and replace each node with its prefix value, using the intermediate values from the up-sweep phase.
+
+We begin by setting the last element to zero, as the identity element for addition:
+\[
+X[n - 1] \gets 0
+\]
+
+At each level, we swap the partial sum and update:
+\[
+\text{temp} \gets X[i - d]; \quad X[i - d] \gets X[i]; \quad X[i] \gets \text{temp} + X[i]
+\]
+
+This step guarantees the prefix property across the array.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/downsweep.png}
+    \caption{Down-Sweep Phase of Prefix Sum}
+    \label{fig:downsweep}
+\end{figure}
+
+\paragraph{CUDA Implementation Notes:}
+\begin{itemize}
+    \item The input array is typically stored in \texttt{shared memory} for fast access.
+    \item \texttt{\_\_syncthreads()} is used to synchronize threads at each level of both up-sweep and down-sweep phases.
+    \item This algorithm performs an \textit{exclusive scan} by default. For an inclusive scan, minor post-processing adjustments are made.
+    \item Works best when the number of elements is a power of two. For non-power-of-two sizes, zero-padding is used.
+\end{itemize}
+
+\paragraph{Time Complexity:} $O(\log_2 n)$ using $n$ threads.
+
+\paragraph{Work Complexity:} $O(n)$, matching the sequential version, hence this method is cost-optimal.
+
+
+\subsubsection*{Host Code}
+\begin{lstlisting}[style=cppstyle]
+int main(){
+    const unsigned int num_threads = num_elements/2;
+    /* cudaMalloca d_idata and d_odata */
+    cudaMemcpy( d_idata, h_data, mem_size, cudaMemcpyHostToDevice);
+
+    dim3 grid(256, 1, 1); dim3 threads(num_threads, 1, 1);
+    scan<<<grid, threads>>>(d_odata, d_idata);
+    cudaMemcpy( h_data, d_odata[i], sizeof(float)*num_elements, cudaMemcpyDeviceToHost)
+    /* cudaFree d_idata and d_odata */
+}
+\end{lstlisting}
+\subsubsection*{Device Code}
+\begin{lstlisting}[style=cppstyle]
+__global__ void scan_workefficient(float* g_odata, float* g_idata, int n)
+{
+    //Dynamically allocated shared memory for scan kernels
+    extern __shared__ float temp[];
+    int thid = threadIdx.x; int offset = 1;
+
+    //Cache the computational window in shared memroy
+    temp[2*thid] = g_idata[*thid];
+    temp[2*thid +1] = g_idata[2*thid +1];
+    // build the sum in place up the tree
+    for (int d=n>>1; d>0; d>>=1)
+    {
+        __syncthreads();
+    
+        if(thid <d)
+        {
+            int ai = offset * (2*thid +1) - 1;
+            int bi = offset * (2 * thid + 2) - 1;
+
+            temp[bi] += temp[ai];
+        }
+        offset *= 2;
+    }
+    // scan back down the tree
+    // clear the last element
+    if (thid == 0) temp[n-1] = 0;
+    // traverse down the tree building the scan in place
+    for (int d = 1; d < n; d *= 2)
+    {
+        offset >>= 1;
+        __syncthreads();
+        if (thid < d)
+        {
+            int ai = offset*(2*thid + 1) - 1;
+            int bi = offset*(2*thid + 2) - 1;
+            float t = temp[ai];
+            temp[ai] = temp[bi];
+            temp[bi] += t;
+        }
+    }
+
+    __syncthreads();
+
+    //write results to global memory
+    g_odata[2*thid] = temp[2*thid];
+    g_odata[2*thid +1] = temp[2*thid +1]
+}
+\end{lstlisting}
+
+
+
+For implementation details and optimization strategies, refer to~\cite{nvidia2011nvidia}.
+
+
+
+\chapter{Parallel Algorithms}
+
+\section{Parallel Sorting}
+
+Let us first consider the problem of sorting in parallel.
+
+\subsection*{Problem Definition}
+
+The input is a sequence of size $N$ that is initially distributed across $P$ processors. Each processor holds a local subset of the global sequence.
+
+The objective is to sort the global sequence such that:
+\begin{itemize}
+    \item The elements in each processor $P_i$ are sorted locally.
+    \item All elements in processor $P_i$ are greater than all elements in processor $P_{i-1}$ and less than all elements in processor $P_{i+1}$, for all valid $i$.
+\end{itemize}
+
+\subsection{Parallel Quick Sort}
+
+One naive approach to parallel sorting is a parallel variant of the quicksort algorithm.
+
+\subsubsection*{Algorithm Overview}
+
+\begin{enumerate}
+    \item Initially, a single processor holds the entire dataset. It chooses a pivot element and partitions the array into two sub-arrays:
+    \begin{itemize}
+        \item Elements less than the pivot.
+        \item Elements greater than the pivot.
+    \end{itemize}
+    
+    \item These two sub-arrays are then passed to two processors (including the original one), and each processor recursively performs local quicksort on its assigned sub-array.
+
+    \item This process continues, doubling the number of sub-arrays (and processors involved) at each level, until we reach $P$ sub-arrays—one per processor.
+\end{enumerate}
+
+\subsubsection*{Disadvantages}
+
+\begin{enumerate}
+    \item \textbf{Inefficient Utilization of Processors:} 
+    \begin{itemize}
+        \item In the early stages—where the most computation is performed—only a few processors are active. For example, only one processor is used for the full array in the first step, two in the second, and so on.
+        \item Consequently, most processors remain idle during the compute-heavy phases, resulting in poor load balancing and underutilization of parallel hardware.
+    \end{itemize}
+
+    \item \textbf{Single Processor Memory Bottleneck:}
+    \begin{itemize}
+        \item The algorithm requires one processor to initially hold the entire dataset, which may not be feasible for large problem sizes.
+        \item This violates the definition of a distributed input, and limits the scalability of the algorithm on distributed-memory systems.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Parallel Quicksort with Full Processor Utilization}
+
+This algorithm improves over the naive parallel quicksort by involving \textbf{all processors at every iteration}. It avoids the underutilization of processors seen earlier.
+
+We assume the input array is \textbf{evenly divided} across all $P$ processors, each holding $N/P$ elements.
+
+\subsubsection*{Overview of the Algorithm}
+
+\begin{enumerate}
+    \item Processor $P_0$ selects a pivot element and \textbf{broadcasts} it to all other processors.
+    
+    \item Each processor $P_i$ partitions its local array into:
+    \begin{itemize}
+        \item $L_i$: Elements \textbf{less than} the pivot.
+        \item $G_i$: Elements \textbf{greater than or equal to} the pivot.
+    \end{itemize}
+    
+    \item Let $L = \sum_i |L_i|$ and $G = \sum_i |G_i|$. The processors are now \textbf{split into two subgroups}:
+    \begin{itemize}
+        \item The first $\frac{P \cdot L}{N}$ processors handle all $L_i$.
+        \item The remaining $\frac{P \cdot G}{N}$ processors handle all $G_i$.
+    \end{itemize}
+    
+    \item The computation continues recursively within each subgroup. Each subgroup selects a new pivot, partitions its elements again into $L_i$ and $G_i$, and the processors are recursively split again.
+
+    \item This process continues until there are exactly $P$ subgroups, each of size 1. At that point, each processor performs a \textbf{local quicksort} on its portion of the array.
+\end{enumerate}
+
+\subsubsection{Shared Memory Implementation}
+
+In a shared memory system:
+
+\begin{itemize}
+    \item The $L_i$ subarrays are placed in the \textbf{beginning portion} of a shared memory array, and the $G_i$ subarrays are placed in the \textbf{remaining portion}.
+    \item Each processor must know where to write its $L_i$ and $G_i$ elements in the shared memory.
+\end{itemize}
+
+To compute the starting write positions efficiently, we use the \textbf{prefix sum} operation on the sizes of the $L_i$ and $G_i$ subarrays. The prefix sum provides:
+\begin{itemize}
+    \item The total number of $L$ elements before processor $P_i$, giving it an exact memory offset.
+    \item A similar offset for $G_i$ within the second half of the shared memory.
+\end{itemize}
+
+This avoids the need for locks or atomics, and allows processors to write concurrently without conflict. Prefix sums can be computed in $O(\log P)$ time and are highly efficient on parallel systems.
+
+\textbf{Recursive Step:}  
+In the next step, each subgroup (those handling $L_i$ and $G_i$ respectively) selects a new pivot, repeats the partitioning, and continues recursively as described above. When the number of subgroups reaches $P$, each processor holds its final partition and performs a local sort.
+
+\textbf{Final Output:}  
+This approach guarantees that each processor $P_i$ contains a sorted subarray, and:
+\[
+\text{All elements in } P_{i-1} <\text{All elements in } P_i < \text{All elements in } P_{i+1}
+\]
+achieving the final goal of global sorting in a distributed manner.
+
+\subsubsection{Message Passing Implementation}
+
+In a distributed memory setting (e.g., using MPI):
+
+\begin{itemize}
+    \item Each processor must know \textbf{where to send} its $L_i$ and $G_i$ elements.
+    \item This requires a \textbf{distributed prefix sum} to determine:
+    \begin{itemize}
+        \item Global indices in the $L$ or $G$ partition.
+        \item The destination processor based on cumulative counts and group sizes.
+    \end{itemize}
+    
+    \item For instance, the destination processor for a chunk of $L_i$ is determined by:
+    \[
+    \text{Processor index} = \left\lfloor \frac{\text{prefix sum of $L_i$ elements}}{\text{number of $L$ elements per processor}} \right\rfloor
+    \]
+    
+    \item The same applies for $G_i$.
+\end{itemize}
+
+This communication step can involve \textbf{all-to-all communication}, and in the worst case takes $O(N/P)$ time. The process is then repeated recursively on subgroups as before.
+
+\subsubsection*{Final Local Sort}
+
+Once each processor is assigned its final portion of the array, it performs a local sort. The complexity is:
+\[
+O\left(\frac{N}{P} \log_2 \frac{N}{P} \right)
+\]
+
+This variant of quicksort—called \textbf{Parallel Quicksort}—uses all processors efficiently and achieves good load balancing throughout the sorting process.
+
+\subsection{Complexity Analysis}
+
+The total time complexity of the parallel quicksort algorithm can be broken down into several components:
+
+\begin{itemize}
+    \item The number of partitioning steps (recursive levels) is $O(\log_2 P)$, since at each step, the processor groups are divided roughly in half until we reach $P$ groups.
+    
+    \item At each step, the following operations are performed:
+    \begin{itemize}
+        \item \textbf{Broadcast of pivot:} Can be implemented using a binary tree in $O(\log_2 P)$ time.
+        \item \textbf{Allreduce (to count $L$ and $G$ elements):} Also costs $O(\log_2 P)$ time.
+        \item \textbf{Prefix sum:} Needed to compute offsets for data redistribution. Costs $O(\log_2 P)$.
+        \item \textbf{All-to-all communication:} Used to redistribute $L_i$ and $G_i$ values among processors. This requires $O(N/P)$ time in the worst case.
+    \end{itemize}
+    
+    Therefore, the cost per partitioning step is:
+    \[
+    O(\log_2 P + N/P)
+    \]
+    And across $O(\log_2 P)$ levels, the total cost becomes:
+    \[
+    O(\log_2^2 P + \frac{N}{P} \log_2 P)
+    \]
+    
+    \item Once the partitioning completes, each processor performs a local sort on its portion. In the best case, each processor has roughly $N/P$ elements, giving:
+    \[
+    O\left(\frac{N}{P} \log_2 \frac{N}{P}\right)
+    \]
+\end{itemize}
+
+\textbf{Total Complexity:}
+\[
+O\left(\frac{N}{P} \log_2 \frac{N}{P}\right) + O\left(\log_2^2 P + \frac{N}{P} \log_2 P\right)
+\]
+
+\subsubsection*{Drawbacks}
+
+The major drawback of parallel quicksort lies in the potential for \textbf{load imbalance} and \textbf{underutilization of processors}. Unlike merge sort or radix sort, quicksort depends heavily on the choice of pivot.
+
+In the worst case, the pivot may divide the array very unevenly, leading to:
+\begin{itemize}
+    \item Some processors receiving significantly more data than others.
+    \item Unequal distribution of work during the final local sorting stage.
+\end{itemize}
+
+Thus, even though the algorithm scales well theoretically, its practical performance can suffer due to this inherent imbalance. There is no guaranteed strategy for choosing a pivot that results in equal-sized partitions every time. Therefore, quicksort, although fast sequentially, is often considered \textbf{not ideal for parallel sorting} due to its unpredictable behavior with respect to load balancing.
+
+For more details on parallel quicksort refer~\cite{kumar1994introduction}.
+
+\section{Breadth-First Search (BFS)}
+
+Graph traversal algorithms are critical in analyzing large datasets where relationships among data objects are represented as graphs. Breadth-First Search (BFS) is a fundamental algorithm used to explore graphs level by level and is widely used for applications such as finding shortest paths, social network analysis, web crawling, and more.
+
+\subsection{Level-Synchronized Algorithm}
+
+We begin with a level-synchronized parallel BFS algorithm. This approach proceeds level-by-level starting from a source vertex $v_s$. The \textbf{level} of a vertex $v$ is defined as its graph distance from the source.
+
+This is a \textbf{frontier-based} algorithm: in each iteration, the current \textit{frontier} (the set of vertices at the current level) is expanded to discover the next set of vertices. The algorithm operates in the \textbf{Bulk Synchronous Parallelism (BSP)} model where threads synchronize after each level expansion.
+
+\medskip
+\noindent
+\textbf{Key design question:} How should we decompose the graph (vertices, edges, adjacency matrix) among processors?
+
+\subsubsection{Distributed BFS with 1D Partitioning}
+
+In this approach, each processor is assigned a subset of the vertices and their outgoing edges. This is equivalent to performing a 1D row-wise partitioning of the graph’s adjacency matrix.
+
+Each vertex $v$ has an edge list defined by the indices in row $v$ of the adjacency matrix $A$. At each BFS level $l$, each processor owns a subset $F$ of the \textit{frontier vertices}.
+
+Each processor:
+\begin{itemize}
+    \item Traverses the edges of vertices in $F$.
+    \item Forms a set $N$ of neighboring vertices.
+    \item Filters $N$ to determine which of its members are owned by other processors.
+    \item Communicates these vertices to their owner processors.
+    \item The owners then include the received vertices in their own local frontiers.
+\end{itemize}
+For further details refer~\cite{yoo2005scalable} (pages 1-7).
+\begin{algorithm}[H]
+\caption{Distributed BFS with 1D Partitioning}
+\label{alg:1DBFS}
+\begin{algorithmic}[1]
+\State Initialize level array $L_{v_s}(v) = \begin{cases}
+    0, & \text{if } v = v_s \text{ (source)} \\
+    \infty, & \text{otherwise}
+\end{cases}$
+\For{$l = 0$ to $\infty$}
+    \State $F \gets \{v \mid L_{v_s}(v) = l\} \quad \text{(Local frontier)}$
+    \If{$F = \emptyset$ on all processors}
+        \State \textbf{break} \Comment{Traversal complete}
+    \EndIf
+    \State $N \gets$ neighbors of vertices in $F$
+    \For{each processor $q$}
+        \State $N_q \gets \{v \in N \mid \text{owned by } q\}$
+        \State Send $N_q$ to processor $q$
+        \State Receive $\tilde{N}_q$ from processor $q$
+    \EndFor
+    \State $\tilde{N} \gets \bigcup_q \tilde{N}_q$ \Comment{Combined new frontier}
+    \For{each $v \in \tilde{N}$ such that $L_{v_s}(v) = \infty$}
+        \State $L_{v_s}(v) \gets l + 1$
+    \EndFor
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{BFS on GPUs}
+
+A GPU-based BFS assigns a thread to each vertex. A kernel is launched at each level with one thread per vertex. Only threads corresponding to current frontier vertices become active.
+
+This implementation uses global memory arrays for visited flags and level distances. It may result in load imbalance, since some threads may be idle while others are active, depending on the graph structure.
+
+\textbf{Note:} Atomics (e.g., \texttt{atomicCAS}) may be required to avoid race conditions when multiple threads attempt to write to the same memory location.
+
+\begin{algorithm}[H]
+\caption{GPU BFS Kernel (Frontier-based)}
+\label{alg:GPUBFS}
+\begin{algorithmic}[1]
+\Procedure{bfs\_kernel}{$\texttt{currLevel}$}
+    \State $v \gets \texttt{blockIdx.x} \times \texttt{blockDim.x} + \texttt{threadIdx.x}$
+    \If{$\texttt{dist}[v] == \texttt{currLevel}$}
+        \For{each $n \in \texttt{neighbors}(v)$}
+            \If{$\texttt{visited}[n] == 0$}
+                \State $\texttt{dist}[n] \gets \texttt{dist}[v] + 1$
+                \State $\texttt{visited}[n] \gets 1$
+            \EndIf
+        \EndFor
+    \EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\noindent
+Challenges with GPU BFS:
+\begin{itemize}
+    \item \textbf{Thread divergence}: Threads assigned to non-frontier vertices will idle.
+    \item \textbf{Load imbalance}: High-degree vertices cause some threads to do significantly more work.
+    \item \textbf{Race conditions}: Need atomics for concurrent updates to shared arrays (e.g., \texttt{dist}, \texttt{visited}).
+\end{itemize}
+For further details refer~\cite{harish2007accelerating} (pages 5-8).
+\bigskip
+\noindent
+Several advanced techniques exist to mitigate these issues:
+\begin{itemize}
+    \item Work-efficient BFS (e.g., queue-based).
+    \item Direction-optimizing BFS (push vs pull model).
+    \item Warp-centric and load-balanced kernel launches.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Gaussian Elimination}
+Recall that in gaussian elimination we are required to zero out the elements below the diagonal by adding multiples of row $i$ to later rows. Let us look at the following sequential code for it:
+\begin{lstlisting}[style=cppstyle]
+    for i = 1 to n-1
+        for j = i+1 to n
+            for k = i to n
+                A(j,k) = A(j,k) - A(j,i)/A(i,i) * A(i,k)
+\end{lstlisting}
+Note that we don't need to compute $A(j,i)/A(i,i)$ from inner loop every time. So we modify the code to do as follows:
+\begin{lstlisting}[style = cppstyle]
+for i = 1 to n-1
+    for j = i+1 to n
+        m = A(j,i)/A(i,i)
+            for k = i to n
+                A(j,k) = A(j,k) - m * A(i,k)
+\end{lstlisting}
+Note that in each iteration we know that $A(j,i) = 0$. Thus no need to compute what we already know. Hence we start the innermost loop with $i+1$. Thus, we further modify the code as:
+\begin{lstlisting}[style = cppstyle]
+for i = 1 to n-1
+    for j = i+1 to n
+        m = A(j,i)/A(i,i)
+            for k = i+1 to n
+                A(j,k) = A(j,k) - m * A(i,k)
+\end{lstlisting}
+We further modify to store multiplies $m$ below diagonals.
+\begin{lstlisting}[style = cppstyle]
+    for i = 1 to n-1
+        for j = i+1 to n
+            A(j,i) = A(j,i) / A(i,i)
+                for k = i+1 to n
+                    A(j,k) = A(j,k) - A(j,i) * A(i,k)
+\end{lstlisting}
+Let us now look at the runtime of this algorithm. Note that in each iteration in the innermost loop $k$ goes from $i+1$ to $n$ where $i$ goes from $1$ to $n-1$. Thus, the total number of times we compute:
+\[
+\sum_{i=1}^{n-1} (n-i)^2 =  O\left(\frac{n^3}{3}\right) 
+\]
+
+Let us now look at the Parallel Gaussian Elimination:
+
+
+
+
+
+
+\chapter{PRAM Model}
+
+\section{Introduction}
+PRAM stands for \textbf{Parallel Random Access Machine}. It is an abstract computational model designed to help researchers and developers formulate parallel algorithms without being constrained by the underlying hardware limitations. The model assumes an idealized parallel computer in which:
+
+\begin{itemize}
+    \item There are an arbitrary number of processors.
+    \item All processors operate synchronously in lockstep, i.e., they follow a global clock.
+    \item All processors have uniform access to a shared memory in constant time.
+\end{itemize}
+
+This abstraction allows algorithm designers to focus purely on the parallelism inherent to the algorithm, avoiding details like message passing, memory latency, synchronization overhead, or communication costs. Thus, PRAM enables the study of algorithmic efficiency in an idealized setting, decoupled from real-world hardware complexity.
+
+\section{Benefits of PRAM}
+There are several significant benefits of using the PRAM model for designing and analyzing parallel algorithms:
+
+\begin{enumerate}
+    \item \textbf{Architectural Independence:} PRAM ignores machine-specific characteristics such as network topology or memory hierarchies. This allows for the creation of portable high-level parallel algorithms that can later be adapted to a wide variety of parallel architectures.
+    
+    \item \textbf{Upper and Lower Bounds:} The model provides a clean theoretical framework to establish asymptotic upper and lower bounds on time and work (i.e., total number of operations across all processors), which helps in understanding the inherent difficulty of problems and guides optimal parallelization strategies.
+    
+    \item \textbf{Simplified Design Space:} By abstracting away low-level concerns, PRAM simplifies the process of algorithm design and analysis. Once a theoretically efficient PRAM algorithm is developed, it can be transformed (possibly with some compromises) into a practical algorithm suited for real hardware.
+    
+    \item \textbf{Basis for Real Machines:} Many ideas from PRAM algorithms inspire actual parallel programming techniques. The PRAM model can serve as a high-level blueprint for designing efficient parallel programs on real systems, such as multi-core CPUs, shared memory systems, or GPUs.
+    
+    \item \textbf{Inspiration for Architecture Design:} PRAM algorithms often reveal the theoretical maximum parallelism possible for a given problem. This can drive hardware designers to develop architectures (e.g., SIMD processors, GPU thread hierarchies) that attempt to approximate such ideal parallelism.
+    
+    \item \textbf{Applicability to Modern Architectures:} Although no machine can truly realize the PRAM model due to communication and synchronization limitations, many modern architectures like GPUs can emulate aspects of PRAM using shared memory and thousands of lightweight threads. Hence, PRAM remains relevant and influential in the design of efficient GPU-based algorithms.
+\end{enumerate}
+
+\section{PRAM Architecture Model}
+
+The PRAM architecture consists of the following core components:
+
+\begin{itemize}
+    \item \textbf{Control Unit:} Coordinates and synchronizes the actions of all processors. All processors follow the same instruction in lockstep, adhering to the SIMD (Single Instruction, Multiple Data) paradigm.
+    
+    \item \textbf{Global Shared Memory:} A single memory space accessible by all processors. Each memory cell can be accessed in constant time, and all processors share this memory space.
+    
+    \item \textbf{Unbounded Set of Processors:} The PRAM model assumes an unlimited number of processors, each having a small amount of private memory for intermediate computations.
+\end{itemize}
+
+Each active processor operates in the following cycle:
+\begin{enumerate}
+    \item \textbf{Read} a value from global memory.
+    \item \textbf{Perform} a local computation using its private memory.
+    \item \textbf{Write} the result back to global memory.
+\end{enumerate}
+
+\subsection{Memory Access Models}
+The main distinction between different types of PRAM models lies in how they handle memory access conflicts, especially when multiple processors try to read from or write to the same memory location simultaneously.
+
+\begin{itemize}
+    \item \textbf{EREW (Exclusive Read Exclusive Write):} No two processors can access the same memory cell for reading or writing in the same time step. This is the most restrictive and realistic model.
+    
+    \item \textbf{CREW (Concurrent Read Exclusive Write):} Multiple processors are allowed to read from the same memory location simultaneously, but only one processor can write to a memory location at any given time.
+    
+    \item \textbf{CRCW (Concurrent Read Concurrent Write):} Multiple processors can read from and write to the same memory location in the same time step. The model defines additional rules to resolve write conflicts:
+    \begin{itemize}
+        \item \textbf{COMMON:} All processors attempting to write to a memory cell must write the same value.
+        \item \textbf{ARBITRARY:} An arbitrary processor among the contenders is chosen to perform the write.
+        \item \textbf{PRIORITY:} The processor with the lowest index (or priority) among those attempting the write wins and its value is written.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Model Equivalence}
+Although these models differ in power and ease of programming, they are computationally equivalent in the theoretical sense. That is, an algorithm designed for one PRAM model can be simulated on another model with at most a logarithmic time overhead.
+
+For instance, a CRCW-PRIORITY algorithm can be simulated on an EREW-PRAM with an overhead of at most $O(\log P)$ time, where $P$ is the number of processors. This allows algorithm designers to choose a simpler model for the design phase (e.g., CRCW) and later convert or adapt it for implementation in a more restrictive model (e.g., EREW or CREW).
+
+\section{Steps in PRAM Algorithm}
+
+PRAM algorithms typically follow two broad phases:
+
+\begin{itemize}
+    \item \textbf{Phase 1: Processor Activation.} A sufficient number of processors are activated based on the size of the input and the nature of the task.
+    \item \textbf{Phase 2: Parallel Computation.} The activated processors execute computations in parallel, according to the model's access rules (e.g., EREW, CREW, or CRCW).
+\end{itemize}
+
+\subsection{Example: Binary Tree Reduction}
+
+Binary tree-based reduction is a classic example of a PRAM algorithm. The goal is to reduce an array of $n$ elements using an associative operation (e.g., sum, min, max) into a single value.
+
+In this algorithm, the input array is treated as the leaves of a binary tree. In each step, $n/2$ processors are used to pair and combine adjacent elements. The result is stored in a smaller array of size $n/2$, and the process repeats on this reduced array. After $\log_2 n$ steps, the final result is obtained at the root.
+
+This reduction can be efficiently implemented using the EREW PRAM model, as each processor reads from and writes to distinct memory locations in every step.
+
+\subsection{Example: Prefix Sum Calculation}
+
+Another important operation in parallel computing is the prefix sum (also called the scan operation). Given an array $A$ of $n$ elements, the prefix sum array $B$ is defined as:
+\[
+B[i] = \sum_{j=0}^{i} A[j], \quad \text{for } 0 \leq i < n.
+\]
+
+Prefix sum is a building block for several applications including:
+\begin{itemize}
+    \item Array partitioning based on conditions (e.g., separating odd/even numbers).
+    \item Memory allocation.
+    \item Lock-free synchronization in shared-memory parallel architectures.
+\end{itemize}
+
+We present a CREW PRAM algorithm for computing prefix sums in $O(\log_2 n)$ time using $n$ processors.
+
+\subsubsection{CREW PRAM Algorithm}
+We assume an input array $A$ of size $n$. The figure~\ref{fig:CREW_prefix} illustrates the algorithm where, in each step, processors concurrently read two elements from the array (concurrent read) and write the sum to the corresponding location (exclusive write). This satisfies the CREW PRAM access constraints.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/CREW_prefix.png}
+    \caption{CREW PRAM-based Prefix Sum Computation}
+    \label{fig:CREW_prefix}
+\end{figure}
+
+The key idea is that at each level of the computation tree, the distance between the elements being added doubles, and the same number of processors are used to compute. The total number of parallel steps required is $O(\log_2 n)$.
+
+\subsection{Example: Merging Sorted Lists}
+
+Most PRAM algorithms achieve reduced time complexity by leveraging parallelism at the cost of performing more total operations than an optimal RAM (sequential) algorithm. This trade-off is a common theme in the design of parallel algorithms.
+
+\paragraph{Sequential Case (RAM Model).}  
+Consider merging two sorted lists $A$ and $B$, each containing $n/2$ elements. A standard merge operation proceeds in linear time by maintaining two pointers, one for each list, and repeatedly selecting the smaller of the two current elements. This requires at most $n - 1$ comparisons, yielding a time complexity of $O(n)$, and is work-optimal in the RAM model.
+
+\paragraph{Parallel Case (CREW PRAM Model).}  
+In contrast, we now describe a parallel merging algorithm under the CREW PRAM model using $n$ processors — one assigned to each element of the two lists. The basic idea is as follows:
+
+\begin{itemize}
+    \item Each processor $P_i$ is assigned to element $x_i$ from either list $A$ or $B$ (assume a merged virtual list of size $n$).
+    \item The processor knows the index of $x_i$ in its own list.
+    \item To determine the final position of $x_i$ in the merged output, the processor performs a binary search in the \emph{other} list to find how many elements in that list are smaller than $x_i$.
+    \item The sum of the two ranks (local index and the binary search result) gives the final position of $x_i$ in the merged list.
+\end{itemize}
+
+Each binary search operation takes $O(\log_2 n)$ time, and since there are $n$ processors performing independent binary searches, the total number of operations is $O(n \log_2 n)$.
+
+\paragraph{Time Complexity.}
+\[
+T(n) = O(\log_2 n) \quad \text{(parallel time per processor)}
+\]
+
+\paragraph{Work Complexity.}
+\[
+W(n) = O(n \log_2 n)
+\]
+
+\paragraph{Cost Optimality.}  
+A parallel algorithm is said to be \textit{cost-optimal} if the total work done by all processors matches the best known sequential time complexity. Here, the best sequential algorithm for merging takes $O(n)$ time, but our PRAM algorithm performs $O(n \log_2 n)$ work. Therefore, this algorithm is \textbf{not cost-optimal}.
+
+\paragraph{Remarks.}  
+While the algorithm achieves polylogarithmic time performance, it does so by increasing the total computational work. This is a characteristic trade-off in many PRAM algorithms — achieving low parallel time at the cost of higher overall computation.
+
+More advanced parallel merging algorithms exist that reduce the total work, for example, by using sampling and divide-and-conquer strategies. However, they typically involve more complex coordination among processors.
+
+\subsection{Example: Enumeration Sort}
+
+Enumeration Sort is a comparison-based sorting algorithm that determines the final position of each element in the sorted array by counting the number of elements that are smaller than it.
+
+\paragraph{Sequential Version.}  
+In a traditional sequential implementation, for each element $a_i$, we count the number of elements $a_j$ such that $a_j < a_i$. The count gives the rank or final position of $a_i$ in the sorted array. This requires $O(n^2)$ comparisons in total, and thus the sequential complexity is $O(n^2)$.
+
+\paragraph{Parallel Version: Special CRCW PRAM Model.}  
+We now consider a parallel implementation using a special CRCW (Concurrent Read, Concurrent Write) PRAM model. This version can compute the sorted order in constant time $O(1)$ using $n^2$ processors.
+
+\begin{itemize}
+    \item Each processor $P_{i,j}$ is assigned to compare elements $a[i]$ and $a[j]$ for $i, j \in \{0, 1, \dots, n-1\}$.
+    \item If $a[i] > a[j]$, the processor writes a $1$ to a shared memory location representing $position[i]$, otherwise it writes $0$.
+    \item We assume a special CRCW variant in which if multiple processors write to the same memory location simultaneously, the \textbf{sum} of all written values is stored (i.e., a summation write conflict resolution).
+    \item Thus, $position[i]$ will store the number of elements less than $a[i]$, which corresponds to its rank in the sorted array.
+\end{itemize}
+
+This means that all $n^2$ comparisons can happen in parallel in one step, and all writes to the $position$ array are resolved via concurrent summation, yielding the correct sorted positions in constant time.
+
+\paragraph{Time Complexity.}  
+\[
+T(n) = O(1)
+\]
+
+\paragraph{Work Complexity.}  
+\[
+W(n) = O(n^2)
+\]
+
+\paragraph{Cost Optimality.}  
+This algorithm is \textbf{not cost-optimal} because it performs $O(n^2)$ total operations, whereas the best-known comparison-based sequential sorting algorithms such as Merge Sort or Quick Sort perform $O(n \log_2 n)$ comparisons.
+
+\paragraph{Summary.}  
+Enumeration Sort demonstrates the power of PRAM models in reducing parallel time complexity through massive processor usage. However, such algorithms may be impractical for real-world machines due to their unrealistic assumptions and high processor demands, and they are not cost-efficient compared to optimal sequential or practical parallel algorithms.
+
+\section{Summary}
+
+In summary, PRAM algorithms serve primarily as theoretical constructs that abstract away architectural constraints such as memory latency, bandwidth limitations, and synchronization overhead. Despite being idealized, they are immensely valuable for the following reasons:
+
+\begin{itemize}
+    \item They provide a simple and clean model for designing and analyzing parallel algorithms.
+    \item They allow us to establish upper and lower bounds on the parallel time complexity of problems.
+    \item They guide the design of efficient parallel algorithms that can later be adapted for practical systems such as multicore CPUs or GPUs.
+    \item They help in identifying parallelism in a problem, which is crucial in the early design phase.
+    \item They can even inspire the architecture of specialized parallel machines or hardware accelerators.
+\end{itemize}
+
+While PRAM algorithms may not be directly implementable on real-world systems due to their ideal assumptions (e.g., unlimited processors and zero-cost synchronization), they remain a foundational tool for both education and research in parallel computing. For further details refer~\cite{quinn1994parallel} pages 25-32, 40-42, 256.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
