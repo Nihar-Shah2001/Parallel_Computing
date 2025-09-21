@@ -10,3 +10,6 @@
 *.synctex.gz
 *.toc
 *-NMS.log
+
+# Edit Dense Linear Algebra and understand
+# Parallel algorithms in detail.
